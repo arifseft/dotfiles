@@ -10,7 +10,7 @@ bindkey '\e\eOD' backward-word
 export CLICOLOR=1
 export EDITOR='nvim'
 
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --exclude .git --exclude vendor --exclude node_modules'
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
 # export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 

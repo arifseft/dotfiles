@@ -19,7 +19,7 @@ call plug#begin('~/.vim/plugged')
 	Plug 'preservim/nerdtree'
     Plug 'preservim/nerdcommenter'
     Plug 'rbgrouleff/bclose.vim'
-	Plug 'terryma/vim-multiple-cursors'
+	" Plug 'terryma/vim-multiple-cursors'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-sensible'
     Plug 'tpope/vim-surround'

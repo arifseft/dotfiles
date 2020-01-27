@@ -1,3 +1,7 @@
+"" nerdtree
+let g:NERDTreeShowHidden=1
+let g:NERDTreeMinimalUI=1
+
 "" nerdcommenter
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -70,4 +74,6 @@ let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_test_show_name = 1
 let g:go_textobj_include_function_doc = 0
 let g:rehash256 = 1
- 
+
+let g:python_host_prog='/usr/local/bin/python'
+let g:python3_host_prog='/usr/bin/python3'
