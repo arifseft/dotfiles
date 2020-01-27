@@ -1,0 +1,84 @@
+set autoindent
+set autoread
+set background=dark
+set backspace=indent,eol,start
+set clipboard=unnamed
+set cmdheight=2
+set cpoptions+=n
+set encoding=utf-8
+set expandtab
+set fileencoding=utf-8
+set fileencodings=utf-8
+set foldmethod=syntax
+set gdefault
+set hidden
+set history=10000
+set hlsearch
+set ignorecase
+set laststatus=2
+set lazyredraw
+set matchpairs+=<:>
+set modifiable
+set mouse=a
+set nocursorcolumn
+set noerrorbells
+set noexpandtab
+set noshowmode
+set noswapfile
+set novisualbell
+set nowrap
+set number relativenumber
+set path+=**
+set re=1
+set rtp+=/usr/local/opt/fzf
+set ruler
+set scrolloff=2
+set shell=zsh\ -i
+set shiftwidth=4
+set shortmess+=c
+set showmatch
+set sidescrolloff=5
+set signcolumn=yes
+set smartcase
+set smartindent
+set softtabstop=4
+set splitbelow
+set splitright
+set t_Co=256
+set tabstop=4
+set title
+set updatetime=300
+set virtualedit=block
+set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+set wildmode=list:longest,list:full
+
+" Fix bug 256color from tmux
+if &term =~ '256color'
+    " disable Background Color Erase (BCE)
+    set t_ut=
+endif
+
+if &term =~ '^screen'
+    " tmux will send xterm-style keys when its xterm-keys option is on
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
+
+if !has('nvim')
+    set ttymouse=xterm2
+    set rtp+=/usr/local/lib/python3.7/site-packages/powerline/bindings/vim
+endif
+
+" Disable visualbell
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+    autocmd GUIEnter * set visualbell t_vb=
+endif
+
+"" Copy/Paste/Cut
+if has('unnamedplus')
+    set clipboard=unnamed,unnamedplus
+endif
+

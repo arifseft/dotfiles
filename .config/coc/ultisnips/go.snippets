@@ -1,0 +1,216 @@
+
+
+# qservice snippets
+snippet DELETE_PROXY_STRING
+Delete${1}ByIdUrl string
+endsnippet
+
+snippet DELETE_PROXY_URL
+Delete${1}ByIdUrl: url + "/${2}",
+endsnippet
+
+snippet UPSERT_QSERVICE
+	func (q ${1}) Upsert$2(input $2Payload) (*$2Payload, error) {
+		var result *$2Payload
+
+		action := q.Upsert$2Url
+		payload, err := json.Marshal(input)
+
+		status, response, body, err := helper.HttpRequest("POST", action, payload)
+		if err != nil {
+			return nil, qerror.NewError(err, body)
+		}
+
+		if status != 200 {
+			return nil, qerror.NewError(err, body)
+		}
+
+		marshaledResponse, err := json.Marshal(response.Data)
+		if err != nil {
+			return nil, qerror.NewError(err, response)
+		}
+
+		err = json.Unmarshal(marshaledResponse, &result)
+		if err != nil {
+			return nil, qerror.NewError(err, marshaledResponse)
+		}
+
+		return result, nil
+	}
+endsnippet
+
+snippet DELETE_HANDLER 
+	func Delete${1}Handler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) (interface{}, error) {
+		var payload ${2}.Id
+
+		jsonBody, err := ioutil.ReadAll(request.Body)
+
+		err = json.Unmarshal(jsonBody, &payload)
+
+		if err != nil {
+			return nil, qerror.NewError(err)
+		}
+
+		${3}Service := $2.New()
+		${4}, err := $3Service.Delete$1ById(payload)
+		if err != nil {
+			return nil, qerror.NewError(err)
+		}
+
+		return $4, nil
+	}
+endsnippet
+
+snippet DELETE_SERVICE
+	func (s ${1}Service) Delete$1ById(payload $1Id) (string, error) {
+		${3}, err := s.data.Get$1ById(payload.Id)
+		if err != nil {
+			return "", qerror.NewError(err)
+		}
+		if $3 == nil {
+			return "", qerror.NewValidationError("$1 does not exist")
+		}
+
+		err = s.data.Delete$1ById(payload.Id)
+		if err != nil {
+			return "", qerror.NewError(err)
+		}
+
+		return "success", nil
+	}
+endsnippet
+
+snippet DELETE_INTERFACE
+	Delete${1}ById(${2}Id uint64) error
+endsnippet
+
+snippet DELETE_MYSQL_STMT
+	Delete${1}ById qframeworkDb.Qstatement
+endsnippet
+
+snippet DELETE_MYSQL_CONST
+	Delete${1}ById = 'DELETE FROM ${2} WHERE id = ?'
+endsnippet
+
+snippet DELETE_MYSQL_INIT
+	${1}Stmt.Delete${2}ById = qframeworkDb.QPrepare(database.GetDBMaster(), Delete$2ById)
+endsnippet
+
+snippet DELETE_MYSQL_METHOD
+func (m Mysql${1}Data) Delete$1ById(${2}Id uint64) error {
+	_, err := database.GetDb().Exec(
+		$2Stmt.Delete$1ById,
+		$2Id,
+	)
+
+	if err != nil {
+		return qerror.NewError(err)
+	}
+
+	return qerror.NewError(err)
+}
+endsnippet
+
+snippet DELETE_API_HANDLER
+func Delete${1}ById(writer http.ResponseWriter, request *http.Request, params httprouter.Params) (interface{}, error) {
+	var payload ${2}$1Id
+
+	body, err := ioutil.ReadAll(request.Body)
+	if err != nil {
+		return nil, qerror.NewError(err)
+	}
+
+	err = json.Unmarshal(body, &payload)
+	if err != nil {
+		return nil, qerror.NewError(err)
+	}
+
+	err = ${3}.$1().Delete$1(payload)
+	if err != nil {
+		return nil, qerror.NewError(err)
+	}
+
+	return "success", nil
+
+}
+endsnippet
+
+snippet DELETE_API_SERVICE
+func (s ${1}${2}Service) Delete$2(input ${3}Id) error {
+	return microservice.Get$1Ms().Delete$2ById(input)
+}
+endsnippet
+
+snippet DELETE_PROXY_SERVICE
+func (q Qourse) Delete${1}ById(${2}Id $1Id) error {
+	action := q.Delete$1ByIdUrl
+	payload, err := json.Marshal($2Id)
+
+	status, _, body, err := helper.HttpRequest("POST", action, payload)
+	if err != nil {
+		return qerror.NewError(err, body)
+	}
+
+	if status != 200 {
+		return qerror.NewError(err, body)
+	}
+
+	return nil
+}
+endsnippet
+
+snippet NEW_SERVICE
+	type ${1}Service struct {
+		data data.$1Data
+	}
+
+	func New() $1Service struct {
+		return $1Service{
+			data: data.Mysql$1Data{},
+		}
+	}
+
+	func (s $1Service) Upsert$1(payload $1Payload) (*$1Payload, error) {
+		if payload.Id != nil {
+			$1, err := s.data.Get$1ById(*payload.Id)
+			if err != nil {
+				return nil, qerror.NewError(err)
+			}
+			if $1 == nil {
+				return nil, qerror.NewValidationError("$1 does not exist")
+			}
+			_, err = s.dataUpdate$1($1.Id, payload)
+			if err != nil {
+				return nil, qerror.NewError(err)
+			}
+		} else {
+			new$1Id, err := s.data.Insert$1($1)
+			payload.Id = new$1Id
+		}
+		return &payload, nil
+	}
+
+	func (s $1Service) Delete$1ById(payload SkillsetId) (string, error) {
+		$1, err := s.data.Get$1BySkillsetId(payload.Id)
+		if err != nil {
+			return "", qerror.NewError(err)
+		}
+		if $1 == nil {
+			return "", qerror.NewValidationError("$1 does not exist")
+		}
+
+		_, err = microservice.GetQuiz().DeleteQuiz($1.QuizId)
+		if err != nil {
+			return "", qerror.NewError(err)
+		}
+
+		err = s.data.Delete$1BySkillsetId(payload.Id)
+		if err != nil {
+			return "", qerror.NewError(err)
+		}
+
+		return "success", nil
+	}
+endsnippet
+
+

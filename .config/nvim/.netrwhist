@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =6
+let g:netrw_dirhist_6='/Users/arifsefrianto/.vim'
+let g:netrw_dirhist_5='/Users/arifsefrianto/dotfiles'
+let g:netrw_dirhist_4='/Users/arifsefrianto/go/src/github.com/karirdotcom/quiz/config/qey'
+let g:netrw_dirhist_3='/Users/arifsefrianto/go/src/github.com/karirdotcom/quiz/config'
+let g:netrw_dirhist_2='/Users/arifsefrianto/go/src/github.com/karirdotcom/quiz/config/app'
+let g:netrw_dirhist_1='/Users/arifsefrianto/go/src/github.com/karirdotcom/quiz/config'
+let g:netrw_dirhist_0='/Volumes/HDD/PhpstormProjects/www/sites/qareer/code/kunkka-lumen'
+let g:netrw_dirhist_9='/Volumes/HDD/PhpstormProjects/www/sites/qareer/code'
+let g:netrw_dirhist_8='/Volumes/HDD/PhpstormProjects/www/sites/qareer'
+let g:netrw_dirhist_7='/Users/arifsefrianto/go/src/github.com/arifseft/go-simple-chat'
