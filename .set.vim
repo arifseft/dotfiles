@@ -1,6 +1,6 @@
 set autoindent
 set autoread
-set background=dark
+" set background=light
 set backspace=indent,eol,start
 set clipboard=unnamed
 set cmdheight=2
@@ -51,6 +51,13 @@ set updatetime=300
 set virtualedit=block
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 set wildmode=list:longest,list:full
+
+let iterm_profile = $ITERM_PROFILE
+if iterm_profile == "dark"
+    set background=dark
+else
+    set background=light
+endif
 
 " Fix bug 256color from tmux
 if &term =~ '256color'

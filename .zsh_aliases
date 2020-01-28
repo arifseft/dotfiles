@@ -55,6 +55,7 @@ alias ae='n ~/.config/alacritty/alacritty.yml'
 alias se='n ~/.config/coc/ultisnips/go.snippets'
 alias re='n ~/.config/ranger/rc.conf'
 alias rm='trash'
+alias ts='theme-switch'
 
 alias myloc='mysql -hlocalhost -uroot -p12345678'
 alias mydev='mysql -hdbqareer.dev.qareer.com -uorang_qareer -pmaucobafitur'

@@ -12,6 +12,14 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.zshenv
 source $HOME/.zsh_aliases
 
+theme-switch () {
+	if [[ "$ITERM_PROFILE" != "dark" ]] then
+		echo -e "\033]50;SetProfile=dark\a"; export ITERM_PROFILE='dark';
+	else
+		echo -e "\033]50;SetProfile=light\a"; export ITERM_PROFILE='light';
+	fi
+}
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export LC_ALL=en_US.UTF-8
 
