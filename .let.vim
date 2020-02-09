@@ -49,6 +49,7 @@ let g:go_addtags_transform = "camelcase"
 let g:go_auto_sameids = 1
 let g:go_auto_type_info = 1
 let g:go_decls_includes = "func,type"
+let g:go_def_mapping_enabled = 0
 let g:go_def_mode = "gopls"
 let g:go_echo_command_info = 1
 let g:go_fmt_autosave = 1

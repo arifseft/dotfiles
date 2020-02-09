@@ -8,30 +8,18 @@ nnoremap <silent> <leader>h :sp <bar> terminal<CR><INS>
 nnoremap <silent> <leader>v :vsp <bar> terminal<CR><INS>
 tnoremap <ESC> <C-\><C-n>
 
-"" Quick exit insert mode with jk
-inoremap jk <ESC>
-
 "" Set working directory
-nnoremap <leader>. :lcd %:p:h<CR>
+nnoremap <leader>. :cd %:p:h<CR> <bar> pwd<CR>
+nnoremap <leader>./ :cd `git rev-parse --show-toplevel`<CR> <bar> pwd<CR>
 
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-" command! -bang -nargs=* Rg
-"     \ call fzf#vim#grep(
-"     \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-"     \   fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+    \   fzf#vim#with_preview(), <bang>0)
 
 nnoremap <C-g> :Rg<Cr> 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
-nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>, :Buffers<CR>
 nnoremap <silent> <C-f> :BLines<CR>
 nnoremap <silent> <leader>f :Lines<CR>
 nnoremap <silent> <leader>t :BTags<CR>
@@ -39,7 +27,7 @@ nnoremap <silent> <C-p> :call fzf#vim#files('$KARIR', {'options': '--prompt ""'}
 
 nmap <c-s> :w<CR>
 imap <c-s> <Esc>:w<CR>
-map <leader>m :Maps<CR>
+map <leader>m :vsp $HOME/.map.vim<CR>
 
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
@@ -61,7 +49,7 @@ noremap <leader>x :bn<CR>
 
 "" Close buffer
 nmap <leader>c :bd<CR>
-tmap <leader>c exit<CR>>
+tmap <leader>c exit<CR>
 noremap <leader>q :q<CR>
 
 
@@ -75,25 +63,19 @@ noremap <C-l> <C-w>l
 noremap <C-h> <C-w>h
 
 " Disable arrow keys
-map <UP> <NOP>
-map <DOWN> <NOP>
-map <RIGHT> <NOP>
-map <LEFT> <NOP>
+noremap <UP> <NOP>
+noremap <DOWN> <NOP>
+noremap <RIGHT> <NOP>
+noremap <LEFT> <NOP>
 
 " edit vimrc
 nnoremap <leader>e :vsp $MYVIMRC<cr>
 
 " edit snippets
-nnoremap <leader>s :vsp $XDG_CONFIG_HOME/coc/ultisnips/go.snippets<cr>G
-
-" replace
-nnoremap <leader>r :%s///g<Left><Left>
-xnoremap <leader>r :%s///g<Left><Left>
-nnoremap <leader>rc :%s///gc<Left><Left>
-xnoremap <leader>rc :%s///gc<Left><Left>
-
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
+nnoremap <leader>s :vsp $XDG_CONFIG_HOME/coc/ultisnips/go.snippets<cr>Go
 
 map <C-n> :NERDTreeToggle<CR>
+map <C-b> <C-^><CR>
+map <C-a> <esc>ggVG
+map <leader>d 0yaf]]O<esc>O<esc>p]]w
+map <leader>sv :source ~/.vimrc<CR>

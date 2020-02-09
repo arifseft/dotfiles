@@ -10,6 +10,7 @@ set expandtab
 set fileencoding=utf-8
 set fileencodings=utf-8
 set foldmethod=syntax
+set foldlevel=99
 set gdefault
 set hidden
 set history=10000
@@ -23,6 +24,7 @@ set mouse=a
 set nocursorcolumn
 set noerrorbells
 set noexpandtab
+set nofoldenable
 set noshowmode
 set noswapfile
 set novisualbell
@@ -35,7 +37,8 @@ set ruler
 set scrolloff=2
 set shell=zsh\ -i
 set shiftwidth=4
-set shortmess+=c
+set shortmess=a
+" set shortmess+=c
 set showmatch
 set sidescrolloff=5
 set signcolumn=yes

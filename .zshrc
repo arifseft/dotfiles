@@ -12,7 +12,7 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.zshenv
 source $HOME/.zsh_aliases
 
-theme-switch () {
+t() {
 	if [[ "$ITERM_PROFILE" != "dark" ]] then
 		echo -e "\033]50;SetProfile=dark\a"; export ITERM_PROFILE='dark';
 	else

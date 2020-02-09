@@ -1,15 +1,15 @@
 
 
 # qservice snippets
-snippet DELETE_PROXY_STRING
+snippet SN_DELETE_PROXY_STRING
 Delete${1}ByIdUrl string
 endsnippet
 
-snippet DELETE_PROXY_URL
+snippet SN_DELETE_PROXY_URL
 Delete${1}ByIdUrl: url + "/${2}",
 endsnippet
 
-snippet UPSERT_QSERVICE
+snippet SN_UPSERT_QSERVICE
 	func (q ${1}) Upsert$2(input $2Payload) (*$2Payload, error) {
 		var result *$2Payload
 
@@ -39,7 +39,7 @@ snippet UPSERT_QSERVICE
 	}
 endsnippet
 
-snippet DELETE_HANDLER 
+snippet SN_DELETE_HANDLER
 	func Delete${1}Handler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) (interface{}, error) {
 		var payload ${2}.Id
 
@@ -61,7 +61,7 @@ snippet DELETE_HANDLER
 	}
 endsnippet
 
-snippet DELETE_SERVICE
+snippet SN_DELETE_SERVICE
 	func (s ${1}Service) Delete$1ById(payload $1Id) (string, error) {
 		${3}, err := s.data.Get$1ById(payload.Id)
 		if err != nil {
@@ -80,23 +80,23 @@ snippet DELETE_SERVICE
 	}
 endsnippet
 
-snippet DELETE_INTERFACE
+snippet SN_DELETE_INTERFACE
 	Delete${1}ById(${2}Id uint64) error
 endsnippet
 
-snippet DELETE_MYSQL_STMT
+snippet SN_DELETE_MYSQL_STMT
 	Delete${1}ById qframeworkDb.Qstatement
 endsnippet
 
-snippet DELETE_MYSQL_CONST
+snippet SN_DELETE_MYSQL_CONST
 	Delete${1}ById = 'DELETE FROM ${2} WHERE id = ?'
 endsnippet
 
-snippet DELETE_MYSQL_INIT
+snippet SN_DELETE_MYSQL_INIT
 	${1}Stmt.Delete${2}ById = qframeworkDb.QPrepare(database.GetDBMaster(), Delete$2ById)
 endsnippet
 
-snippet DELETE_MYSQL_METHOD
+snippet SN_DELETE_MYSQL_METHOD
 func (m Mysql${1}Data) Delete$1ById(${2}Id uint64) error {
 	_, err := database.GetDb().Exec(
 		$2Stmt.Delete$1ById,
@@ -111,7 +111,7 @@ func (m Mysql${1}Data) Delete$1ById(${2}Id uint64) error {
 }
 endsnippet
 
-snippet DELETE_API_HANDLER
+snippet SN_DELETE_API_HANDLER
 func Delete${1}ById(writer http.ResponseWriter, request *http.Request, params httprouter.Params) (interface{}, error) {
 	var payload ${2}$1Id
 
@@ -135,13 +135,13 @@ func Delete${1}ById(writer http.ResponseWriter, request *http.Request, params ht
 }
 endsnippet
 
-snippet DELETE_API_SERVICE
+snippet SN_DELETE_API_SERVICE
 func (s ${1}${2}Service) Delete$2(input ${3}Id) error {
 	return microservice.Get$1Ms().Delete$2ById(input)
 }
 endsnippet
 
-snippet DELETE_PROXY_SERVICE
+snippet SN_DELETE_PROXY_SERVICE
 func (q Qourse) Delete${1}ById(${2}Id $1Id) error {
 	action := q.Delete$1ByIdUrl
 	payload, err := json.Marshal($2Id)
@@ -159,7 +159,7 @@ func (q Qourse) Delete${1}ById(${2}Id $1Id) error {
 }
 endsnippet
 
-snippet NEW_SERVICE
+snippet SN_NEW_SERVICE
 	type ${1}Service struct {
 		data data.$1Data
 	}
@@ -213,4 +213,43 @@ snippet NEW_SERVICE
 	}
 endsnippet
 
+snippet SN_QPOST
+router.QPOST("${1}", handler.${2}Handler)
+endsnippet
 
+snippet SN_QGET
+router.QGET("${1}", handler.${2}Handler)
+endsnippet
+
+snippet SN_HANDLER
+func ${1}Handler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) (interface{}, error) {
+	var payload ${2}.${3}
+
+	jsonBody, err := ioutil.ReadAll(request.Body)
+
+	err = json.Unmarshal(jsonBody, &payload)
+
+	if err != nil {
+		return nil, qerror.NewError(err)
+	}
+
+	${4}Service := $2.New()
+	$4, err := $4Service.$1(payload)
+	if err != nil {
+		return nil, qerror.NewError(err)
+	}
+
+	return $4, nil
+}
+endsnippet
+
+snippet SN_ERROR
+if err != nil {
+	return ${1}, qerror.NewError(err)
+}
+endsnippet
+
+snippet SN_PL
+fmt.Println("${1}==========================================")
+fmt.Println($1)
+endsnippet
