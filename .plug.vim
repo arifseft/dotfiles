@@ -6,7 +6,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'francoiscabrol/ranger.vim'
     Plug 'honza/vim-snippets'
     Plug 'lifepillar/vim-solarized8'
-    Plug 'jiangmiao/auto-pairs'
+    " Plug 'jiangmiao/auto-pairs'
     if isdirectory('/usr/local/opt/fzf')
         Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
     else
@@ -19,10 +19,14 @@ call plug#begin('~/.vim/plugged')
 	Plug 'preservim/nerdtree'
     Plug 'preservim/nerdcommenter'
     Plug 'rbgrouleff/bclose.vim'
+	Plug 'tpope/vim-abolish'
+	Plug 'tpope/vim-eunuch'
     Plug 'tpope/vim-fugitive'
+	Plug 'tpope/vim-rails'
     Plug 'tpope/vim-sensible'
-    Plug 'tpope/vim-surround'
+	Plug 'tpope/vim-surround'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+	Plug 'vim-ruby/vim-ruby'
 call plug#end()
 

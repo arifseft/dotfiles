@@ -1,6 +1,5 @@
 set autoindent
 set autoread
-" set background=light
 set backspace=indent,eol,start
 set clipboard=unnamed
 set cmdheight=2
@@ -24,7 +23,6 @@ set mouse=a
 set nocursorcolumn
 set noerrorbells
 set noexpandtab
-set nofoldenable
 set noshowmode
 set noswapfile
 set novisualbell
@@ -37,8 +35,8 @@ set ruler
 set scrolloff=2
 set shell=zsh\ -i
 set shiftwidth=4
-set shortmess=a
-" set shortmess+=c
+" set shortmess=a
+set shortmess+=c
 set showmatch
 set sidescrolloff=5
 set signcolumn=yes

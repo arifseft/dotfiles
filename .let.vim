@@ -1,6 +1,7 @@
 "" nerdtree
 let g:NERDTreeShowHidden=1
 let g:NERDTreeMinimalUI=1
+let g:NERDTreeHijackNetrw = 0
 
 "" nerdcommenter
 " Add spaces after comment delimiters by default
@@ -28,7 +29,7 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
 
 let g:ranger_replace_netrw = 1
-let g:ranger_open_new_tab = 1
+let g:ranger_open_new_tab = 0
 
 let g:coc_global_extenstion = ['coc-snippets']
 let g:coc_snippet_next = '<Tab>'
@@ -45,7 +46,7 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline_powerline_fonts = 1
 "let g:airline_theme='luna'
 "let g:airline_solarized_bg='dark'
-let g:go_addtags_transform = "camelcase"
+let g:go_addtags_transform = "snakecase"
 let g:go_auto_sameids = 1
 let g:go_auto_type_info = 1
 let g:go_decls_includes = "func,type"
@@ -72,6 +73,7 @@ let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_metalinter_command = ""
 let g:go_metalinter_deadline = "5s"
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_template_autocreate = 0
 let g:go_test_show_name = 1
 let g:go_textobj_include_function_doc = 0
 let g:rehash256 = 1

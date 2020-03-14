@@ -9,8 +9,8 @@ nnoremap <silent> <leader>v :vsp <bar> terminal<CR><INS>
 tnoremap <ESC> <C-\><C-n>
 
 "" Set working directory
-nnoremap <leader>. :cd %:p:h<CR> <bar> pwd<CR>
-nnoremap <leader>./ :cd `git rev-parse --show-toplevel`<CR> <bar> pwd<CR>
+nnoremap <leader>/ :cd %:p:h<CR>
+nnoremap <leader>// :cd `git rev-parse --show-toplevel`<CR>
 
 command! -bang -nargs=* Rg
     \ call fzf#vim#grep(
@@ -20,6 +20,7 @@ command! -bang -nargs=* Rg
 nnoremap <C-g> :Rg<Cr> 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>, :Buffers<CR>
+tmap <leader>, :Buffers<CR>
 nnoremap <silent> <C-f> :BLines<CR>
 nnoremap <silent> <leader>f :Lines<CR>
 nnoremap <silent> <leader>t :BTags<CR>
@@ -46,9 +47,11 @@ endif
 noremap <leader>z :bp<CR>
 noremap <leader>x :bn<CR>
 
+noremap <leader>j :cn<CR>
+noremap <leader>k :cp<CR>
 
 "" Close buffer
-nmap <leader>c :bd<CR>
+nmap <leader>c :Bclose<CR>
 tmap <leader>c exit<CR>
 noremap <leader>q :q<CR>
 
@@ -75,7 +78,9 @@ nnoremap <leader>e :vsp $MYVIMRC<cr>
 nnoremap <leader>s :vsp $XDG_CONFIG_HOME/coc/ultisnips/go.snippets<cr>Go
 
 map <C-n> :NERDTreeToggle<CR>
-map <C-b> <C-^><CR>
+map <C-b> <C-^>
 map <C-a> <esc>ggVG
 map <leader>d 0yaf]]O<esc>O<esc>p]]w
-map <leader>sv :source ~/.vimrc<CR>
+map <leader>sv :source $DOTFILES/.config/nvim/init.vim<CR>
+map <leader>o :Ranger<CR>
+map gt :GetDataImplement<CR>
