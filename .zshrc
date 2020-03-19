@@ -35,8 +35,8 @@ POWERLINE_BASH_SELECT=1
 source /usr/local/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-[[ ! -f ~/.p10k-lean.zsh ]] || source ~/.p10k-lean.zsh
+#[[ ! -f ~/.p10k-lean.zsh ]] || source ~/.p10k-lean.zsh
 
 [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh

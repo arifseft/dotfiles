@@ -122,6 +122,14 @@ function! s:camelcase(word)
     return substitute(word,'\C\(_\)\=\(.\)','\=submatch(1)==""?tolower(submatch(2)) : toupper(submatch(2))','g')
   endif
 endfunction
+function! s:snakecase(word)
+  let word = substitute(a:word,'::','/','g')
+  let word = substitute(word,'\(\u\+\)\(\u\l\)','\1_\2','g')
+  let word = substitute(word,'\(\l\|\d\)\(\u\)','\1_\2','g')
+  let word = substitute(word,'[.-]','_','g')
+  let word = tolower(word)
+  return word
+endfunction
 
 function! PgToStruct(start, end) range
     for line in range(a:start, a:end)
@@ -371,7 +379,7 @@ function InitAll(repo, service, model, table_name)
 endfunction
 command! -nargs=* InitAll call InitAll(<f-args>)
 
-function CreateServiceFunc(repo, service, resource)
+function CreateServiceFuncMS(repo, service, resource)
 	exe 'e $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
 	exe 'norm G'
 	exe 'norm o'
@@ -381,17 +389,17 @@ function CreateServiceFunc(repo, service, resource)
 	endfor
 	exe 'w'
 endfunction
-command! -nargs=* CreateServiceFunc call CreateServiceFunc(<f-args>)
+command! -nargs=* CreateServiceFuncMS call CreateServiceFuncMS(<f-args>)
 
-function CreateEndpoint(repo, url, service, resource)
+function CreateEndpointMS(repo, url, service, resource)
 	exe 'e $KARIR/'.a:repo.'/cmd/app/'.a:repo.'/main.go'
 	exe ':norm G'
 	exe ':norm O router.QPOST("'.a:url.'", handler.'.a:resource.a:service.'Handler'.')'
 	exe 'w'
 endfunction
-command! -nargs=* CreateEndpoint call CreateEndpoint(<f-args>)
+command! -nargs=* CreateEndpointMS call CreateEndpointMS(<f-args>)
 
-function CreateHandlerFunc(repo, service, resource)
+function CreateHandlerFuncMS(repo, service, resource)
 	exe 'e $KARIR/'.a:repo.'/pkg/handler/handler.'.s:camelcase(a:service).'.go'
 	exe 'norm G'
 	exe 'norm o'
@@ -401,25 +409,27 @@ function CreateHandlerFunc(repo, service, resource)
 	endfor
 	exe 'w'
 endfunction
-command! -nargs=* CreateHandlerFunc call CreateHandlerFunc(<f-args>)
+command! -nargs=* CreateHandlerFuncMS call CreateHandlerFuncMS(<f-args>)
 
 function CreateMS(repo, url, service, resource)
-	exe 'CreateEndpoint '.a:repo.' '.a:url.' '.a:service.' '.a:resource
-	exe 'CreateServiceFunc '.a:repo.' '.a:service.' '.a:resource
-	exe 'CreateHandlerFunc '.a:repo.' '.a:service.' '.a:resource
+	exe 'CreateEndpointMS '.a:repo.' '.a:url.' '.a:service.' '.a:resource
+	exe 'CreateServiceFuncMS '.a:repo.' '.a:service.' '.a:resource
+	exe 'CreateHandlerFuncMS '.a:repo.' '.a:service.' '.a:resource
 endfunction
 command! -nargs=* CreateMS call CreateMS(<f-args>)
 
 function CreateProxy(repo, url, service, resource)
 	exe 'e $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
-	exe '/'.a:resource.a:service.'Input'
+	exe 'norm gg'
+	exe '/type '.a:resource.a:service.'Input struct {'
 	exe 'norm 0'
 	exe 'norm v'
-	exe '/}'
-	exe 'norm n'
+	exe '/func ('
+	exe '?}'
 	exe 'norm y'
 
 	exe 'e $KARIR/qservice/pkg/common/'.a:repo.'/'.a:repo.'.go'
+	exe 'norm gg'
 	exe '/type'
 	exe '/}'
 	exe 'norm O '.s:mixedcase(a:resource.a:service).'Url string'
@@ -432,7 +442,8 @@ function CreateProxy(repo, url, service, resource)
 	exe 'norm p'
 	
 	exe 'e $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
-	exe '/'.a:resource.a:service.'('
+	exe 'norm gg'
+	exe '/) '.a:resource.a:service.'('
 	exe 'norm yaf'
 	
 	exe 'e $KARIR/qservice/pkg/common/'.a:repo.'/'.a:repo.'.go'
@@ -490,6 +501,146 @@ function CreateProxy(repo, url, service, resource)
 	exe 'w'
 endfunction
 command! -nargs=* CreateProxy call CreateProxy(<f-args>)
+
+function CreateEndpointAPI(repoAPI, repoMS, url, service, resource)
+	exe 'e $KARIR/'.a:repoAPI.'/cmd/app/'.a:repoAPI.'/'.a:repoMS.'/'.a:repoMS.'.go'
+	exe ':norm G'
+	exe ':norm O router.QPOST("'.a:url.'", middleware.KarirAuthorization(handler'.s:mixedcase(a:repoMS).'.'.a:resource.a:service.'Handler'.'))'
+	exe 'w'
+endfunction
+command! -nargs=* CreateEndpointAPI call CreateEndpointAPI(<f-args>)
+
+function CreateHandlerFuncAPI(repoAPI, repoMS, service, resource)
+	exe 'e $KARIR/'.a:repoAPI.'/pkg/handler/'.tolower(s:mixedcase(a:repoMS)).'/handler.'.s:camelcase(a:service).'.go'
+	exe 'norm gg'
+	exe 'norm o import "github.com/karirdotcom/'.a:repoAPI.'/pkg/service/'.tolower(s:mixedcase(a:repoMS)).'"'
+	exe 'norm G'
+	exe 'norm o'
+	exe 'norm o func '.a:resource.a:service.'Handler(writer http.ResponseWriter, request *http.Request, params httprouter.Params) (interface{}, error) {'
+	exe 'norm o		var input '.tolower(s:mixedcase(a:repoMS)).'.'.s:mixedcase(a:resource.a:service).'Input'
+	exe 'norm o '
+	exe 'norm o 	ctx := request.Context()'
+	exe 'norm o 	auth, ok := ctx.Value("auth").(*qredential.CommonTokenPayload)'
+	exe 'norm o '
+	exe 'norm o 	if !ok {'
+	exe 'norm o 		return nil, qerror.NewAuthorizationErrors([]string{constants.ERR_INVALID_ACCESS_TOKEN})'
+	exe 'norm o 	}'
+	exe 'norm o '
+	exe 'norm o		body, err := ioutil.ReadAll(request.Body)'
+	exe 'norm o		if err != nil {'
+	exe 'norm o			return nil, qerror.NewError(err)'
+	exe 'norm o		}'
+	exe 'norm o '
+	exe 'norm o		err = json.Unmarshal(body, &input)'
+	exe 'norm o		if err != nil {'
+	exe 'norm o			return nil, qerror.NewError(err)'
+	exe 'norm o		}'
+	exe 'norm o		'
+	exe 'norm o		validate = validator.New()'
+	exe 'norm o		if err = validate.Struct(input); err != nil {'
+	exe 'norm o			errVal := helper.FormatValidatorArrayResponse(err)'
+	exe 'norm o			return nil, qerror.NewValidationErrors(errVal)'
+	exe 'norm o		}'
+	exe 'norm o '
+	exe 'norm o 	userId := uint64(auth.SourceId)'
+	exe 'norm o '
+	exe 'norm o 	response, err := '.tolower(s:mixedcase(a:repoMS)).'.New'.a:service.'().'.a:resource.a:service.'(userId, input)'
+	exe 'norm o 	if err != nil {'
+	exe 'norm o 		return nil, qerror.NewError(err)'
+	exe 'norm o 	}'
+	exe 'norm o '
+	exe 'norm o 	return response, nil'
+	exe 'norm o }'
+	exe 'w'
+endfunction
+command! -nargs=* CreateHandlerFuncAPI call CreateHandlerFuncAPI(<f-args>)
+
+function CreateServiceFuncAPI(repoAPI, repoMS, service, resource)
+	exe 'e $KARIR/'.a:repoMS.'/pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
+	exe 'norm gg'
+	exe '/type '.a:resource.a:service.'Input struct {'
+	exe 'norm 0'
+	exe 'norm v'
+	exe '/func ('
+	exe '?}'
+	exe 'norm y'
+
+	exe 'e $KARIR/'.a:repoAPI.'/pkg/service/'.tolower(s:mixedcase(a:repoMS)).'/service.'.s:camelcase(a:service).'.go'
+	exe 'norm gg'
+	exe 'norm o import karir_ms "github.com/karirdotcom/qservice/pkg/common/'.tolower(s:mixedcase(a:repoMS)).'"'
+	exe 'norm G'
+	exe 'norm o'
+	exe 'norm o'
+	exe 'norm p'
+	exe 'norm G'
+	exe 'norm o'
+	exe 'norm o'
+
+	exe 'norm o func (s '.s:mixedcase(a:repoMS).a:service.'Service) '.a:resource.a:service.'(userId uint64, input '.s:mixedcase(a:resource.a:service).'Input) (*'.s:mixedcase(a:resource.a:service).'Output, error) {'
+	exe 'norm o 	resp, err := microservice.Get'.s:mixedcase(a:repoMS).'().'.s:mixedcase(a:resource.a:service).'('.s:snakecase(a:repoMS).'.'.s:mixedcase(a:resource.a:service).'Input{})'
+	exe 'norm o '
+	exe 'norm o 	if err != nil {'
+	exe 'norm o 		return nil, qerror.NewError(err)'
+	exe 'norm o 	}'
+	exe 'norm o '
+	exe 'norm o		var output '.s:mixedcase(a:resource.a:service).'Output'
+	exe 'norm o		copier.Copy(&output, &resp)'
+	exe 'norm o '
+	exe 'norm o		return &output, nil'
+	exe 'norm o }'
+	
+	exe 'w'
+endfunction
+command! -nargs=* CreateServiceFuncAPI call CreateServiceFuncAPI(<f-args>)
+
+function CreateAPI(repoAPI, repoMS, url, service, resource)
+	exe 'CreateEndpointAPI '.a:repoAPI.' '.a:repoMS.' '.a:url.' '.a:service.' '.a:resource
+	exe 'CreateServiceFuncAPI '.a:repoAPI.' '.a:repoMS.' '.a:service.' '.a:resource
+	exe 'CreateHandlerFuncAPI '.a:repoAPI.' '.a:repoMS.' '.a:service.' '.a:resource
+endfunction
+command! -nargs=* CreateAPI call CreateAPI(<f-args>)
+
+function InitHandlerAPI(repoAPI, repoMS, service)
+	exe 'cd $KARIR/'.a:repoAPI
+	exe 'cd `git rev-parse --show-toplevel`'
+	exe '!touch pkg/handler/'.tolower(s:mixedcase(a:repoMS)).'/handler.'.s:camelcase(a:service).'.go'
+	exe 'e pkg/handler/'.tolower(s:mixedcase(a:repoMS)).'/handler.'.s:camelcase(a:service).'.go'
+	exe 'norm i package '.tolower(s:mixedcase(a:repoMS))
+	exe 'w'
+endfunction
+command! -nargs=* InitHandlerAPI call InitHandlerAPI(<f-args>)
+
+function InitServiceAPI(repoAPI, repoMS, service)
+	exe 'cd $KARIR/'.a:repoAPI
+	exe 'cd `git rev-parse --show-toplevel`'
+	exe 'Mkdir! pkg/service/'.tolower(s:mixedcase(a:repoMS))
+	exe '!touch pkg/service/'.tolower(s:mixedcase(a:repoMS)).'/service.'.s:camelcase(a:service).'.go'
+	exe 'e pkg/service/'.tolower(s:mixedcase(a:repoMS)).'/service.'.s:camelcase(a:service).'.go'
+
+	exe 'norm o package '.tolower(s:mixedcase(a:repoMS))
+	exe 'norm o '
+	exe 'norm o import ('
+	exe 'norm o 	"github.com/karirdotcom/karir-api/pkg/common/microservice"'
+	exe 'norm o 	"github.com/karirdotcom/qframework/pkg/common/qerror"'
+	exe 'norm o 	'.s:snakecase(a:repoMS).' "github.com/karirdotcom/qservice/pkg/common/'.a:repoMS.'"'
+	exe 'norm o )'
+	exe 'norm o '
+	exe 'norm o type '.s:mixedcase(a:repoMS).s:mixedcase(a:service).'Service struct {'
+	exe 'norm o }'
+	exe 'norm o '
+	exe 'norm o func New'.s:mixedcase(a:service).'() '.s:mixedcase(a:repoMS).s:mixedcase(a:service).'Service {'
+	exe 'norm o 	return '.s:mixedcase(a:repoMS).s:mixedcase(a:service).'Service{}'
+	exe 'norm o }'
+
+	exe 'w'
+endfunction
+command! -nargs=* InitServiceAPI call InitServiceAPI(<f-args>)
+
+function InitAllAPI(repoAPI, repoMS, service)
+	exe 'InitServiceAPI '.a:repoAPI.' '.a:repoMS.' '.a:service
+	exe 'InitHandlerAPI '.a:repoAPI.' '.a:repoMS.' '.a:service
+endfunction
+command! -nargs=* InitAllAPI call InitAllAPI(<f-args>)
 
 function GetColumns(table_name)
 	let getColumns = "select column_name from information_schema.columns where table_name ='".a:table_name."'"

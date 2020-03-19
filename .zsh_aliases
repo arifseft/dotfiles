@@ -68,6 +68,7 @@ alias modev='mongo --host stack.dev.qareer.com --port 27017 --username simpendat
 alias mostg='mongo --host stack.staging.qareer.com --port 27017 --username simpendata --password bentukdokumen'
 # alias pgdev='psql service=pg_dev'
 alias pgstg='psql postgres://flamboyan:PNI0XkuC9@13.251.169.57:5432/karir_production'
+alias pgprd='psql postgres://bacakarir:cumabacaajakarir@dbkarir_read.karir.com:5432/karir_production'
 #
 alias pgdeverika='psql postgres://sakura:SNmm8q4AR@dberika.dev.karir.com:5432/erika_production'
 alias pgdevkarir='psql postgres://flamboyan:PNI0XkuC9@dbkarir.dev.karir.com:5432/karir_production'
