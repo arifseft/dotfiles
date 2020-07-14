@@ -68,11 +68,11 @@ let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
 let g:go_info_mode = "gopls"
 let g:go_list_type = "quickfix"
-let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-let g:go_metalinter_command = ""
-let g:go_metalinter_deadline = "5s"
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+" let g:go_metalinter_autosave = 1
+" let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+" let g:go_metalinter_command = ""
+" let g:go_metalinter_deadline = "5s"
+" let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_template_autocreate = 0
 let g:go_test_show_name = 1
 let g:go_textobj_include_function_doc = 0
@@ -80,3 +80,6 @@ let g:rehash256 = 1
 
 let g:python_host_prog='/usr/local/bin/python'
 let g:python3_host_prog='/usr/bin/python3'
+
+let g:phpfmt_standard = 'PSR2'
+

@@ -1,3 +1,4 @@
+alias a='cd ~/go/src/github.com/arifseft'
 alias k='cd $KARIR'
 alias supervisord='supervisord -c /usr/local/share/supervisor/supervisord.conf'
 alias supervisorctl='supervisorctl -c /usr/local/share/supervisor/supervisord.conf'
@@ -56,9 +57,6 @@ alias se='n ~/.config/coc/ultisnips/go.snippets'
 alias re='n ~/.config/ranger/rc.conf'
 alias rm='trash'
 
-# RedisConnString": "stack.dev-int.qareer.com:6379",
-#   "RedisPassword": "redisdev",
-#   "RedisDB" : 5
 alias redisdev='redis-cli -h stack.dev-int.qareer.com -p 6379 -a redisdev'
 alias myloc='mysql -hlocalhost -uroot -p12345678'
 alias mydev='mysql -hdbqareer.dev.qareer.com -uorang_qareer -pmaucobafitur'
@@ -67,6 +65,7 @@ alias myprd='mysql -hdbreplica2.qareer.com -uqerja_baca -pkerjaannya_bacakakakak
 alias modev='mongo --host stack.dev.qareer.com --port 27017 --username simpendata --password bentukdokumen'
 alias mostg='mongo --host stack.staging.qareer.com --port 27017 --username simpendata --password bentukdokumen'
 # alias pgdev='psql service=pg_dev'
+alias pgloc='psql -hlocalhost -uroot -p12345678'
 alias pgstg='psql postgres://flamboyan:PNI0XkuC9@13.251.169.57:5432/karir_production'
 alias pgprd='psql postgres://bacakarir:cumabacaajakarir@dbkarir_read.karir.com:5432/karir_production'
 #

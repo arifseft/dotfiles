@@ -1,2 +1,5 @@
+tsserver
+tsserver.restart
+workspace.showOutput
 snippets.openSnippetFiles
 snippets.editSnippets

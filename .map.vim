@@ -19,12 +19,15 @@ command! -bang -nargs=* Rg
 
 nnoremap <C-g> :Rg<Cr> 
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+
 nnoremap <silent> <leader>, :Buffers<CR>
 tmap <leader>, :Buffers<CR>
 nnoremap <silent> <C-f> :BLines<CR>
 nnoremap <silent> <leader>f :Lines<CR>
 nnoremap <silent> <leader>t :BTags<CR>
-nnoremap <silent> <C-p> :call fzf#vim#files('$KARIR', {'options': '--prompt ""'})<CR>
+" nnoremap <silent> <C-p> :call fzf#vim#files('$KARIR', {'options': '--prompt ""'})<CR>
+
+nnoremap <silent> <C-p> :call fzf#vim#files(FindRootDirectory(), {'options': '--prompt ""'})<cr>
 
 nmap <c-s> :w<CR>
 imap <c-s> <Esc>:w<CR>
@@ -34,7 +37,6 @@ map <leader>m :vsp $HOME/.map.vim<CR>
 nmap <leader>y :History:<CR>
 
 noremap YY "+y<CR>
-noremap <leader>p "+gP<CR>
 noremap XX "+x<CR>
 
 if has('macunix')
@@ -65,6 +67,15 @@ noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 noremap <C-h> <C-w>h
 
+"" Adjust windows size
+noremap <silent> <C-Left> :vertical resize +3<CR>
+noremap <silent> <C-Right> :vertical resize -3<CR>
+noremap <silent> <C-Up> :resize +3<CR>
+noremap <silent> <C-Down> :resize -3<CR>
+
+map <Leader>th <C-w>t<C-w>H
+map <Leader>tk <C-w>t<C-w>K
+
 " Disable arrow keys
 noremap <UP> <NOP>
 noremap <DOWN> <NOP>
@@ -77,10 +88,15 @@ nnoremap <leader>e :vsp $MYVIMRC<cr>
 " edit snippets
 nnoremap <leader>s :vsp $XDG_CONFIG_HOME/coc/ultisnips/go.snippets<cr>Go
 
-map <C-n> :NERDTreeToggle<CR>
+map <C-t> :cd `git rev-parse --show-toplevel` <bar> NERDTreeToggle <bar> NERDTreeRefreshRoot <CR>
 map <C-b> <C-^>
 map <C-a> <esc>ggVG
 map <leader>d 0yaf]]O<esc>O<esc>p]]w
 map <leader>sv :source $DOTFILES/.config/nvim/init.vim<CR>
 map <leader>o :Ranger<CR>
-map gt :GetDataImplement<CR>
+map gid :GetDataImplement<CR>
+
+" map gat :'<,'>GoAddTags<CR>
+" map grt :'<,'>GoRemoveTags<CR>
+map gat :GoAddTags<CR>
+map grt :GoRemoveTags<CR>

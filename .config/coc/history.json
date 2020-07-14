@@ -1,1 +1,14 @@
-{}
+{
+  "services": {
+    "%2FUsers%2Farifsefrianto%2Fdotfiles": [
+      "go"
+    ]
+  },
+  "lists": {
+    "%2FVolumes%2FHDD%2Fgithub": {
+      "com%2Farifseft%2Fpython-ai-flappy-bird": [
+        "ext"
+      ]
+    }
+  }
+}

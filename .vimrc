@@ -2,6 +2,38 @@ source $DOTFILES/.plug.vim
 source $DOTFILES/.set.vim
 source $DOTFILES/.let.vim
 
+packadd cfilter
+
+let python_highlight_all = 1
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+" map <leader>s :SyntasticCheck<CR>
+" map <leader>d :SyntasticReset<CR>
+" map <leader>e :lnext<CR>
+" map <leader>r :lprev<CR>
+"
+" " tag list
+" map <leader>t :TagbarToggle<CR>
+
+" Define some single Blade directives. This variable is used for highlighting only.
+let g:blade_custom_directives = ['datetime', 'javascript']
+
+" Define pairs of Blade directives. This variable is used for highlighting and indentation.
+let g:blade_custom_directives_pairs = {
+      \   'markdown': 'endmarkdown',
+      \   'cache': 'endcache',
+      \ }
+
+let g:pdv_template_dir = $HOME ."/.vim/plugged/pdv/templates_snip"
+nnoremap <buffer> <C-i> :call pdv#DocumentWithSnip()<CR>
+
 "" Clear highlight number highlight clear LineNr highlight clear CursorLineNr
 
 syntax enable
@@ -10,6 +42,10 @@ filetype plugin indent on
 
 hi! Normal guibg=NONE ctermbg=NONE
 hi! NonText guibg=NONE ctermbg=NONE
+" hi! Comment ctermfg=DarkGrey guifg=DarkGrey
+" hi! Search ctermbg=DarkRed guibg=DarkBlue
+" hi! ErrorMsg ctermbg=White ctermfg=Red guibg=White guifg=Red
+"
 
 " Auto change directory to opened file
 autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
@@ -18,6 +54,9 @@ autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
 autocmd FocusLost * silent :up
 autocmd WinLeave * silent :up
 autocmd BufWinLeave * silent :up
+
+autocmd FileType go nnoremap <buffer> <c-s> :w <bar> silent CocRestart<CR>
+autocmd FileType javascript nnoremap <buffer> <c-s> :w <bar> silent CocRestart<CR>
 
 " Exit terminal
 augroup terminal_settings
@@ -33,6 +72,10 @@ augroup terminal_settings
           \   call nvim_input('<CR>')  |
           \ endif
 augroup END
+
+autocmd BufNewFile,BufRead *.js set shiftwidth=2
+autocmd BufNewFile,BufRead *.js set softtabstop=4
+autocmd BufNewFile,BufRead *.js set tabstop=4
 
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
@@ -56,6 +99,33 @@ autocmd! BufWritePost $DOTFILES/.let.vim source $DOTFILES/.config/nvim/init.vim
 autocmd! BufWritePost $DOTFILES/.let.vim AirlineRefresh
 autocmd! BufWritePost $DOTFILES/.set.vim source $DOTFILES/.config/nvim/init.vim
 autocmd! BufWritePost $DOTFILES/.set.vim AirlineRefresh
+
+
+" vim-prettier
+" let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+
+" vim-javascript
+augroup javascript_folding
+    au!
+    au FileType javascript setlocal foldmethod=syntax
+augroup END
+
+
+
+" When using `dd` in the quickfix list, remove the item from the quickfix list.
+function! RemoveQFItem()
+  let curqfidx = line('.') - 1
+  let qfall = getqflist()
+  call remove(qfall, curqfidx)
+  call setqflist(qfall, 'r')
+  execute curqfidx + 1 . "cfirst"
+  :copen
+endfunction
+:command! RemoveQFItem :call RemoveQFItem()
+" Use map <buffer> to only map dd in the quickfix window. Requires +localmap
+autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
 
 "" Dep ensure current response
 command! Dep cd %:h <bar> cd `git rev-parse --show-toplevel` <bar> execute 'sp | terminal dep ensure -v'
@@ -107,7 +177,7 @@ function CopyQServiceVendor()
 	endif
 	let l:qservicedir = substitute(l:vendordir, "/karirdotcom.*github.com", "", "")
 	exe "!cp ".l:vendordir."/* ".l:qservicedir
-	echo l:vendordir." >> ".l:qservicedir." ...Qservice copied "
+	echo l:qservicedir." ...Qservice copied "
 endfunction
 command! QServiceVendor call CopyQServiceVendor()
 
@@ -144,6 +214,7 @@ function! PgToStruct(start, end) range
 	execute a:firstline . "," . a:lastline . "s/| bool/bool/e"
 	execute a:firstline . "," . a:lastline . "s/| varchar/string/e"
 	execute a:firstline . "," . a:lastline . "s/| _varchar/string/e"
+	execute a:firstline . "," . a:lastline . "s/| json/string/e"
 	execute a:firstline . "," . a:lastline . "s/| text/string/e"
 	execute a:firstline . "," . a:lastline . "s/| int4/uint64/e"
 	execute a:firstline . "," . a:lastline . "s/| numeric/float64/e"
@@ -172,23 +243,19 @@ endfunction
 command! -nargs=* -range StructToInput <line1>, <line2>call StructToInput(<line1>, <line2>)
 
 function InitHandler(repo, service)
-	exe 'cd $KARIR/'.a:repo
-	exe 'cd `git rev-parse --show-toplevel`'
-	exe '!touch pkg/handler/handler.'.s:camelcase(a:service).'.go'
-	exe 'e pkg/handler/handler.'.s:camelcase(a:service).'.go'
+	exe '!touch $KARIR/'.a:repo.'/pkg/handler/handler.'.s:camelcase(a:service).'.go'
+	exe 'e $KARIR/'.a:repo.'/pkg/handler/handler.'.s:camelcase(a:service).'.go'
 	exe 'norm i package handler'
 	exe 'w'
 endfunction
 command! -nargs=* InitHandler call InitHandler(<f-args>)
 
 function InitService(repo, service)
-	exe 'cd $KARIR/'.a:repo
-	exe 'cd `git rev-parse --show-toplevel`'
-	exe 'Mkdir! pkg/service/'.s:camelcase(a:service)
-	exe 'Mkdir! pkg/service/'.s:camelcase(a:service).'/data'
-	exe '!touch pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
-	exe 'e pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
-	let serviceInit=[' package '.s:camelcase(a:service), ' ', ' type '.s:mixedcase(a:service).'Service struct {', ' 	'.s:camelcase(a:service).'Data data.'.s:mixedcase(a:service).'Data', ' }', ' ', ' func New() '.s:mixedcase(a:service).'Service {', ' 	return '.s:mixedcase(a:service).'Service{', ' 		'.s:camelcase(a:service).'Data: data.Postgres'.s:mixedcase(a:service).'Data{},', ' 	}', ' }']
+	exe 'Mkdir! $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service)
+	exe 'Mkdir! $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data'
+	exe '!touch $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
+	exe 'e $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
+	let serviceInit=[	' package '.s:camelcase(a:service),	' ',	' import "github.com/karirdotcom/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data"',	' ', ' type '.s:mixedcase(a:service).'Service struct {', ' 	'.s:camelcase(a:service).'Data data.'.s:mixedcase(a:service).'Data', ' }', ' ', ' func New() '.s:mixedcase(a:service).'Service {', ' 	return '.s:mixedcase(a:service).'Service{', ' 		'.s:camelcase(a:service).'Data: data.Postgres'.s:mixedcase(a:service).'Data{},', ' 	}', ' }']
 	for line in serviceInit
 		exe 'norm o '.line
 	endfor
@@ -197,13 +264,11 @@ endfunction
 command! -nargs=* InitService call InitService(<f-args>)
 
 function InitModel(repo, service, model, table_name)
-	exe 'cd $KARIR/'.a:repo
-	exe 'cd `git rev-parse --show-toplevel`'
-	exe 'Mkdir! pkg/service/'.s:camelcase(a:service)
-	exe 'Mkdir! pkg/service/'.s:camelcase(a:service).'/data'
-	exe '!touch pkg/service/'.s:camelcase(a:service).'/data/postgres.'.s:camelcase(a:model).'.go'
+	exe 'Mkdir! $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service)
+	exe 'Mkdir! $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data'
+	exe '!touch $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data/postgres.'.s:camelcase(a:model).'.go'
 	let getColumns = GetColumns(a:table_name)
-	exe 'e pkg/service/'.s:camelcase(a:service).'/data/postgres.'.s:camelcase(a:model).'.go'
+	exe 'e $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data/postgres.'.s:camelcase(a:model).'.go'
 	let insertColumns = ''
 	let insertParams = ''
 	let updateColumns = ''
@@ -351,12 +416,10 @@ endfunction
 command! -nargs=* InitModel call InitModel(<f-args>)
 
 function InitInterface(repo, service, model)
-	exe 'cd $KARIR/'.a:repo
-	exe 'cd `git rev-parse --show-toplevel`'
-	exe 'Mkdir! pkg/service/'.s:camelcase(a:service)
-	exe 'Mkdir! pkg/service/'.s:camelcase(a:service).'/data'
-	exe '!touch pkg/service/'.s:camelcase(a:service).'/data/interface.'.s:camelcase(a:model).'.go'
-	exe 'e pkg/service/'.s:camelcase(a:service).'/data/interface.'.s:camelcase(a:model).'.go'
+	exe 'Mkdir! $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service)
+	exe 'Mkdir! $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data'
+	exe '!touch $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data/interface.'.s:camelcase(a:model).'.go'
+	exe 'e $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data/interface.'.s:camelcase(a:model).'.go'
 	let interfaceInit=[' package data', ' ', ' import "time"', ' ', ' type Get'.s:mixedcase(a:model).'Filter struct {', ' 	Id     *uint64 `json:"id" db:"id"`', ' 	Limit  uint64  `json:"limit"`', ' 	Offset uint64  `json:"offset"`', ' }', ' ', ' type '.s:mixedcase(a:model).'Data interface {', ' 	Get'.s:mixedcase(a:model).'(filter Get'.s:mixedcase(a:model).'Filter) ([]'.s:mixedcase(a:model).', error)', ' 	Insert'.s:mixedcase(a:model).'(payload '.s:mixedcase(a:model).') (uint64, error)', ' 	Update'.s:mixedcase(a:model).'(id uint64, payload '.s:mixedcase(a:model).') (*'.s:mixedcase(a:model).', error)', ' }']
 	for line in interfaceInit
 		exe 'norm o '.line
@@ -421,7 +484,7 @@ command! -nargs=* CreateMS call CreateMS(<f-args>)
 function CreateProxy(repo, url, service, resource)
 	exe 'e $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/service.'.s:camelcase(a:service).'.go'
 	exe 'norm gg'
-	exe '/type '.a:resource.a:service.'Input struct {'
+	exe '/type '.a:resource.a:service
 	exe 'norm 0'
 	exe 'norm v'
 	exe '/func ('
@@ -567,7 +630,7 @@ function CreateServiceFuncAPI(repoAPI, repoMS, service, resource)
 
 	exe 'e $KARIR/'.a:repoAPI.'/pkg/service/'.tolower(s:mixedcase(a:repoMS)).'/service.'.s:camelcase(a:service).'.go'
 	exe 'norm gg'
-	exe 'norm o import karir_ms "github.com/karirdotcom/qservice/pkg/common/'.tolower(s:mixedcase(a:repoMS)).'"'
+	exe 'norm o import karir_ms "github.com/karirdotcom/qservice/pkg/common/'.a:repoMS.'"'
 	exe 'norm G'
 	exe 'norm o'
 	exe 'norm o'
@@ -601,21 +664,17 @@ endfunction
 command! -nargs=* CreateAPI call CreateAPI(<f-args>)
 
 function InitHandlerAPI(repoAPI, repoMS, service)
-	exe 'cd $KARIR/'.a:repoAPI
-	exe 'cd `git rev-parse --show-toplevel`'
-	exe '!touch pkg/handler/'.tolower(s:mixedcase(a:repoMS)).'/handler.'.s:camelcase(a:service).'.go'
-	exe 'e pkg/handler/'.tolower(s:mixedcase(a:repoMS)).'/handler.'.s:camelcase(a:service).'.go'
+	exe '!touch $KARIR/'.a:repoAPI.'/pkg/handler/'.tolower(s:mixedcase(a:repoMS)).'/handler.'.s:camelcase(a:service).'.go'
+	exe 'e $KARIR/'.a:repoAPI.'/pkg/handler/'.tolower(s:mixedcase(a:repoMS)).'/handler.'.s:camelcase(a:service).'.go'
 	exe 'norm i package '.tolower(s:mixedcase(a:repoMS))
 	exe 'w'
 endfunction
 command! -nargs=* InitHandlerAPI call InitHandlerAPI(<f-args>)
 
 function InitServiceAPI(repoAPI, repoMS, service)
-	exe 'cd $KARIR/'.a:repoAPI
-	exe 'cd `git rev-parse --show-toplevel`'
-	exe 'Mkdir! pkg/service/'.tolower(s:mixedcase(a:repoMS))
-	exe '!touch pkg/service/'.tolower(s:mixedcase(a:repoMS)).'/service.'.s:camelcase(a:service).'.go'
-	exe 'e pkg/service/'.tolower(s:mixedcase(a:repoMS)).'/service.'.s:camelcase(a:service).'.go'
+	exe 'Mkdir! $KARIR/'.a:repoAPI.'/pkg/service/'.tolower(s:mixedcase(a:repoMS))
+	exe '!touch $KARIR/'.a:repoAPI.'/pkg/service/'.tolower(s:mixedcase(a:repoMS)).'/service.'.s:camelcase(a:service).'.go'
+	exe 'e $KARIR/'.a:repoAPI.'/pkg/service/'.tolower(s:mixedcase(a:repoMS)).'/service.'.s:camelcase(a:service).'.go'
 
 	exe 'norm o package '.tolower(s:mixedcase(a:repoMS))
 	exe 'norm o '
@@ -677,8 +736,7 @@ function CreatePgStruct(repo, service, model, table_name)
 	let getDBInfo = "select column_name, is_nullable, udt_name FROM information_schema.COLUMNS WHERE TABLE_NAME = '".a:table_name."'"
 	let copyDB = system('pgdevkarir -c "'.getDBInfo.'"')
 
-	exe 'cd $KARIR/'.a:repo
-	exe 'e pkg/service/'.s:camelcase(a:service).'/data/interface.'.s:camelcase(a:model).'.go'
+	exe 'e $KARIR/'.a:repo.'/pkg/service/'.s:camelcase(a:service).'/data/interface.'.s:camelcase(a:model).'.go'
 	exe 'norm G'
 	exe '?type'
 	exe 'norm O'
