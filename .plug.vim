@@ -2,7 +2,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'AndrewRadev/splitjoin.vim'
 	Plug 'airblade/vim-gitgutter'
     Plug 'airblade/vim-rooter'
-	Plug 'beanworks/vim-phpfmt'
+	" Plug 'beanworks/vim-phpfmt'
 	Plug 'editorconfig/editorconfig-vim'
 	Plug 'ekalinin/Dockerfile.vim'
     Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
@@ -46,6 +46,7 @@ call plug#begin('~/.vim/plugged')
 	Plug 'vim-ruby/vim-ruby'
 	Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
     Plug 'majutsushi/tagbar'
-    Plug 'vim-syntastic/syntastic'
+	" Plug 'vim-syntastic/syntastic'
+	" Plug 'wsdjeg/vim-todo'
 call plug#end()
 

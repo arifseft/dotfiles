@@ -81,5 +81,5 @@ let g:rehash256 = 1
 let g:python_host_prog='/usr/local/bin/python'
 let g:python3_host_prog='/usr/bin/python3'
 
-let g:phpfmt_standard = 'PSR2'
+" let g:phpfmt_standard = 'PSR2'
 
