@@ -79,7 +79,7 @@ let g:go_textobj_include_function_doc = 0
 let g:rehash256 = 1
 
 let g:python_host_prog='/usr/local/bin/python'
-let g:python3_host_prog='/usr/bin/python3'
+let g:python3_host_prog='/usr/local/bin/python3'
 
 " let g:phpfmt_standard = 'PSR2'
 

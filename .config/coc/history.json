@@ -13,5 +13,17 @@
         "tod"
       ]
     }
+  },
+  "extensions": {
+    "%2FUsers%2Farifsefrianto": [
+      "exit"
+    ]
+  },
+  "diagnostics": {
+    "%2FVolumes%2FHDD%2Fgithub": {
+      "com%2Fkarirdotcom%2Fkarir-consulting-joko": [
+        " "
+      ]
+    }
   }
 }

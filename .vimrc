@@ -1,19 +1,27 @@
+" Load sources
 source $DOTFILES/.plug.vim
 source $DOTFILES/.set.vim
 source $DOTFILES/.let.vim
 
 packadd cfilter
 
-let python_highlight_all = 1
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+let g:vdebug_features = { 'max_children': 256 }
+let g:vdebug_options = {}
+let g:vdebug_options['ide_key'] = 'XDEBUG_VIM'
+let g:vdebug_options['break_on_open'] = 0
+let g:vdebug_options['server'] = '127.0.0.1'
+let g:vdebug_options['port'] = '9001'
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let python_highlight_all = 1
+
+" syntastic
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 " map <leader>s :SyntasticCheck<CR>
 " map <leader>d :SyntasticReset<CR>
 " map <leader>e :lnext<CR>
@@ -21,6 +29,9 @@ let g:syntastic_check_on_wq = 0
 "
 " " tag list
 " map <leader>t :TagbarToggle<CR>
+
+" Auto open NERDTree
+" au VimEnter * NERDTree
 
 " Define some single Blade directives. This variable is used for highlighting only.
 let g:blade_custom_directives = ['datetime', 'javascript']
@@ -47,6 +58,7 @@ filetype plugin indent on
 
 hi! Normal guibg=NONE ctermbg=NONE
 hi! NonText guibg=NONE ctermbg=NONE
+hi! VertSplit ctermbg=NONE guibg=NONE
 " hi! Comment ctermfg=DarkGrey guifg=DarkGrey
 " hi! Search ctermbg=DarkRed guibg=DarkBlue
 " hi! ErrorMsg ctermbg=White ctermfg=Red guibg=White guifg=Red
@@ -87,23 +99,22 @@ autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit'
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
-" Load
 source $DOTFILES/.map.vim
 source $DOTFILES/.startify.vim
 source $DOTFILES/.coc.vim
 
 " Automatically source vimrc on save.
-autocmd! BufWritePost $DOTFILES/.config/nvim/init.vim source $DOTFILES/.config/nvim/init.vim
-autocmd! BufWritePost $DOTFILES/.config/nvim/init.vim AirlineRefresh
-
-autocmd! BufWritePost $DOTFILES/.plug.vim source $DOTFILES/.config/nvim/init.vim
-autocmd! BufWritePost $DOTFILES/.plug.vim AirlineRefresh
-autocmd! BufWritePost $DOTFILES/.map.vim source $DOTFILES/.config/nvim/init.vim
-autocmd! BufWritePost $DOTFILES/.map.vim AirlineRefresh
-autocmd! BufWritePost $DOTFILES/.let.vim source $DOTFILES/.config/nvim/init.vim
-autocmd! BufWritePost $DOTFILES/.let.vim AirlineRefresh
-autocmd! BufWritePost $DOTFILES/.set.vim source $DOTFILES/.config/nvim/init.vim
-autocmd! BufWritePost $DOTFILES/.set.vim AirlineRefresh
+" autocmd! BufWritePost $DOTFILES/.config/nvim/init.vim source $DOTFILES/.config/nvim/init.vim
+" autocmd! BufWritePost $DOTFILES/.config/nvim/init.vim AirlineRefresh
+"
+" autocmd! BufWritePost $DOTFILES/.plug.vim source $DOTFILES/.config/nvim/init.vim
+" autocmd! BufWritePost $DOTFILES/.plug.vim AirlineRefresh
+" autocmd! BufWritePost $DOTFILES/.map.vim source $DOTFILES/.config/nvim/init.vim
+" autocmd! BufWritePost $DOTFILES/.map.vim AirlineRefresh
+" autocmd! BufWritePost $DOTFILES/.let.vim source $DOTFILES/.config/nvim/init.vim
+" autocmd! BufWritePost $DOTFILES/.let.vim AirlineRefresh
+" autocmd! BufWritePost $DOTFILES/.set.vim source $DOTFILES/.config/nvim/init.vim
+" autocmd! BufWritePost $DOTFILES/.set.vim AirlineRefresh
 
 
 " vim-prettier
@@ -117,7 +128,26 @@ augroup javascript_folding
     au FileType javascript setlocal foldmethod=syntax
 augroup END
 
+function! LaravelView()
+	let currentLine = getline(".")
+	let viewPath = matchstr(currentLine, '\creturn\sview(\([''"]\)\zs.\{-}\ze\1')
+	let viewPath = substitute(viewPath,'\.','/','e')
+	exe 'cd `git rev-parse --show-toplevel`'
+	exe 'e resources/views/'.viewPath.'.blade.php'
+endfunction
+noremap gv :call LaravelView()<CR>
 
+" function! LaravelController()
+"     let currentLine = getline(".")
+"     let a = "	Route::get('/audit/detail/download', 'DashboardController@downloadAuditDetail')"
+"
+"     let controllerName = matchstr(a, '\c\s.*(\([''"]\)\zs.\{-}\ze\1')
+"     let controllerName = substitute(controllerName,'\.','/','e')
+" echo controllerName
+	" exe 'cd `git rev-parse --show-toplevel`'
+	" exe 'e app/Http/Controllers/Admin/'.controllerName.'.php'
+" endfunction
+" noremap gc :call LaravelController()<CR>
 
 " When using `dd` in the quickfix list, remove the item from the quickfix list.
 function! RemoveQFItem()
@@ -133,66 +163,66 @@ endfunction
 autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
 
 "" Dep ensure current response
-command! Dep cd %:h <bar> cd `git rev-parse --show-toplevel` <bar> execute 'sp | terminal dep ensure -v'
-
-command! RunNsq terminal nsq
-
-function Run(repo)
-	exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run '.a:repo.'/main.go'
-endfunction
-command! -nargs=1 Run call Run(<f-args>)
-
-function RunConsumer(repo)
-	exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run consumer/main.go'
-endfunction
-command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
-
-function Stop(repo)
-	exe 'bd! term*'.a:repo.'/main.go'
-endfunction
-command! -nargs=1 Stop call Stop(<f-args>)
-
-function StopConsumer(repo)
-	exe 'bd! term*'.a:repo.'*consumer/main.go'
-endfunction
-command! -nargs=1 StopConsumer call StopConsumer(<f-args>)
-
-function CreateLog(repo)
-	exe '!mkdir /var/log/'.a:repo.' && touch /var/log/'.a:repo.'/'.a:repo.'.log'
-endfunction
-command! -nargs=1 CreateLog call CreateLog(<f-args>)
-
-function GetDataImplement()
-	let q = filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')
-	if len(q) != 0
-		clast
-		cclose
-	else
-		GoImplements
-	endif
-endfunction
-command! GetDataImplement call GetDataImplement()
-
-function! s:mixedcase(word)
-  return substitute(s:camelcase(a:word),'^.','\u&','')
-endfunction
-function! s:camelcase(word)
-  let word = substitute(a:word, '-', '_', 'g')
-  if word !~# '_' && word =~# '\l'
-    return substitute(word,'^.','\l&','')
-  else
-    return substitute(word,'\C\(_\)\=\(.\)','\=submatch(1)==""?tolower(submatch(2)) : toupper(submatch(2))','g')
-  endif
-endfunction
-function! s:snakecase(word)
-  let word = substitute(a:word,'::','/','g')
-  let word = substitute(word,'\(\u\+\)\(\u\l\)','\1_\2','g')
-  let word = substitute(word,'\(\l\|\d\)\(\u\)','\1_\2','g')
-  let word = substitute(word,'[.-]','_','g')
-  let word = tolower(word)
-  return word
-endfunction
-
+" command! Dep cd %:h <bar> cd `git rev-parse --show-toplevel` <bar> execute 'sp | terminal dep ensure -v'
+"
+" command! RunNsq terminal nsq
+"
+" function Run(repo)
+"     exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run '.a:repo.'/main.go'
+" endfunction
+" command! -nargs=1 Run call Run(<f-args>)
+"
+" function RunConsumer(repo)
+"     exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run consumer/main.go'
+" endfunction
+" command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
+"
+" function Stop(repo)
+"     exe 'bd! term*'.a:repo.'/main.go'
+" endfunction
+" command! -nargs=1 Stop call Stop(<f-args>)
+"
+" function StopConsumer(repo)
+"     exe 'bd! term*'.a:repo.'*consumer/main.go'
+" endfunction
+" command! -nargs=1 StopConsumer call StopConsumer(<f-args>)
+"
+" function CreateLog(repo)
+"     exe '!mkdir /var/log/'.a:repo.' && touch /var/log/'.a:repo.'/'.a:repo.'.log'
+" endfunction
+" command! -nargs=1 CreateLog call CreateLog(<f-args>)
+"
+" function GetDataImplement()
+"     let q = filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')
+"     if len(q) != 0
+"         clast
+"         cclose
+"     else
+"         GoImplements
+"     endif
+" endfunction
+" command! GetDataImplement call GetDataImplement()
+"
+" function! s:mixedcase(word)
+"   return substitute(s:camelcase(a:word),'^.','\u&','')
+" endfunction
+" function! s:camelcase(word)
+"   let word = substitute(a:word, '-', '_', 'g')
+"   if word !~# '_' && word =~# '\l'
+"     return substitute(word,'^.','\l&','')
+"   else
+"     return substitute(word,'\C\(_\)\=\(.\)','\=submatch(1)==""?tolower(submatch(2)) : toupper(submatch(2))','g')
+"   endif
+" endfunction
+" function! s:snakecase(word)
+"   let word = substitute(a:word,'::','/','g')
+"   let word = substitute(word,'\(\u\+\)\(\u\l\)','\1_\2','g')
+"   let word = substitute(word,'\(\l\|\d\)\(\u\)','\1_\2','g')
+"   let word = substitute(word,'[.-]','_','g')
+"   let word = tolower(word)
+"   return word
+" endfunction
+"
 " function CopyQServiceVendor()
 "     cd %:p:h
 "     let l:vendordir = getcwd()

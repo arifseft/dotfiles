@@ -60,8 +60,8 @@ alias rm='trash'
 alias redisdev='redis-cli -h stack.dev-int.qareer.com -p 6379 -a redisdev'
 alias myloc='mysql -hlocalhost -uroot -p12345678'
 alias mydev='mysql -hdbqareer.dev.qareer.com -uorang_qareer -pmaucobafitur'
-alias mystg='mysql -hdbqareer.staging.qareer.com -uorang_qareer -pmaucobafitur'
-alias myprd='mysql -hdbreplica2.qareer.com -uqerja_baca -pkerjaannya_bacakakakaka'
+alias mystg='mysql -h103.93.56.46 -uorang_qareer -pmaucobafitur'
+alias myprd='mysql -hdb.qareer.com -uread_user -pkj#h3u9&dY'
 alias modev='mongo --host stack.dev.qareer.com --port 27017 --username simpendata --password bentukdokumen'
 alias mostg='mongo --host stack.staging.qareer.com --port 27017 --username simpendata --password bentukdokumen'
 # alias pgdev='psql service=pg_dev'
@@ -81,3 +81,8 @@ pgdev() {
 }
 
 alias wpqerja='ssh -i /Volumes/HDD/Downloads/qerja-journal-dev.pem ubuntu@13.229.120.154'
+
+# PHP ARTISAN
+alias pa='php artisan'
+alias pam='php artisan migrate'
+alias par='php artisan migrate:rollback'

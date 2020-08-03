@@ -31,7 +31,6 @@ nnoremap <silent> <C-p> :call fzf#vim#files(FindRootDirectory(), {'options': '--
 
 nmap <c-s> :w<CR>
 imap <c-s> <Esc>:w<CR>
-map <leader>m :vsp $HOME/.map.vim<CR>
 
 "Recovery commands from history through FZF
 nmap <leader>y :History:<CR>
@@ -83,12 +82,15 @@ noremap <RIGHT> <NOP>
 noremap <LEFT> <NOP>
 
 " edit vimrc
-nnoremap <leader>e :vsp $MYVIMRC<cr>
+map <leader>e :vsp $MYVIMRC<cr>
+map <leader>m :vsp $HOME/.map.vim<CR>
+map <leader>p :vsp $HOME/.plug.vim<cr>
 
 " edit snippets
 nnoremap <leader>s :vsp $XDG_CONFIG_HOME/coc/ultisnips/go.snippets<cr>Go
 
 map <C-t> :cd `git rev-parse --show-toplevel` <bar> NERDTreeToggle <bar> NERDTreeRefreshRoot <CR>
+map tt :TagbarToggle<CR>
 map <C-b> <C-^>
 map <C-a> <esc>ggVG
 map <leader>d 0yaf]]O<esc>O<esc>p]]w
@@ -96,7 +98,5 @@ map <leader>sv :source $DOTFILES/.config/nvim/init.vim<CR>
 map <leader>o :Ranger<CR>
 map gid :GetDataImplement<CR>
 
-" map gat :'<,'>GoAddTags<CR>
-" map grt :'<,'>GoRemoveTags<CR>
 map gat :GoAddTags<CR>
 map grt :GoRemoveTags<CR>

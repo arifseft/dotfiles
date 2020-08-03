@@ -32,3 +32,4 @@ export PATH=$PATH:$GOBIN:/usr/local/opt/go/libexec/bin:/usr/local/mysql/bin/:/us
 # export TERM=screen-256color
 export TERM=xterm-256color
 export DOTFILES=$HOME/dotfiles
+export XDEBUG_CONFIG="idekey=XDEBUG_VIM"

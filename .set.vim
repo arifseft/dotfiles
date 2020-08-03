@@ -2,15 +2,21 @@ set autoindent
 set autoread
 set backspace=indent,eol,start
 set clipboard=unnamed
-set cmdheight=3
+set cmdheight=1
 set cpoptions+=n
 set encoding=utf8
 set expandtab
 set fileencoding=utf-8
 set fileencodings=utf-8
-" set fillchars+=vert:\
-set foldmethod=syntax
-set foldlevel=99
+set fillchars+=vert:│
+" set foldmethod=syntax
+" set foldlevel=99
+
+set foldlevel=1
+set foldmethod=indent   
+set foldnestmax=2
+" set nofoldenable
+
 set gdefault
 set hidden
 set history=10000
@@ -56,10 +62,10 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 set wildmode=list:longest,list:full
 
 let iterm_profile = $ITERM_PROFILE
-if iterm_profile == "dark"
-    set background=dark
-else
+if iterm_profile == "light"
     set background=light
+else
+    set background=dark
 endif
 
 " Fix bug 256color from tmux

@@ -9,7 +9,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'francoiscabrol/ranger.vim'
     Plug 'honza/vim-snippets'
 	Plug 'leafgarland/typescript-vim'
-    Plug 'lifepillar/vim-solarized8'
+	Plug 'lifepillar/vim-solarized8'
 	Plug 'jwalton512/vim-blade'
 	Plug 'jiangmiao/auto-pairs'
     if isdirectory('/usr/local/opt/fzf')
@@ -31,6 +31,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'rbgrouleff/bclose.vim'
 	Plug 'ryanoasis/vim-devicons'
 	Plug 'SirVer/ultisnips'
+	Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 	Plug 'terryma/vim-multiple-cursors'
 	Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 	Plug 'tobyS/pdv'
@@ -41,11 +42,10 @@ call plug#begin('~/.vim/plugged')
 	Plug 'tpope/vim-rails'
     Plug 'tpope/vim-sensible'
 	Plug 'tpope/vim-surround'
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+	Plug 'vim-airline/vim-airline'
+	Plug 'vim-airline/vim-airline-themes'
 	Plug 'vim-ruby/vim-ruby'
-	Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-    Plug 'majutsushi/tagbar'
+	Plug 'vim-vdebug/vdebug'
 	" Plug 'vim-syntastic/syntastic'
 	" Plug 'wsdjeg/vim-todo'
 call plug#end()
