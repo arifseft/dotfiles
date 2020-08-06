@@ -130,8 +130,8 @@ augroup END
 
 function! LaravelView()
 	let currentLine = getline(".")
-	let viewPath = matchstr(currentLine, '\creturn\sview(\([''"]\)\zs.\{-}\ze\1')
-	let viewPath = substitute(viewPath,'\.','/','e')
+	let viewPath = matchstr(currentLine, '\c(\([''"]\)\zs.\{-}\ze\1')
+	let viewPath = substitute(viewPath,'\.','/','ge')
 	exe 'cd `git rev-parse --show-toplevel`'
 	exe 'e resources/views/'.viewPath.'.blade.php'
 endfunction
