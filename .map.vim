@@ -89,7 +89,7 @@ map <leader>p :vsp $HOME/.plug.vim<cr>
 " edit snippets
 nnoremap <leader>s :vsp $XDG_CONFIG_HOME/coc/ultisnips/go.snippets<cr>Go
 
-map <C-t> :cd `git rev-parse --show-toplevel` <bar> NERDTreeToggle <bar> NERDTreeRefreshRoot <CR>
+" map <C-t> :cd `git rev-parse --show-toplevel` <bar> NERDTreeToggle <bar> NERDTreeRefreshRoot <CR>
 map tt :TagbarToggle<CR>
 map <C-b> <C-^>
 map <C-a> <esc>ggVG
