@@ -85,4 +85,4 @@ alias wpqerja='ssh -i /Volumes/HDD/Downloads/qerja-journal-dev.pem ubuntu@13.229
 alias pa='php artisan'
 alias pam='php artisan migrate'
 alias par='php artisan migrate:rollback'
-alias s="cd $HOME/go/src/github.com/karirdotcom/karir-consulting-joko && php artisan config:clear && php artisan config:cache && php artisan serve"
+alias s="cd $HOME/go/src/github.com/karirdotcom/karir-consulting-joko && php artisan config:cache && php artisan serve"

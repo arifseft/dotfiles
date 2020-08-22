@@ -15,12 +15,18 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 export XDG_CONFIG_HOME=$HOME/.config
 
-export GOROOT=/usr/local/Cellar/go/1.14.2_1/libexec
+export GOPATH=/usr/local/Cellar/go/1.14.6
+export GOROOT=$GOPATH/libexec
 export GO111MODULE=auto
-# export GO111MODULE=off
-export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
-export KARIR=$GOPATH/src/github.com/karirdotcom
+export KARIR=$HOME/go/src/github.com/karirdotcom
+
+#export GOROOT=/usr/local/Cellar/go/1.14.2_1/libexec
+#export GO111MODULE=auto
+# export GO111MODULE=off
+#export GOPATH=$HOME/go
+#export GOBIN=$GOPATH/bin
+#export KARIR=$GOPATH/src/github.com/karirdotcom
 export MYVIMRC=$XDG_CONFIG_HOME/nvim/init.vim
 export GEM_HOME=$HOME/.gem
 export ANDROID_HOME=$HOME/Library/Android/sdk

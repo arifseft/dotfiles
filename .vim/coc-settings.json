@@ -30,7 +30,5 @@
     "emmet.includeLanguages": {"vue-html": "html", "javascript": "javascriptreact"},
 	"eslint.autoFixOnSave": true,
 	"eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-	"prettier.disableSuccessMessage": true,
-	"python.jediEnabled": false,
-	"python.formatting.provider": "black"
+	"prettier.disableSuccessMessage": true
 }

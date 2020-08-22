@@ -14,6 +14,25 @@ let g:vdebug_options['port'] = '9001'
 
 let python_highlight_all = 1
 
+" syntastic settings
+"""""""""""""""""""
+"let g:syntastic_debug=3
+let g:syntastic_go_checkers=['go']
+let g:syntastic_enable_signs=1
+let g:syntastic_error_symbol='!!'
+let g:syntastic_style_error_symbol='!!'
+let g:syntastic_warning_symbol='??'
+let g:syntastic_style_warning_symbol='??'
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq=1
+let g:syntastic_aggregate_errors=1
+let g:syntastic_auto_loc_list=1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+"""""""""""""""""""
+
 " syntastic
 " set statusline+=%#warningmsg#
 " set statusline+=%{SyntasticStatuslineFlag()}

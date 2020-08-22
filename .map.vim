@@ -100,3 +100,6 @@ map gid :GetDataImplement<CR>
 
 map gat :GoAddTags<CR>
 map grt :GoRemoveTags<CR>
+
+map ej :lnext<CR>
+map ek :lprevious<CR>

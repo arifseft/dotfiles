@@ -1,1 +1,34 @@
-/Users/arifsefrianto/dotfiles/.vim/coc-settings.json
+{
+    "suggest.noselect": false,
+    "solargraph.commandPath": "/usr/local/bin/solargraph",
+    "languageserver": {
+        "golang": {
+            "command": "gopls",
+            "rootPatterns": [
+                "go.mod",
+                ".git/",
+				".env"
+            ],
+            "filetypes": [
+                "go"
+            ],
+			"disableWorkspaceFolders": true
+        }
+    },
+    "coc.preferences.formatOnSaveFiletypes": [
+        "css",
+        "markdown",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"python",
+		"php"
+    ],
+	"emmet.showExpandedAbbreviation": "always",
+    "emmet.showAbbreviationSuggestions": true,
+    "emmet.includeLanguages": {"vue-html": "html", "javascript": "javascriptreact"},
+	"eslint.autoFixOnSave": true,
+	"eslint.filetypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+	"prettier.disableSuccessMessage": true
+}

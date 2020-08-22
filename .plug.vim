@@ -2,11 +2,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'AndrewRadev/splitjoin.vim'
 	Plug 'airblade/vim-gitgutter'
     Plug 'airblade/vim-rooter'
-	" Plug 'beanworks/vim-phpfmt'
 	Plug 'editorconfig/editorconfig-vim'
 	Plug 'ekalinin/Dockerfile.vim'
     Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
     Plug 'francoiscabrol/ranger.vim'
+    Plug 'FredKSchott/CoVim'
     Plug 'honza/vim-snippets'
 	Plug 'leafgarland/typescript-vim'
 	Plug 'lifepillar/vim-solarized8'
@@ -19,6 +19,7 @@ call plug#begin('~/.vim/plugged')
         Plug 'junegunn/fzf.vim'
     endif
     Plug 'junegunn/vim-easy-align'
+	Plug 'kshenoy/vim-signature'
 	Plug 'majutsushi/tagbar'
 	Plug 'MaxMEllon/vim-jsx-pretty'
     Plug 'mhinz/vim-startify'
@@ -46,7 +47,6 @@ call plug#begin('~/.vim/plugged')
 	Plug 'vim-airline/vim-airline-themes'
 	Plug 'vim-ruby/vim-ruby'
 	Plug 'vim-vdebug/vdebug'
-	" Plug 'vim-syntastic/syntastic'
-	" Plug 'wsdjeg/vim-todo'
+	Plug 'vim-syntastic/syntastic'
 call plug#end()
 
