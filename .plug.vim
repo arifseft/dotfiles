@@ -6,7 +6,7 @@ call plug#begin('~/.vim/plugged')
 	Plug 'ekalinin/Dockerfile.vim'
     Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
     Plug 'francoiscabrol/ranger.vim'
-    Plug 'FredKSchott/CoVim'
+    " Plug 'FredKSchott/CoVim'
     Plug 'honza/vim-snippets'
 	Plug 'leafgarland/typescript-vim'
 	Plug 'lifepillar/vim-solarized8'

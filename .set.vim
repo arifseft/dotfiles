@@ -10,9 +10,7 @@ set fileencoding=utf-8
 set fileencodings=utf-8
 set fillchars+=vert:│
 " set foldmethod=syntax
-" set foldlevel=99
-
-set foldlevel=1
+set foldlevel=99 " 99 disable fold, 1 enable fold
 set foldmethod=indent   
 set foldnestmax=2
 " set nofoldenable
