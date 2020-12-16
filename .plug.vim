@@ -2,14 +2,15 @@ call plug#begin('~/.vim/plugged')
     Plug 'AndrewRadev/splitjoin.vim'
 	Plug 'airblade/vim-gitgutter'
     Plug 'airblade/vim-rooter'
+	Plug 'arcticicestudio/nord-vim'
 	Plug 'editorconfig/editorconfig-vim'
 	Plug 'ekalinin/Dockerfile.vim'
     Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
     Plug 'francoiscabrol/ranger.vim'
-    " Plug 'FredKSchott/CoVim'
+	" Plug 'freitass/todo.txt-vim'
     Plug 'honza/vim-snippets'
 	Plug 'leafgarland/typescript-vim'
-	Plug 'lifepillar/vim-solarized8'
+	" Plug 'lifepillar/vim-solarized8'
 	Plug 'jwalton512/vim-blade'
 	Plug 'jiangmiao/auto-pairs'
     if isdirectory('/usr/local/opt/fzf')
@@ -23,20 +24,22 @@ call plug#begin('~/.vim/plugged')
 	Plug 'majutsushi/tagbar'
 	Plug 'MaxMEllon/vim-jsx-pretty'
     Plug 'mhinz/vim-startify'
+	" Plug 'morhetz/gruvbox'
 	Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 	Plug 'pangloss/vim-javascript'
 	Plug 'neoclide/vim-jsx-improve'
 	Plug 'preservim/nerdtree'
     Plug 'preservim/nerdcommenter'
 	Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+	Plug 'puremourning/vimspector'
     Plug 'rbgrouleff/bclose.vim'
 	Plug 'ryanoasis/vim-devicons'
 	Plug 'SirVer/ultisnips'
 	Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 	Plug 'terryma/vim-multiple-cursors'
 	Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-	Plug 'tobyS/pdv'
-	Plug 'tobyS/vmustache'
+	" Plug 'tobyS/pdv'
+	" Plug 'tobyS/vmustache'
 	Plug 'tpope/vim-abolish'
 	Plug 'tpope/vim-eunuch'
     Plug 'tpope/vim-fugitive'
@@ -48,5 +51,6 @@ call plug#begin('~/.vim/plugged')
 	Plug 'vim-ruby/vim-ruby'
 	Plug 'vim-vdebug/vdebug'
 	Plug 'vim-syntastic/syntastic'
+	Plug 'wsdjeg/vim-todo'
 call plug#end()
 

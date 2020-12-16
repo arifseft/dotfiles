@@ -26,10 +26,12 @@ let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 
 " Enable NERDCommenterToggle to checkall selected lines is commented or not
-let g:NERDToggleCheckAllLines = 1
+let g:NERDToggleCheckllLines = 1
 
 let g:ranger_replace_netrw = 1
 let g:ranger_open_new_tab = 0
+
+let g:gitgutter_map_keys = 0
 
 let g:coc_global_extenstion = ['coc-snippets']
 let g:coc_snippet_next = '<Tab>'
@@ -44,6 +46,7 @@ let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline_powerline_fonts = 1
+" let g:airline_theme='gruvbox'
 "let g:airline_theme='luna'
 "let g:airline_solarized_bg='dark'
 let g:go_addtags_transform = "snakecase"
@@ -76,9 +79,14 @@ let g:go_list_type = "quickfix"
 let g:go_template_autocreate = 0
 let g:go_test_show_name = 1
 let g:go_textobj_include_function_doc = 0
+let g:go_debug_windows = {
+      \ 'vars':       'rightbelow 60vnew',
+      \ 'stack':      'rightbelow 10new',
+\ }
 let g:rehash256 = 1
 
-let g:python_host_prog='/usr/local/bin/python'
+let g:python_host_prog='/usr/bin/python'
+" let g:python_host_prog='/usr/local/bin/python'
 let g:python3_host_prog='/usr/local/bin/python3'
 
 " let g:phpfmt_standard = 'PSR2'

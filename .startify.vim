@@ -1,5 +1,11 @@
 " Startify
-let g:startify_bookmarks=['~/.zshrc', '$MYVIMRC'] 
+let g:startify_bookmarks=[
+	\ '~/.zshrc',
+	\ '$MYVIMRC',
+	\ '$HOME/go/src/github.com/karirdotcom/karir-consulting-api/go.mod',
+	\ '$HOME/go/src/github.com/karirdotcom/karir-consulting-joko/.env',
+	\ '$HOME/go/src/github.com/karirdotcom/karir-api/Gopkg.toml',
+	\ '$HOME/go/src/github.com/karirdotcom/qourier/Gopkg.toml']
 let g:startify_lists = [
           \ { 'type': 'sessions',  'header': ['   Sessions']       },
           \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },

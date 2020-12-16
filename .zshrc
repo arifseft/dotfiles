@@ -28,6 +28,12 @@ mkcd () {
   cd "$1"
 }
 
+docker_running=$(docker-machine ls | grep default)
+if [[ "$docker_running" == *"Running"* ]]
+then
+  eval "$(docker-machine env default)"
+fi
+
 # Powerline
 # powerline-daemon -q
 # POWERLINE_BASH_CONTINUATION=1
@@ -40,3 +46,10 @@ mkcd () {
 #[[ ! -f ~/.p10k-lean.zsh ]] || source ~/.p10k-lean.zsh
 
 [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+# export PATH="/usr/local/opt/ruby/bin:$PATH"
+# if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+#
+# # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+# export PATH="$PATH:$HOME/.rvm/bin"
+#
+source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"

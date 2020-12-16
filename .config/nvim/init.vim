@@ -14,6 +14,9 @@ let g:vdebug_options['port'] = '9001'
 
 let python_highlight_all = 1
 
+let g:vimspector_enable_mappings = 'HUMAN'
+" packadd! vimspector
+
 " syntastic settings
 """""""""""""""""""
 "let g:syntastic_debug=3
@@ -24,7 +27,7 @@ let g:syntastic_style_error_symbol='!!'
 let g:syntastic_warning_symbol='??'
 let g:syntastic_style_warning_symbol='??'
 let g:syntastic_always_populate_loc_list=1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=1
 let g:syntastic_aggregate_errors=1
 let g:syntastic_auto_loc_list=1
@@ -61,8 +64,8 @@ let g:blade_custom_directives_pairs = {
       \   'cache': 'endcache',
       \ }
 
-let g:pdv_template_dir = $HOME ."/.vim/plugged/pdv/templates_snip"
-nnoremap <buffer> <C-i> :call pdv#DocumentWithSnip()<CR>
+" let g:pdv_template_dir = $HOME ."/.vim/plugged/pdv/templates_snip"
+" nnoremap <buffer> <C-i> :call pdv#DocumentWithSnip()<CR>
 
 "" Clear highlight number highlight clear LineNr highlight clear CursorLineNr
 
@@ -72,7 +75,13 @@ if exists('g:loaded_webdevicons')
     call webdevicons#refresh()
 endif
 
-colorscheme solarized8
+" colorscheme solarized8
+colorscheme nord
+
+" let g:gruvbox_italic=1
+" let g:gruvbox_termcolors=16
+" colorscheme gruvbox
+
 filetype plugin indent on
 
 hi! Normal guibg=NONE ctermbg=NONE
@@ -84,7 +93,7 @@ hi! VertSplit ctermbg=NONE guibg=NONE
 "
 
 " Auto change directory to opened file
-autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
+" autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
 
 " Autosave when left buffer
 autocmd FocusLost * silent :up
@@ -163,9 +172,9 @@ endfunction
 
 " Call NERDTreeFind if NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
 function! SyncTree()
-  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
-    wincmd p
+  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff && !&ls
+	NERDTreeFind
+	wincmd p
   endif
 endfunction
 
@@ -209,15 +218,15 @@ autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
 "
 " command! RunNsq terminal nsq
 "
-" function Run(repo)
-"     exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run '.a:repo.'/main.go'
-" endfunction
-" command! -nargs=1 Run call Run(<f-args>)
-"
-" function RunConsumer(repo)
-"     exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run consumer/main.go'
-" endfunction
-" command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
+function Run(repo)
+	exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run '.a:repo.'/main.go'
+endfunction
+command! -nargs=1 Run call Run(<f-args>)
+
+function RunConsumer(repo)
+	exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run consumer/main.go'
+endfunction
+command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
 "
 " function Stop(repo)
 "     exe 'bd! term*'.a:repo.'/main.go'
@@ -229,10 +238,10 @@ autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
 " endfunction
 " command! -nargs=1 StopConsumer call StopConsumer(<f-args>)
 "
-" function CreateLog(repo)
-"     exe '!mkdir /var/log/'.a:repo.' && touch /var/log/'.a:repo.'/'.a:repo.'.log'
-" endfunction
-" command! -nargs=1 CreateLog call CreateLog(<f-args>)
+function CreateLog(repo)
+	exe '!mkdir /var/log/'.a:repo.' && touch /var/log/'.a:repo.'/'.a:repo.'.log'
+endfunction
+command! -nargs=1 CreateLog call CreateLog(<f-args>)
 "
 " function GetDataImplement()
 "     let q = filter(getwininfo(), 'v:val.quickfix && !v:val.loclist')

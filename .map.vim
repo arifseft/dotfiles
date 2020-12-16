@@ -101,5 +101,16 @@ map gid :GetDataImplement<CR>
 map gat :GoAddTags<CR>
 map grt :GoRemoveTags<CR>
 
-map ej :lnext<CR>
-map ek :lprevious<CR>
+" map ej :lnext<CR>
+" map ek :lprevious<CR>
+
+
+" vimspector
+nmap <leader>dd :call vimspector#Launch()<CR>
+nmap <leader>dx :VimspectorReset<CR>
+nmap <leader>de :VimspectorEval
+nmap <leader>dw :VimspectorWatch
+nmap <leader>do :VimsoectorShowOutput
+
+nnoremap td :cd `git rev-parse --show-toplevel` <bar> OpenTodo<CR><CR>
+
