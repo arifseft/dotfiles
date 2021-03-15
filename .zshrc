@@ -6,7 +6,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_MODE="awesome-patched"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(docker docker-compose git golang kubectl laravel minikube you-should-use zsh-autosuggestions zsh-syntax-highlighting zsh_reload)
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zshenv
@@ -52,4 +52,4 @@ fi
 # # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 # export PATH="$PATH:$HOME/.rvm/bin"
 #
-source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+# source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"

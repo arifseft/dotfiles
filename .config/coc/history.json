@@ -12,7 +12,10 @@
       "com%2Fkarirdotcom%2Fkarir-consulting-joko": [
         "tod"
       ]
-    }
+    },
+    "%2FUsers%2Farifsefrianto%2Fdotfiles": [
+      "e"
+    ]
   },
   "extensions": {
     "%2FUsers%2Farifsefrianto": [
@@ -22,6 +25,9 @@
   "diagnostics": {
     "%2FVolumes%2FHDD%2Fgithub": {
       "com%2Fkarirdotcom%2Fkarir-consulting-joko": [
+        " "
+      ],
+      "com%2Farifseft%2Felasticsearch-cluster%2Frests": [
         " "
       ]
     }

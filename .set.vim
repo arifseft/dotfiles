@@ -38,8 +38,8 @@ set re=1
 set rtp+=/usr/local/opt/fzf
 set ruler
 set scrolloff=2
-" set shell=zsh\ -i
-set shell=/usr/local/bin/zsh
+set shell=zsh\ -i
+" set shell=/usr/local/bin/zsh
 set shiftwidth=4
 " set shortmess=a
 set shortmess+=c

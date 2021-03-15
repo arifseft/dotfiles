@@ -3,6 +3,7 @@
 alias supervisord='supervisord -c /usr/local/share/supervisor/supervisord.conf'
 alias supervisorctl='supervisorctl -c /usr/local/share/supervisor/supervisord.conf'
 alias supervisordie='kill -9 `supervisorctl pid` && unlink /tmp/supervisor.sock'
+alias supervisorreload='supervisorctl update && supervisorctl reread'
 
 alias nsq='nsqlookupd & nsqd --data-path ~ --lookupd-tcp-address=127.0.0.1:4160 --broadcast-address=127.0.0.1 & nsqadmin --lookupd-http-address=127.0.0.1:4161'
 
@@ -44,9 +45,7 @@ alias gmm='git merge master'
 alias ll='ls -la'
 
 alias n='nvim'
-alias vim='nvim'
-alias vi='nvim'
-alias v='nvim'
+alias v='vim'
 alias ve='n $MYVIMRC'
 alias te='n ~/dotfiles/.tmux.conf.local'
 alias ze='n ~/dotfiles/.zshrc'
@@ -89,13 +88,12 @@ pgdev() {
 	fi
 }
 
-alias wpqerja='ssh -i /Volumes/HDD/Downloads/qerja-journal-dev.pem ubuntu@13.229.120.154'
-
 # PHP ARTISAN
 # alias pa='php artisan'
 # alias pam='php artisan migrate'
 # alias par='php artisan migrate:rollback'
-alias s="cd $KARIR/karir-consulting-joko && php artisan config:cache && php artisan serve"
+# alias s="cd $KARIR/karir-consulting-joko && php artisan config:cache && php artisan serve"
+alias s="cd $BMI/backend && php artisan config:cache && php artisan serve"
 
 alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
@@ -107,3 +105,9 @@ alias tmh='ssh arifsefrianto/home@sgp1.tmate.io'
 alias kca='cd $KARIR/karir-consulting-api'
 alias kcj='cd $KARIR/karir-consulting-joko'
 alias kcw='cd $KARIR/karir-consulting-web'
+
+# flynd
+alias mysqldumpdev='scp fdev1:bmi/backup.sql ~/Downloads'
+# alias mysqlrestoredev='cat ~/Downloads/backup.sql | docker exec -i bmi_database_1 /usr/bin/mysqldump -P 3308 -u bmi_dba --password=bmi_dba_pass123 bmi'
+alias mysqlrestore='docker exec -i bmi_database_1 mysql -P3308 -ubmi_dba -pbmi_dba_pass123 bmi < ~/Downloads/backup.sql'
+# alias redis-server='cd ~ && redis-server'

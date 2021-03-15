@@ -17,7 +17,7 @@ command! -bang -nargs=* Rg
     \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
     \   fzf#vim#with_preview(), <bang>0)
 
-nnoremap <C-g> :Rg<Cr> 
+nnoremap <C-g> :Rg<CR>
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 
 nnoremap <silent> <leader>, :Buffers<CR>
@@ -90,7 +90,7 @@ map <leader>p :vsp $HOME/.plug.vim<cr>
 nnoremap <leader>s :vsp $XDG_CONFIG_HOME/coc/ultisnips/go.snippets<cr>Go
 
 " map <C-t> :cd `git rev-parse --show-toplevel` <bar> NERDTreeToggle <bar> NERDTreeRefreshRoot <CR>
-map tt :TagbarToggle<CR>
+" map tt :TagbarToggle<CR>
 map <C-b> <C-^>
 map <C-a> <esc>ggVG
 map <leader>d 0yaf]]O<esc>O<esc>p]]w
@@ -104,13 +104,59 @@ map grt :GoRemoveTags<CR>
 " map ej :lnext<CR>
 " map ek :lprevious<CR>
 
+" vim-todo
+" nnoremap td :cd `git rev-parse --show-toplevel` <bar> OpenTodo<CR><CR>
 
 " vimspector
 nmap <leader>dd :call vimspector#Launch()<CR>
 nmap <leader>dx :VimspectorReset<CR>
 nmap <leader>de :VimspectorEval
 nmap <leader>dw :VimspectorWatch
-nmap <leader>do :VimsoectorShowOutput
+nmap <leader>do :VimspectorShowOutput
 
-nnoremap td :cd `git rev-parse --show-toplevel` <bar> OpenTodo<CR><CR>
+" command Exec set splitright | vnew | set filetype=sh | read !sh #
 
+" execute curl
+nnoremap <silent> <C-x> :sp <bar> terminal sh %<CR>
+
+map ff :NERDTreeFind<CR>
+map zz :sp <bar> terminal s<CR>
+nmap fr <Plug>CtrlSFCwordPath -W<CR>
+vmap fr <Plug>CtrlSFVwordExec
+
+nmap cm :Commits<CR>
+
+function! L ()
+  tab term ++curwin
+  tab term lazygit
+endfunction
+command! L execute ":call L()"
+
+map <leader>db :DB g:local 
+
+"" Move visual block
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+"" Git
+noremap <Leader>ga :Git add --patch<CR>
+noremap <Leader>gc :Git commit<CR>
+noremap <Leader>gp :Git push<CR>
+noremap <Leader>gl :Git pull<CR>
+noremap <Leader>gb :Git blame<CR>
+noremap <Leader>gs :Gstatus<CR>
+noremap <Leader>gd :Gvdiff<CR>
+noremap <Leader>gr :Gremove<CR>
+
+" session management
+nnoremap <leader>so :OpenSession<Space>
+nnoremap <leader>ss :SaveSession<Space>
+nnoremap <leader>sd :DeleteSession<CR>
+nnoremap <leader>sc :CloseSession<CR>
+
+"" Tabs
+nnoremap <Tab> gt
+nnoremap <S-Tab> gT
+nnoremap <silent> <S-t> :tabnew<CR>
+
+nnoremap <leader>i :source $DOTFILES/.config/nvim/init.vim \| PlugInstall<CR>

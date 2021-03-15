@@ -9,7 +9,7 @@ module.exports = {
     updateChannel: "stable",
 
     // default font size in pixels for all tabs
-    fontSize: 12,
+    fontSize: 14,
 
     // font family with optional fallbacks
     fontFamily:
@@ -44,7 +44,7 @@ module.exports = {
 
     // terminal background color
     // opacity is only supported on macOS
-    backgroundColor: "#000",
+    // backgroundColor: "#000",
 
     // terminal selection color
     selectionColor: "rgba(248,28,229,0.3)",
@@ -136,11 +136,11 @@ module.exports = {
 
     // Whether to use the WebGL renderer. Set it to false to use canvas-based
     // rendering (slower, but supports transparent backgrounds)
-    webGLRenderer: true,
+    // webGLRenderer: true,
 
     // backgroundImage:
     //   "/Users/arifsefrianto/Downloads/graham-holtshausen-fUnfEz3VLv4.jpg",
-    opacity: 0.85,
+    // opacity: 0.85,
 
     // for advanced config flags please refer to https://hyper.is/#cfg
   },
@@ -152,7 +152,8 @@ module.exports = {
   //   `@company/project`
   //   `project#1.0.1`
   plugins: [
-    "hyper-solarized-dark",
+    // "hyper-solarized-dark",
+    //
     "hypercwd",
     "hyper-search",
     "hyperterm-tabs",
@@ -160,7 +161,8 @@ module.exports = {
     "hyper-quit",
     "hyperminimal",
     // "hyper-background",
-    "hyper-opacity",
+    // "hyper-opacity",
+    "nord-hyper",
   ],
 
   // in development, you can create a directory under

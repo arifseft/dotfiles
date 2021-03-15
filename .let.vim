@@ -85,9 +85,31 @@ let g:go_debug_windows = {
 \ }
 let g:rehash256 = 1
 
-let g:python_host_prog='/usr/bin/python'
-" let g:python_host_prog='/usr/local/bin/python'
+" let g:python_host_prog='/usr/bin/python'
+let g:python_host_prog='/usr/local/bin/python'
 let g:python3_host_prog='/usr/local/bin/python3'
 
-" let g:phpfmt_standard = 'PSR2'
+" vim-rest-console
+" let g:vrc_allow_get_request_body = 1
+" let g:vrc_elasticsearch_support = 1
+" let b:vrc_header_content_type = 'application/json; charset=utf-8'
+" let g:vrc_horizontal_split = 1
+" let g:vrc_output_buffer_name = '__VRC_OUTPUT.json'
+" let b:vrc_response_default_content_type = 'application/json'
+" let g:vrc_trigger = '<C-x>'
+"
 
+let g:ctrlsf_ackprg = '/usr/local/bin/rg'
+let g:ctrlsf_winsize = '30%'
+let g:ctrlsf_auto_preview = 1
+let g:ctrlsf_auto_close = 0
+let g:ctrlsf_confirm_save = 0
+let g:ctrlsf_auto_focus = {
+    \ 'at': 'start',
+    \ }
+let g:ctrlsf_mapping = {
+    \ "next": "n",
+    \ "prev": "N",
+    \ }
+
+let g:local = 'mysql://root:12345678@localhost/bmi'

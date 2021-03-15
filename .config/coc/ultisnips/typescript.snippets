@@ -1,0 +1,933 @@
+# A valid snippet should starts with:
+#
+#		snippet trigger_word [ "description" [ options ] ]
+#
+# and end with:
+#
+#		endsnippet
+#
+# Snippet options:
+#
+#		b - Beginning of line.
+#		i - In-word expansion.
+#		w - Word boundary.
+#		r - Regular expression
+#		e - Custom context snippet
+#		A - Snippet will be triggered automatically, when condition matches.
+#
+# Basic example:
+#
+#		snippet emitter "emitter properties" b
+#		private readonly ${1} = new Emitter<$2>()
+#		public readonly ${1/^_(.*)/$1/}: Event<$2> = this.$1.event
+#		endsnippet
+#
+# Online reference: https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
+
+snippet Tab_trigger "Description" b
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
+import * as FileSystem from 'expo-file-system';
+import qs from 'qs';
+import Hydrator from 'transflynd-axios-factory/dist/interceptors/response/hydrate';
+import config from '@config';
+import {appVersion, isDev} from '@helpers/misc';
+import {
+GetAccountResponse,
+GetBookingResponse,
+GetBookingDirectionResponse,
+GetBookingsSummaryResponse,
+GetBookingOrderSummaryResponse,
+GetFailureReasonResponse,
+GetOnGoingBookingIdResponse,
+GetS3PreSignedUrlsResponse,
+PaginatedResponse,
+PostArriveBookingOrderRequest,
+PostEntityCreatedResponse,
+PostFailBookingOrderRequest,
+PostFinishBookingOrderRequest,
+PostFinishBookingRequest,
+PostStartLoadingBookingOrderRequest,
+PostFinishLoadingBookingOrderRequest,
+PostLoginRequest,
+PostLoginResponse,
+PostS3ImageRequest,
+PostStartBookingOrderRequest,
+PostStartBookingRequest,
+CollectionResponse
+} from '@api/payloads';
+
+const endpoints = config.api.endpoints;
+const timeout = config.api.timeout;
+const apiHost = config.api.host;
+const apiPort = config.api.port;
+
+export interface UploadableFile {
+uri: string,
+caption: string,
+isUploaded: boolean,
+cloudUrl?: string
+}
+
+export const api = axios.create({
+baseURL: apiHost + (apiPort && apiPort !== '' ? ':' + apiPort : ''),
+timeout: timeout,
+headers: {
+	'User-Agent': 'DA2/' + appVersion(),
+}
+});
+
+function cancellerRequest(config: AxiosRequestConfig) {
+const abort = axios.CancelToken.source();
+const id = setTimeout(
+	() => abort.cancel(`Timeout of ${timeout}ms.`),
+	timeout,
+);
+
+config['cancelToken'\] = abort.token;
+config['cancelTokenTimeout'\] = id;
+
+return config;
+}
+
+function cancellerError(error: any) {
+if (error.hasOwnProperty('request') && error.request) {
+	if (error.request.hasOwnProperty('config') && error.request.config) {
+	if (
+		error.request.config.hasOwnProperty('cancelTokenTimeout') &&
+		error.request.config.cancelTokenTimeout
+	) {
+		clearTimeout(error.request.config.cancelTokenTimeout);
+	}
+	}
+}
+
+throw error;
+}
+
+function cancellerResponse(response: AxiosResponse) {
+if (response && response.hasOwnProperty('config') && response.config) {
+	if (
+	response.config.hasOwnProperty('cancelTokenTimeout') &&
+	response.config.cancelTokenTimeout
+	) {
+	clearTimeout(response.config.cancelTokenTimeout);
+	}
+}
+
+return response;
+}
+
+api.interceptors.request.use(cancellerRequest, cancellerError);
+api.interceptors.response.use(cancellerResponse, cancellerError);
+api.interceptors.response.use(Hydrator.success, Hydrator.error);
+api.interceptors.response.use(response => {
+if (response.data && response.data.data) {
+	if (response.data.links) {
+	if (response.data.hasOwnProperty('meta')) {
+		let pagination = response.data.meta.pagination;
+
+		response.data = {
+		data: response.data.data,
+		limit: pagination.perPage,
+		total: pagination.totalItems,
+		skip: (pagination.currentPage - 1) * pagination.perPage,
+		pagination: pagination
+		}
+	}
+	}
+}
+
+return response;
+}, error => {
+throw error;
+});
+
+if (isDev()) {
+api.interceptors.request.use(config => {
+	if (console !== undefined) {
+	console.group('AXIOS_REQUEST');
+	console.log('url', config.url);
+	console.log('config', config);
+	console.groupEnd();
+	}
+
+	return config;
+});
+api.interceptors.response.use(response => {
+	if (console !== undefined) {
+	console.group('AXIOS_RESPONSE');
+	console.log('response', response);
+	console.groupEnd();
+	}
+
+	return response;
+}, e => {
+	console.group('AXIOS_ERROR');
+	console.log('error', e);
+	console.log('response', e.response);
+	console.groupEnd();
+
+	throw e;
+});
+}
+
+let registeredInterceptors = {};
+
+export function registerResponseInterceptor(name: string, success: (value: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>, error: (error: any) => any) {
+if (!registeredInterceptors.hasOwnProperty(name)) {
+	api.interceptors.response.use(success, error);
+
+	registeredInterceptors[name\] = true;
+}
+}
+
+export function setBearerToken(token: string): Promise<string> {
+return new Promise<string>((resolve) => {
+	api.defaults.headers.common['Authorization'\] = `Bearer ${token}`;
+
+	resolve(token);
+})
+}
+
+export function unSetBearerToken(): Promise<null> {
+return new Promise<null>((resolve) => {
+	delete api.defaults.headers.common['Authorization'\];
+
+	resolve(null);
+})
+}
+
+export function getLocationDetail(lat: number, lng: number) {
+const nominatim = axios.create({
+	baseURL: 'https://nominatim.openstreetmap.org:443',
+	timeout: timeout,
+	headers: {
+	'User-Agent':
+		'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
+	},
+});
+
+nominatim.interceptors.request.use(
+	(config) => cancellerRequest(config),
+	(error) => cancellerError(error),
+);
+nominatim.interceptors.response.use(
+	(response) => cancellerResponse(response),
+	(error) => cancellerError(error),
+);
+
+return nominatim.get(
+	'/reverse?format=json&lat=' +
+	lat +
+	'&lon=' +
+	lng +
+	'&zoom=18&addressdetails=1',
+);
+}
+
+export function postLogin(request: PostLoginRequest): Promise<AxiosResponse<PostLoginResponse>> {
+return api.post(endpoints.postLogin, {
+	strategy: null,
+	grant_type: 'password',
+	client_id: config.api.auth.clientId,
+	client_secret: config.api.auth.clientSecret,
+	username: request.username,
+	password: request.password,
+})
+}
+
+export function getAccountInfo(): Promise<AxiosResponse<GetAccountResponse>> {
+return api.get(endpoints.getAccount);
+}
+
+export function getFailureReasons(): Promise<AxiosResponse<CollectionResponse<GetFailureReasonResponse>>> {
+return api.get(endpoints.getFailureReasons);
+}
+
+export function getPendingBookings(): Promise<AxiosResponse<PaginatedResponse<GetBookingResponse>>> {
+return api.get(endpoints.getBookings, {
+	params: {
+	filters: {
+		status: 'assigned'
+	}
+	},
+	paramsSerializer: p => qs.stringify(p)
+});
+}
+
+export function getFinishedBookings(): Promise<AxiosResponse<PaginatedResponse<GetBookingResponse>>> {
+return api.get(endpoints.getBookings, {
+	params: {
+	filters: {
+		status: 'finished'
+	}
+	},
+	paramsSerializer: p => qs.stringify(p)
+});
+}
+
+export function getBookingsSummary(dateFrom: number, dateUntil: number): Promise<AxiosResponse<GetBookingsSummaryResponse[\]>> {
+const url = endpoints.getBookingsSummary;
+const params = {
+	params: {
+	'date-from': dateFrom,
+	'date-until': dateUntil
+	},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+return api.get(url, params);
+}
+
+export function getBookingOrderSummary(dateFrom: number, dateUntil: number): Promise<AxiosResponse<GetBookingOrderSummaryResponse[\]>> {
+const url = endpoints.getBookingOrderSummary;
+const params = {
+	params: {
+	'date-from': dateFrom,
+	'date-until': dateUntil
+	},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+
+return api.get(url,params);
+}
+
+export function getOnGoingBookingId(): Promise<AxiosResponse<GetOnGoingBookingIdResponse | null>> {
+return api.get(endpoints.getOnGoingBookingId);
+}
+
+export function getBookingById(bookingId: number): Promise<AxiosResponse<GetBookingResponse>> {
+const url = endpoints.getBookingById.replace('{id}', '' + bookingId);
+const params = {
+	params: {
+	relations: {
+		'extra_requirements': {
+		0: 'extra_requirement'
+		},
+		'orders': {
+		'items': {
+			0: 'product'
+		}
+		}
+	}
+	},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+
+return api.get(url, params)
+}
+
+export function getBookingDirection(bookingId: number): Promise<AxiosResponse<GetBookingDirectionResponse>> {
+const url = endpoints.getBookingDirection.replace('{id}', '' + bookingId);
+const params = {
+	params: {},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+
+return api.get(url, params)
+}
+
+export function getS3PreSignedUrl(count: number): Promise<AxiosResponse<GetS3PreSignedUrlsResponse>> {
+const url = endpoints.getS3PreSignedUrl;
+const params = {
+	params: {
+	count: count,
+	ext: 'jpeg',
+	age: 60
+	},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+
+return api.get(url, params)
+}
+
+export function postStartBooking(payload: PostStartBookingRequest): Promise<AxiosResponse<PostEntityCreatedResponse>> {
+const url = endpoints.postStartBooking.replace('{id}', '' + payload.bookingId);
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params)
+}
+
+export function postFinishBooking(payload: PostFinishBookingRequest) {
+const url = endpoints.postFinishBooking.replace('{id}', '' + payload.bookingId);
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude,
+	delivery_note: payload.deliveryNote
+};
+
+return api.post(url, params);
+}
+
+export function postStartBookingOrder(payload: PostStartBookingOrderRequest) {
+const url = endpoints.postStartBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params);
+}
+
+export function postFailBookingOrder(payload: PostFailBookingOrderRequest) {
+const url = endpoints.postFailBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude,
+	failure_reason_id: payload.failureReasonId,
+	failure_reason_note: payload.failureReasonNote
+};
+
+return api.post(url, params);
+}
+
+export function postArrivedBookingOrder(payload: PostArriveBookingOrderRequest) {
+const url = endpoints.postArrivedBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params);
+}
+
+export function postStartLoadingBookingOrder(payload: PostStartLoadingBookingOrderRequest) {
+const url = endpoints.postStartLoadingBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params);
+}
+
+export function postFinishLoadingBookingOrder(payload: PostFinishLoadingBookingOrderRequest) {
+const url = endpoints.postFinishLoadingBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params);
+}
+
+export function postFinishBookingOrder(payload: PostFinishBookingOrderRequest) {
+const url = endpoints.postFinishBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const images: PostS3ImageRequest[\] = [\];
+
+payload.images.forEach(i => {
+	const image: PostS3ImageRequest = {
+	url: i.url,
+	caption: i.caption
+	};
+
+	images.push(image);
+});
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude,
+	signature_url: payload.signatureUrl.url,
+	images: images
+};
+
+return api.post(url, params);
+}
+
+export async function putFilesToPreSignedS3(files: UploadableFile[\]): Promise<UploadableFile[\]> {
+const response = await getS3PreSignedUrl(files.length);
+	const urls = response.data.urls;
+	const promises: Promise<UploadableFile>[\] = [\];
+	files.forEach((f, idx) => {
+		const url = urls[idx\];
+		const options: FileSystem.FileSystemUploadOptions = {
+			httpMethod: 'PUT',
+		};
+
+		const promise = FileSystem.uploadAsync(url.put, f.uri, options)
+			.then(() => {
+				f.isUploaded = true;
+				f.cloudUrl = url.get;
+
+				return f;
+			});
+
+		promises.push(promise);
+	});
+	return await Promise.all(promises);
+}
+endsnippet
+
+snippet Tab_trigger "Description" b
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
+import * as FileSystem from 'expo-file-system';
+import qs from 'qs';
+import Hydrator from 'transflynd-axios-factory/dist/interceptors/response/hydrate';
+import config from '@config';
+import {appVersion, isDev} from '@helpers/misc';
+import {
+GetAccountResponse,
+GetBookingResponse,
+GetBookingDirectionResponse,
+GetBookingsSummaryResponse,
+GetBookingOrderSummaryResponse,
+GetFailureReasonResponse,
+GetOnGoingBookingIdResponse,
+GetS3PreSignedUrlsResponse,
+PaginatedResponse,
+PostArriveBookingOrderRequest,
+PostEntityCreatedResponse,
+PostFailBookingOrderRequest,
+PostFinishBookingOrderRequest,
+PostFinishBookingRequest,
+PostStartLoadingBookingOrderRequest,
+PostFinishLoadingBookingOrderRequest,
+PostLoginRequest,
+PostLoginResponse,
+PostS3ImageRequest,
+PostStartBookingOrderRequest,
+PostStartBookingRequest,
+CollectionResponse
+} from '@api/payloads';
+
+const endpoints = config.api.endpoints;
+const timeout = config.api.timeout;
+const apiHost = config.api.host;
+const apiPort = config.api.port;
+
+export interface UploadableFile {
+uri: string,
+caption: string,
+isUploaded: boolean,
+cloudUrl?: string
+}
+
+export const api = axios.create({
+baseURL: apiHost + (apiPort && apiPort !== '' ? ':' + apiPort : ''),
+timeout: timeout,
+headers: {
+	'User-Agent': 'DA2/' + appVersion(),
+}
+});
+
+function cancellerRequest(config: AxiosRequestConfig) {
+const abort = axios.CancelToken.source();
+const id = setTimeout(
+	() => abort.cancel(`Timeout of ${timeout}ms.`),
+	timeout,
+);
+
+config['cancelToken'\] = abort.token;
+config['cancelTokenTimeout'\] = id;
+
+return config;
+}
+
+function cancellerError(error: any) {
+if (error.hasOwnProperty('request') && error.request) {
+	if (error.request.hasOwnProperty('config') && error.request.config) {
+	if (
+		error.request.config.hasOwnProperty('cancelTokenTimeout') &&
+		error.request.config.cancelTokenTimeout
+	) {
+		clearTimeout(error.request.config.cancelTokenTimeout);
+	}
+	}
+}
+
+throw error;
+}
+
+function cancellerResponse(response: AxiosResponse) {
+if (response && response.hasOwnProperty('config') && response.config) {
+	if (
+	response.config.hasOwnProperty('cancelTokenTimeout') &&
+	response.config.cancelTokenTimeout
+	) {
+	clearTimeout(response.config.cancelTokenTimeout);
+	}
+}
+
+return response;
+}
+
+api.interceptors.request.use(cancellerRequest, cancellerError);
+api.interceptors.response.use(cancellerResponse, cancellerError);
+api.interceptors.response.use(Hydrator.success, Hydrator.error);
+api.interceptors.response.use(response => {
+if (response.data && response.data.data) {
+	if (response.data.links) {
+	if (response.data.hasOwnProperty('meta')) {
+		let pagination = response.data.meta.pagination;
+
+		response.data = {
+		data: response.data.data,
+		limit: pagination.perPage,
+		total: pagination.totalItems,
+		skip: (pagination.currentPage - 1) * pagination.perPage,
+		pagination: pagination
+		}
+	}
+	}
+}
+
+return response;
+}, error => {
+throw error;
+});
+
+if (isDev()) {
+api.interceptors.request.use(config => {
+	if (console !== undefined) {
+	console.group('AXIOS_REQUEST');
+	console.log('url', config.url);
+	console.log('config', config);
+	console.groupEnd();
+	}
+
+	return config;
+});
+api.interceptors.response.use(response => {
+	if (console !== undefined) {
+	console.group('AXIOS_RESPONSE');
+	console.log('response', response);
+	console.groupEnd();
+	}
+
+	return response;
+}, e => {
+	console.group('AXIOS_ERROR');
+	console.log('error', e);
+	console.log('response', e.response);
+	console.groupEnd();
+
+	throw e;
+});
+}
+
+let registeredInterceptors = {};
+
+export function registerResponseInterceptor(name: string, success: (value: AxiosResponse) => AxiosResponse | Promise<AxiosResponse>, error: (error: any) => any) {
+if (!registeredInterceptors.hasOwnProperty(name)) {
+	api.interceptors.response.use(success, error);
+
+	registeredInterceptors[name\] = true;
+}
+}
+
+export function setBearerToken(token: string): Promise<string> {
+return new Promise<string>((resolve) => {
+	api.defaults.headers.common['Authorization'\] = `Bearer ${token}`;
+
+	resolve(token);
+})
+}
+
+export function unSetBearerToken(): Promise<null> {
+return new Promise<null>((resolve) => {
+	delete api.defaults.headers.common['Authorization'\];
+
+	resolve(null);
+})
+}
+
+export function getLocationDetail(lat: number, lng: number) {
+const nominatim = axios.create({
+	baseURL: 'https://nominatim.openstreetmap.org:443',
+	timeout: timeout,
+	headers: {
+	'User-Agent':
+		'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
+	},
+});
+
+nominatim.interceptors.request.use(
+	(config) => cancellerRequest(config),
+	(error) => cancellerError(error),
+);
+nominatim.interceptors.response.use(
+	(response) => cancellerResponse(response),
+	(error) => cancellerError(error),
+);
+
+return nominatim.get(
+	'/reverse?format=json&lat=' +
+	lat +
+	'&lon=' +
+	lng +
+	'&zoom=18&addressdetails=1',
+);
+}
+
+export function postLogin(request: PostLoginRequest): Promise<AxiosResponse<PostLoginResponse>> {
+return api.post(endpoints.postLogin, {
+	strategy: null,
+	grant_type: 'password',
+	client_id: config.api.auth.clientId,
+	client_secret: config.api.auth.clientSecret,
+	username: request.username,
+	password: request.password,
+})
+}
+
+export function getAccountInfo(): Promise<AxiosResponse<GetAccountResponse>> {
+return api.get(endpoints.getAccount);
+}
+
+export function getFailureReasons(): Promise<AxiosResponse<CollectionResponse<GetFailureReasonResponse>>> {
+return api.get(endpoints.getFailureReasons);
+}
+
+export function getPendingBookings(): Promise<AxiosResponse<PaginatedResponse<GetBookingResponse>>> {
+return api.get(endpoints.getBookings, {
+	params: {
+	filters: {
+		status: 'assigned'
+	}
+	},
+	paramsSerializer: p => qs.stringify(p)
+});
+}
+
+export function getFinishedBookings(): Promise<AxiosResponse<PaginatedResponse<GetBookingResponse>>> {
+return api.get(endpoints.getBookings, {
+	params: {
+	filters: {
+		status: 'finished'
+	}
+	},
+	paramsSerializer: p => qs.stringify(p)
+});
+}
+
+export function getBookingsSummary(dateFrom: number, dateUntil: number): Promise<AxiosResponse<GetBookingsSummaryResponse[\]>> {
+const url = endpoints.getBookingsSummary;
+const params = {
+	params: {
+	'date-from': dateFrom,
+	'date-until': dateUntil
+	},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+return api.get(url, params);
+}
+
+export function getBookingOrderSummary(dateFrom: number, dateUntil: number): Promise<AxiosResponse<GetBookingOrderSummaryResponse[\]>> {
+const url = endpoints.getBookingOrderSummary;
+const params = {
+	params: {
+	'date-from': dateFrom,
+	'date-until': dateUntil
+	},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+
+return api.get(url,params);
+}
+
+export function getOnGoingBookingId(): Promise<AxiosResponse<GetOnGoingBookingIdResponse | null>> {
+return api.get(endpoints.getOnGoingBookingId);
+}
+
+export function getBookingById(bookingId: number): Promise<AxiosResponse<GetBookingResponse>> {
+const url = endpoints.getBookingById.replace('{id}', '' + bookingId);
+const params = {
+	params: {
+	relations: {
+		'extra_requirements': {
+		0: 'extra_requirement'
+		},
+		'orders': {
+		'items': {
+			0: 'product'
+		}
+		}
+	}
+	},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+
+return api.get(url, params)
+}
+
+export function getBookingDirection(bookingId: number): Promise<AxiosResponse<GetBookingDirectionResponse>> {
+const url = endpoints.getBookingDirection.replace('{id}', '' + bookingId);
+const params = {
+	params: {},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+
+return api.get(url, params)
+}
+
+export function getS3PreSignedUrl(count: number): Promise<AxiosResponse<GetS3PreSignedUrlsResponse>> {
+const url = endpoints.getS3PreSignedUrl;
+const params = {
+	params: {
+	count: count,
+	ext: 'jpeg',
+	age: 60
+	},
+	paramsSerializer: (p: any) => qs.stringify(p)
+};
+
+return api.get(url, params)
+}
+
+export function postStartBooking(payload: PostStartBookingRequest): Promise<AxiosResponse<PostEntityCreatedResponse>> {
+const url = endpoints.postStartBooking.replace('{id}', '' + payload.bookingId);
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params)
+}
+
+export function postFinishBooking(payload: PostFinishBookingRequest) {
+const url = endpoints.postFinishBooking.replace('{id}', '' + payload.bookingId);
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude,
+	delivery_note: payload.deliveryNote
+};
+
+return api.post(url, params);
+}
+
+export function postStartBookingOrder(payload: PostStartBookingOrderRequest) {
+const url = endpoints.postStartBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params);
+}
+
+export function postFailBookingOrder(payload: PostFailBookingOrderRequest) {
+const url = endpoints.postFailBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude,
+	failure_reason_id: payload.failureReasonId,
+	failure_reason_note: payload.failureReasonNote
+};
+
+return api.post(url, params);
+}
+
+export function postArrivedBookingOrder(payload: PostArriveBookingOrderRequest) {
+const url = endpoints.postArrivedBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params);
+}
+
+export function postStartLoadingBookingOrder(payload: PostStartLoadingBookingOrderRequest) {
+const url = endpoints.postStartLoadingBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params);
+}
+
+export function postFinishLoadingBookingOrder(payload: PostFinishLoadingBookingOrderRequest) {
+const url = endpoints.postFinishLoadingBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude
+};
+
+return api.post(url, params);
+}
+
+export function postFinishBookingOrder(payload: PostFinishBookingOrderRequest) {
+const url = endpoints.postFinishBookingOrder
+	.replace('{bookingId}', '' + payload.bookingId)
+	.replace('{bookingOrderId}', '' + payload.bookingOrderId);
+
+const images: PostS3ImageRequest[\] = [\];
+
+payload.images.forEach(i => {
+	const image: PostS3ImageRequest = {
+	url: i.url,
+	caption: i.caption
+	};
+
+	images.push(image);
+});
+
+const params = {
+	latitude: payload.latitude,
+	longitude: payload.longitude,
+	signature_url: payload.signatureUrl.url,
+	images: images
+};
+
+return api.post(url, params);
+}
+
+export async function putFilesToPreSignedS3(files: UploadableFile[\]): Promise<UploadableFile[\]> {
+const response = await getS3PreSignedUrl(files.length);
+	const urls = response.data.urls;
+	const promises: Promise<UploadableFile>[\] = [\];
+	files.forEach((f, idx) => {
+		const url = urls[idx\];
+		const options: FileSystem.FileSystemUploadOptions = {
+			httpMethod: 'PUT',
+		};
+
+		const promise = FileSystem.uploadAsync(url.put, f.uri, options)
+			.then(() => {
+				f.isUploaded = true;
+				f.cloudUrl = url.get;
+
+				return f;
+			});
+
+		promises.push(promise);
+	});
+	return await Promise.all(promises);
+}
+endsnippet

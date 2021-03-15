@@ -2,38 +2,41 @@
 source $DOTFILES/.plug.vim
 source $DOTFILES/.set.vim
 source $DOTFILES/.let.vim
+source $DOTFILES/.map.vim
+source $DOTFILES/.startify.vim
+source $DOTFILES/.coc.vim
 
 packadd cfilter
 
-let g:vdebug_features = { 'max_children': 256 }
-let g:vdebug_options = {}
-let g:vdebug_options['ide_key'] = 'XDEBUG_VIM'
-let g:vdebug_options['break_on_open'] = 0
-let g:vdebug_options['server'] = '127.0.0.1'
-let g:vdebug_options['port'] = '9001'
+" let g:vdebug_features = { 'max_children': 256 }
+" let g:vdebug_options = {}
+" let g:vdebug_options['ide_key'] = 'XDEBUG_VIM'
+" let g:vdebug_options['break_on_open'] = 0
+" let g:vdebug_options['server'] = '127.0.0.1'
+" let g:vdebug_options['port'] = '9001'
 
-let python_highlight_all = 1
+" let python_highlight_all = 1
 
-let g:vimspector_enable_mappings = 'HUMAN'
+" let g:vimspector_enable_mappings = 'HUMAN'
 " packadd! vimspector
 
 " syntastic settings
 """""""""""""""""""
-"let g:syntastic_debug=3
-let g:syntastic_go_checkers=['go']
-let g:syntastic_enable_signs=1
-let g:syntastic_error_symbol='!!'
-let g:syntastic_style_error_symbol='!!'
-let g:syntastic_warning_symbol='??'
-let g:syntastic_style_warning_symbol='??'
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_check_on_open=1
-let g:syntastic_check_on_wq=1
-let g:syntastic_aggregate_errors=1
-let g:syntastic_auto_loc_list=1
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" let g:syntastic_debug=3
+" let g:syntastic_go_checkers=['go']
+" let g:syntastic_enable_signs=1
+" let g:syntastic_error_symbol='!!'
+" let g:syntastic_style_error_symbol='!!'
+" let g:syntastic_warning_symbol='??'
+" let g:syntastic_style_warning_symbol='??'
+" let g:syntastic_always_populate_loc_list=1
+" let g:syntastic_check_on_open=1
+" let g:syntastic_check_on_wq=1
+" let g:syntastic_auto_loc_list=1
+" let g:syntastic_aggregate_errors=1
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 """""""""""""""""""
 
 " syntastic
@@ -49,11 +52,47 @@ set statusline+=%*
 " map <leader>e :lnext<CR>
 " map <leader>r :lprev<CR>
 "
+"
+
+" Syntastic configuration
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+
+" Syntastic configuration for PHP
+" let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+" let g:syntastic_php_phpcs_exec = './bin/phpcs'
+" let g:syntastic_php_phpcs_args = '--standard=psr2'
+" let g:syntastic_php_phpmd_exec = './bin/phpmd'
+" let g:syntastic_php_phpmd_post_args = 'cleancode,codesize,controversial,design,unusedcode'
+
+
 " " tag list
 " map <leader>t :TagbarToggle<CR>
 
 " Auto open NERDTree
 " au VimEnter * NERDTree
+
+" let g:ft = ''
+" function! NERDCommenter_before()
+"   if &ft == 'vue'
+"     let g:ft = 'vue'
+"     let stack = synstack(line('.'), col('.'))
+"     if len(stack) > 0
+"       let syn = synIDattr((stack)[0], 'name')
+"       if len(syn) > 0
+"         exe 'setf ' . substitute(tolower(syn), '^vue_', '', '')
+"       endif
+"     endif
+"   endif
+" endfunction
+" function! NERDCommenter_after()
+"   if g:ft == 'vue'
+"     setf vue
+"     let g:ft = ''
+"   endif
+" endfunction
 
 " Define some single Blade directives. This variable is used for highlighting only.
 let g:blade_custom_directives = ['datetime', 'javascript']
@@ -95,6 +134,13 @@ hi! VertSplit ctermbg=NONE guibg=NONE
 " Auto change directory to opened file
 " autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
 
+" disable Yggdroot/indentline for json
+autocmd Filetype json let g:indentLine_enabled = 0
+
+" Add new end of line
+au BufWritePre * :set binary | set noeol
+au BufWritePost * :set nobinary | set eol
+
 " Autosave when left buffer
 autocmd FocusLost * silent :up
 autocmd WinLeave * silent :up
@@ -119,17 +165,13 @@ augroup terminal_settings
 augroup END
 
 autocmd BufNewFile,BufRead *.js set shiftwidth=2
-autocmd BufNewFile,BufRead *.js set softtabstop=4
-autocmd BufNewFile,BufRead *.js set tabstop=4
+autocmd BufNewFile,BufRead *.js set softtabstop=2
+autocmd BufNewFile,BufRead *.js set tabstop=2
 
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
 autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
 autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
-
-source $DOTFILES/.map.vim
-source $DOTFILES/.startify.vim
-source $DOTFILES/.coc.vim
 
 " Automatically source vimrc on save.
 " autocmd! BufWritePost $DOTFILES/.config/nvim/init.vim source $DOTFILES/.config/nvim/init.vim
@@ -147,7 +189,7 @@ source $DOTFILES/.coc.vim
 
 " vim-prettier
 " let g:prettier#autoformat = 1
-let g:prettier#autoformat_require_pragma = 0
+" let g:prettier#autoformat_require_pragma = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 " vim-javascript
@@ -161,7 +203,7 @@ function! LaravelView()
 	let viewPath = matchstr(currentLine, '\c(\([''"]\)\zs.\{-}\ze\1')
 	let viewPath = substitute(viewPath,'\.','/','ge')
 	exe 'cd `git rev-parse --show-toplevel`'
-	exe 'e resources/views/'.viewPath.'.blade.php'
+	exe 'e backend/resources/views/'.viewPath.'.blade.php'
 endfunction
 noremap gv :call LaravelView()<CR>
 
@@ -201,17 +243,17 @@ nmap <C-t> :call ToggleNerdTree()<CR>
 " noremap gc :call LaravelController()<CR>
 
 " When using `dd` in the quickfix list, remove the item from the quickfix list.
-function! RemoveQFItem()
-  let curqfidx = line('.') - 1
-  let qfall = getqflist()
-  call remove(qfall, curqfidx)
-  call setqflist(qfall, 'r')
-  execute curqfidx + 1 . "cfirst"
-  :copen
-endfunction
-:command! RemoveQFItem :call RemoveQFItem()
-" Use map <buffer> to only map dd in the quickfix window. Requires +localmap
-autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
+" function! RemoveQFItem()
+"   let curqfidx = line('.') - 1
+"   let qfall = getqflist()
+"   call remove(qfall, curqfidx)
+"   call setqflist(qfall, 'r')
+"   execute curqfidx + 1 . "cfirst"
+"   :copen
+" endfunction
+" :command! RemoveQFItem :call RemoveQFItem()
+" " Use map <buffer> to only map dd in the quickfix window. Requires +localmap
+" autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
 
 "" Dep ensure current response
 " command! Dep cd %:h <bar> cd `git rev-parse --show-toplevel` <bar> execute 'sp | terminal dep ensure -v'
@@ -219,14 +261,19 @@ autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
 " command! RunNsq terminal nsq
 "
 function Run(repo)
-	exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run '.a:repo.'/main.go'
+	" exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run '.a:repo.'/main.go'
+	if a:repo == 'gateway'
+		exe 'sp | terminal cd $BMI/'.a:repo.' && watchexec -r --exts go,json -w $BMI/'.a:repo.' go run tracker.go'
+	else
+		exe 'sp | terminal cd $BMI/'.a:repo.' && watchexec -r --exts go,json -w $BMI/'.a:repo.' go run main.go'
+	endif
 endfunction
 command! -nargs=1 Run call Run(<f-args>)
-
-function RunConsumer(repo)
-	exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run consumer/main.go'
-endfunction
-command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
+"
+" function RunConsumer(repo)
+"     exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run consumer/main.go'
+" endfunction
+" command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
 "
 " function Stop(repo)
 "     exe 'bd! term*'.a:repo.'/main.go'
@@ -239,7 +286,8 @@ command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
 " command! -nargs=1 StopConsumer call StopConsumer(<f-args>)
 "
 function CreateLog(repo)
-	exe '!mkdir /var/log/'.a:repo.' && touch /var/log/'.a:repo.'/'.a:repo.'.log'
+	" exe '!mkdir /var/log/'.a:repo.' && touch /var/log/'.a:repo.'/'.a:repo.'.log'
+	exe '!touch /var/log/'.a:repo.'.log'
 endfunction
 command! -nargs=1 CreateLog call CreateLog(<f-args>)
 "
