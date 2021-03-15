@@ -23,7 +23,6 @@ cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>, :Buffers<CR>
 tmap <leader>, :Buffers<CR>
 nnoremap <silent> <C-f> :BLines<CR>
-nnoremap <silent> <leader>f :Lines<CR>
 nnoremap <silent> <leader>t :BTags<CR>
 " nnoremap <silent> <C-p> :call fzf#vim#files('$KARIR', {'options': '--prompt ""'})<CR>
 
@@ -95,7 +94,6 @@ map <C-b> <C-^>
 map <C-a> <esc>ggVG
 map <leader>d 0yaf]]O<esc>O<esc>p]]w
 map <leader>sv :source $DOTFILES/.config/nvim/init.vim<CR>
-map <leader>o :Ranger<CR>
 map gid :GetDataImplement<CR>
 
 map gat :GoAddTags<CR>
@@ -132,7 +130,7 @@ function! L ()
 endfunction
 command! L execute ":call L()"
 
-map <leader>db :DB g:local 
+map <leader>db :DB g:local
 
 "" Move visual block
 vnoremap J :m '>+1<CR>gv=gv
