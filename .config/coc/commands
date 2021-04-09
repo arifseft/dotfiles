@@ -1,3 +1,7 @@
+explorer
+bladeFormatter.run
+floaterm.new
+floaterm.open
 prettier.open-output
 todolist.create
 tsserver

@@ -1,41 +1,39 @@
 {
-    "suggest.noselect": false,
-    "solargraph.commandPath": "/usr/local/bin/solargraph",
-    "languageserver": {
-        "golang": {
-            "command": "gopls",
-            "rootPatterns": [
-                "go.mod",
-                ".git/",
-								".env"
-            ],
-            "filetypes": [
-                "go"
-            ],
-						"disableWorkspaceFolders": true
-        }
-    },
-    "coc.preferences.formatOnSaveFiletypes": [
-        "css",
-        "markdown",
-				"javascript",
-				"javascriptreact",
-				"typescript",
-				"typescriptreact",
-				"python",
-				"php"
-    ],
-	"emmet.showExpandedAbbreviation": "always",
+  "suggest.noselect": false,
+  "solargraph.commandPath": "/usr/local/bin/solargraph",
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": [
+        "go.mod",
+        ".git/",
+        ".env"
+      ],
+      "filetypes": [
+        "go"
+      ],
+      "disableWorkspaceFolders": true
+    }
+  },
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "markdown",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "python",
+    "php"
+  ],
+  "emmet.showExpandedAbbreviation": "always",
   "emmet.showAbbreviationSuggestions": true,
   "emmet.includeLanguages": {
-		"vue-html": "html",
-		"javascript": "javascriptreact",
+    "vue-html": "html",
+    "javascript": "javascriptreact",
     "php": "html",
     "blade": "html"
-	},
-	"prettier.disableSuccessMessage": true,
-	"intelephense.diagnostics.undefinedFunctions": false,
-	"intelephense.diagnostics.undefinedMethods": false,
-	"intelephense.diagnostics.undefinedSymbols": false,
-	"intelephense.diagnostics.undefinedTypes": false
+  },
+  "bladeFormatter.format.indentSize": 2,
+  "bladeFormatter.format.wrapLineLength": 200,
+  "vetur.ignoreProjectWarning": true
 }

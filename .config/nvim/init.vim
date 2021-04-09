@@ -3,8 +3,9 @@ source $DOTFILES/.plug.vim
 source $DOTFILES/.set.vim
 source $DOTFILES/.let.vim
 source $DOTFILES/.map.vim
-source $DOTFILES/.startify.vim
 source $DOTFILES/.coc.vim
+source $DOTFILES/.startify.vim
+source $DOTFILES/.tabularize.vim
 
 packadd cfilter
 
@@ -66,6 +67,16 @@ packadd cfilter
 " let g:syntastic_php_phpcs_args = '--standard=psr2'
 " let g:syntastic_php_phpmd_exec = './bin/phpmd'
 " let g:syntastic_php_phpmd_post_args = 'cleancode,codesize,controversial,design,unusedcode'
+
+
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
+"
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
 
 " " tag list
@@ -134,20 +145,24 @@ hi! VertSplit ctermbg=NONE guibg=NONE
 " Auto change directory to opened file
 " autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
 
-" disable Yggdroot/indentline for json
-autocmd Filetype json let g:indentLine_enabled = 0
 
 " Add new end of line
-au BufWritePre * :set binary | set noeol
-au BufWritePost * :set nobinary | set eol
+" au BufWritePre * :set binary | set noeol
+" au BufWritePost * :set nobinary | set eol
 
 " Autosave when left buffer
-autocmd FocusLost * silent :up
-autocmd WinLeave * silent :up
-autocmd BufWinLeave * silent :up
+autocmd BufWinLeave,FocusLost,WinLeave * silent :up
 
-autocmd FileType go nnoremap <buffer> <c-s> :w <bar> silent CocRestart<CR>
-autocmd FileType javascript nnoremap <buffer> <c-s> :w <bar> silent CocRestart<CR>
+" autocmd FileType go nnoremap <buffer> <c-s> :w <bar> silent CocRestart<CR>
+" autocmd FileType javascript nnoremap <buffer> <c-s> :w <bar> silent CocRestart<CR>
+
+" disable Yggdroot/indentline
+"autocmd BufEnter * let g:indentLine_enabled = 1
+autocmd Filetype coc-explorer let g:indentLine_enabled = 0
+autocmd Filetype json let g:indentLine_enabled = 0
+
+autocmd Filetype coc-explorer set nofoldenable
+autocmd VimEnter * PlugUpdate,CocUpdate
 
 " Exit terminal
 augroup terminal_settings
@@ -156,17 +171,19 @@ augroup terminal_settings
     autocmd BufWinEnter,WinEnter term://* startinsert
     autocmd BufLeave term://* stopinsert
 
-    " Ignore various filetypes as those will close terminal automatically
-    " Ignore fzf, ranger, coc
+" Ignore various filetypes as those will close terminal automatically
+" Ignore fzf, ranger, coc
     autocmd TermClose term://*
-          \ if (expand('<afile>') !~ "fzf") && (expand('<afile>') !~ "ranger") && (expand('<afile>') !~ "coc") |
-          \   call nvim_input('<CR>')  |
-          \ endif
+        \ if (expand('<afile>') !~ "fzf") && (expand('<afile>') !~ "ranger") && (expand('<afile>') !~ "coc") |
+        \   call nvim_input('<CR>')  |
+        \ endif
 augroup END
 
 autocmd BufNewFile,BufRead *.js set shiftwidth=2
 autocmd BufNewFile,BufRead *.js set softtabstop=2
 autocmd BufNewFile,BufRead *.js set tabstop=2
+
+" autocmd BufNewFile,BufRead fugitive set shell=bash
 
 autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
 autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
@@ -198,50 +215,43 @@ augroup javascript_folding
     au FileType javascript setlocal foldmethod=syntax
 augroup END
 
+"" Trigger autoformat for blade
+autocmd BufWritePre *.blade.php call CocAction('format')
+autocmd BufWritePre *.json call CocAction('format')
+autocmd BufWritePre *.vue call CocAction('format')
+
 function! LaravelView()
-	let currentLine = getline(".")
-	let viewPath = matchstr(currentLine, '\c(\([''"]\)\zs.\{-}\ze\1')
-	let viewPath = substitute(viewPath,'\.','/','ge')
-	exe 'cd `git rev-parse --show-toplevel`'
-	exe 'e backend/resources/views/'.viewPath.'.blade.php'
+    let currentLine = getline(".")
+    let viewPath = matchstr(currentLine, '\c(\([''"]\)\zs.\{-}\ze\1')
+    let viewPath = substitute(viewPath,'\.','/','ge')
+    exe 'cd `git rev-parse --show-toplevel`'
+    exe 'e backend/resources/views/'.viewPath.'.blade.php'
 endfunction
 noremap gv :call LaravelView()<CR>
-
-" Check if NERDTree is open or active
-function! IsNERDTreeOpen()
-  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-endfunction
-
-" Call NERDTreeFind if NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
-function! SyncTree()
-  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff && !&ls
-	NERDTreeFind
-	wincmd p
-  endif
-endfunction
-
-" Highlight currently open buffer in NERDTree
-autocmd BufEnter * call SyncTree()
-
-function! ToggleNerdTree()
-  set eventignore=BufEnter
-  NERDTreeToggle
-  set eventignore=
-endfunction
-nmap <C-t> :call ToggleNerdTree()<CR>
-
-" function! LaravelController()
-"     let currentLine = getline(".")
-"     let a = "	Route::get('/audit/detail/download', 'DashboardController@downloadAuditDetail')"
 "
-"     let controllerName = matchstr(a, '\c\s.*(\([''"]\)\zs.\{-}\ze\1')
-"     let controllerName = substitute(controllerName,'\.','/','e')
-" echo controllerName
-	" exe 'cd `git rev-parse --show-toplevel`'
-	" exe 'e app/Http/Controllers/Admin/'.controllerName.'.php'
+" " Check if NERDTree is open or active
+" function! IsNERDTreeOpen()
+"   return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 " endfunction
-" noremap gc :call LaravelController()<CR>
-
+"
+" " Call NERDTreeFind if NERDTree is active, current window contains a modifiable file, and we're not in vimdiff
+" function! SyncTree()
+"   if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff && !&ls
+"       NERDTreeFind
+"       wincmd p
+"   endif
+" endfunction
+"
+" " Highlight currently open buffer in NERDTree
+" autocmd BufEnter * call SyncTree()
+"
+" function! ToggleNerdTree()
+"   set eventignore=BufEnter
+"   NERDTreeToggle
+"   set eventignore=
+" endfunction
+" nmap <C-t> :call ToggleNerdTree()<CR>
+"
 " When using `dd` in the quickfix list, remove the item from the quickfix list.
 " function! RemoveQFItem()
 "   let curqfidx = line('.') - 1
@@ -261,33 +271,52 @@ nmap <C-t> :call ToggleNerdTree()<CR>
 " command! RunNsq terminal nsq
 "
 function Run(repo)
-	" exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run '.a:repo.'/main.go'
-	if a:repo == 'gateway'
-		exe 'sp | terminal cd $BMI/'.a:repo.' && watchexec -r --exts go,json -w $BMI/'.a:repo.' go run tracker.go'
-	else
-		exe 'sp | terminal cd $BMI/'.a:repo.' && watchexec -r --exts go,json -w $BMI/'.a:repo.' go run main.go'
-	endif
+	exe 'sp | terminal cd $BMI/'.a:repo.' && watchexec -r --exts go,json -w $BMI/'.a:repo.' go run main.go'
+	exe 'file '.a:repo.'-main'
 endfunction
 command! -nargs=1 Run call Run(<f-args>)
 "
-" function RunConsumer(repo)
-"     exe 'sp | terminal cd $KARIR/'.a:repo.'/cmd/app && watchexec -r --exts go,json -w $KARIR/'.a:repo.' go run consumer/main.go'
-" endfunction
-" command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
-"
-" function Stop(repo)
-"     exe 'bd! term*'.a:repo.'/main.go'
-" endfunction
-" command! -nargs=1 Stop call Stop(<f-args>)
-"
-" function StopConsumer(repo)
-"     exe 'bd! term*'.a:repo.'*consumer/main.go'
-" endfunction
-" command! -nargs=1 StopConsumer call StopConsumer(<f-args>)
+function RunConsumer(repo)
+	exe 'sp | terminal cd $BMI/'.a:repo.' && watchexec -r --exts go,json -w $BMI/'.a:repo.' go run consumer.go'
+	exe 'file '.a:repo.'-consumer'
+endfunction
+command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
+
+function RunEcho()
+    exe 'sp | terminal cd $BMI/backend && laravel-echo-server start'
+	exe 'file echo'
+endfunction
+command! RunEcho call RunEcho()
+
+function RunAll()
+	call Run('tracker')
+	call Run('gateway')
+	call RunConsumer('gateway')
+	call RunEcho()
+endfunction
+command! RunAll call RunAll()
+
+function StopAll()
+	exe 'bd! tracker-main'
+	exe 'bd! gateway-main'
+	exe 'bd! gateway-consumer'
+	exe 'bd! echo'
+endfunction
+command! StopAll call RunEcho()
+
+function Stop(repo)
+	exe 'bd! '.a:repo
+endfunction
+command! -nargs=1 Stop call Stop(<f-args>)
+
+function StopConsumer(repo)
+	exe 'bd! '.a:repo.'-gateway'
+endfunction
+command! -nargs=1 StopConsumer call StopConsumer(<f-args>)
 "
 function CreateLog(repo)
-	" exe '!mkdir /var/log/'.a:repo.' && touch /var/log/'.a:repo.'/'.a:repo.'.log'
-	exe '!touch /var/log/'.a:repo.'.log'
+    " exe '!mkdir /var/log/'.a:repo.' && touch /var/log/'.a:repo.'/'.a:repo.'.log'
+    exe '!touch /var/log/'.a:repo.'.log'
 endfunction
 command! -nargs=1 CreateLog call CreateLog(<f-args>)
 "
@@ -904,3 +933,6 @@ command! -nargs=1 CreateLog call CreateLog(<f-args>)
 "     exe 'w'
 " endfunction
 " command! -nargs=* CreatePgStruct call CreatePgStruct(<f-args>)
+
+" tunneling
+" lt --port 443 --subdomain unload-api --local-host api.unload.test --local-https true --local-cert /Users/arifsefrianto/.config/valet/Certificates/unload.test.crt --local-key /Users/arifsefrianto/.config/valet/Certificates/unload.test.key --local-ca /Users/arifsefrianto/.config/valet/CA/LaravelValetCASelfSigned.pem

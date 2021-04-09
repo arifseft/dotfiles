@@ -38,4 +38,4 @@ endfunction
 
 let g:startify_custom_header = s:center(s:header)
 
- 
+

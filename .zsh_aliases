@@ -36,7 +36,7 @@ alias gfrp='git flow release publish'
 alias gfrf='git flow release finish'
 # alias gm='git merge'
 alias gmd='git merge develop'
-alias gmm='git merge master'
+alias gmm='git merge main'
 # alias gl='git log'
 # alias ge='git commit --allow-empty -m "empty"'
 # alias grh='git reset --hard '
@@ -55,10 +55,12 @@ alias se='n ~/.config/coc/ultisnips/go.snippets'
 alias re='n ~/.config/ranger/rc.conf'
 alias rm='trash'
 
-alias restg='redis-cli -h 103.93.55.46 -p 6379 -a stagingredis'
-alias reprd='redis-cli -h redis.qareer.com -p 6379 -a redisprod'
+
 alias myloc='mysql -hlocalhost -uroot -p12345678'
-alias mystg='mysql -h103.93.56.46 -uorang_qareer -pmaucobafitur'
+alias mydev='lsof -t -i:3307 | xargs kill && ssh -fN -L 0.0.0.0:3307:db.dev.unload.id:3306 ubuntu@bastion.dev.unload.id -i /Volumes/HDD/Downloads/unload-development.pem && mysql -h0.0.0.0 -P3307 -unimda -pnimda20210220'
+# alias restg='redis-cli -h 103.93.55.46 -p 6379 -a stagingredis'
+# alias reprd='redis-cli -h redis.qareer.com -p 6379 -a redisprod'
+# alias mystg='mysql -h103.93.56.46 -uorang_qareer -pmaucobafitur'
 
 # export MYSQL_SIZE="SELECT table_schema AS DB_Name, ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS MB FROM information_schema.tables WHERE table_schema = 'kunkka3' GROUP BY table_schema"
 # export SIZE_BYTES=$(mysql --skip-column-names -h103.93.56.46 -uorang_qareer -pmaucobafitur kunkka3 <<< 'SELECT ROUND(SUM(data_length) * 0.8) AS "size_bytes" FROM information_schema.TABLES;')

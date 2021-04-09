@@ -1,39 +1,41 @@
-"" nerdtree
-let g:NERDTreeShowHidden=1
-let g:NERDTreeMinimalUI=1
-let g:NERDTreeHijackNetrw = 0
+"
+" " nerdtree
+" let g:NERDTreeShowHidden=1
+" let g:NERDTreeMinimalUI=1
+" let g:NERDTreeHijackNetrw = 0
+"
+ "
+ " " nerdcommenter
+ " " Add spaces after comment delimiters by default
+ " let g:NERDSpaceDelims = 1
+ "
+ " " Use compact syntax for prettified multi-line comments
+ " let g:NERDCompactSexyComs = 1
+ "
+ " " Align line-wise comment delimiters flush left instead of following code indentation
+ " let g:NERDDefaultAlign = 'left'
+ "
+ " " Set a language to use its alternate delimiters by default
+ " let g:NERDAltDelims_java = 1
+ "
+ " " Add your own custom formats or override the defaults
+ " let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+ "
+ " " Allow commenting and inverting empty lines (useful when commenting a region)
+ " let g:NERDCommentEmptyLines = 1
+ "
+ " " Enable trimming of trailing whitespace when uncommenting
+ " let g:NERDTrimTrailingWhitespace = 1
+ "
+ " " Enable NERDCommenterToggle to checkall selected lines is commented or not
+ " let g:NERDToggleCheckllLines = 1
 
-"" nerdcommenter
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" Enable NERDCommenterToggle to checkall selected lines is commented or not
-let g:NERDToggleCheckllLines = 1
-
-let g:ranger_replace_netrw = 1
-let g:ranger_open_new_tab = 0
+" let g:ranger_replace_netrw = 1
+" let g:ranger_open_new_tab = 0
 
 let g:gitgutter_map_keys = 0
 
-let g:coc_global_extenstion = ['coc-snippets']
+let g:coc_global_extenstion = ['coc-vetur', 'coc-snippets', 'coc-explorer', 'coc-emmet', 'coc-yaml', 'coc-tsserver', 'coc-tslint-plugin', 'coc-phpls', 'coc-json', 'coc-docker', 'coc-css', 'coc-blade-formatter']
 let g:coc_snippet_next = '<Tab>'
 let g:coc_snippet_prev = '<S-Tab>'
 

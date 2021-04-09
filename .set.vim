@@ -9,11 +9,10 @@ set expandtab
 set fileencoding=utf-8
 set fileencodings=utf-8
 set fillchars+=vert:│
-" set foldmethod=syntax
-set foldlevel=99 " 99 disable fold, 1 enable fold
-set foldmethod=indent   
-set foldnestmax=2
-" set nofoldenable
+" set foldlevel=1 " 99 disable fold, 1 enable fold
+set foldmethod=indent
+" set foldnestmax=2
+set foldenable
 
 set gdefault
 set hidden
@@ -38,7 +37,8 @@ set re=1
 set rtp+=/usr/local/opt/fzf
 set ruler
 set scrolloff=2
-set shell=zsh\ -i
+set shell=zsh
+" set shell=zsh\ -i
 " set shell=/usr/local/bin/zsh
 set shiftwidth=4
 " set shortmess=a
