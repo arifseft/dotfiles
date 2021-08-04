@@ -2,3 +2,4 @@
 .config/coc/extensions/
 .config/coc/snippets-mru
 .config/nvim/plugged/
+*.log

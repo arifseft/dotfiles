@@ -1,4 +1,5 @@
 explorer
+snippets.editSnippets
 bladeFormatter.run
 floaterm.new
 floaterm.open
@@ -8,4 +9,3 @@ tsserver
 tsserver.restart
 workspace.showOutput
 snippets.openSnippetFiles
-snippets.editSnippets

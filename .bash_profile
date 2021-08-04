@@ -321,7 +321,7 @@ export PATH="/usr/local/opt/php@7.1/sbin:$PATH"
 
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export GOPATH=/Users/arifsefrianto/go
-export GOROOT=/usr/local/Cellar/go/1.12.7/libexec
+#export GOROOT=/usr/local/Cellar/go/1.12.7/libexec
 
 alias supervisord='supervisord -c /usr/local/share/supervisor/supervisord.conf'
 alias supervisorctl='supervisorctl -c /usr/local/share/supervisor/supervisord.conf'

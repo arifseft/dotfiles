@@ -1,9 +1,9 @@
-if exists(":Tabularize")
-	nmap <Leader>= :Tabularize /=<CR>
-	vmap <Leader>= :Tabularize /=<CR>
-	nmap <Leader>: :Tabularize /:\zs<CR>
-	vmap <Leader>: :Tabularize /:\zs<CR>
-endif
+nmap <Leader>= :Tabularize /=<CR>
+vmap <Leader>= :Tabularize /=<CR>
+nmap <Leader>: :Tabularize /:\zs<CR>
+vmap <Leader>: :Tabularize /:\zs<CR>
+nmap <Leader>> :Tabularize /=><CR>
+vmap <Leader>> :Tabularize /=><CR>
 
 " inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
 "

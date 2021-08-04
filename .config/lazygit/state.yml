@@ -1,6 +1,7 @@
 lastupdatecheck: 0
 recentrepos:
+- /Users/arifsefrianto/dotfiles
 - /Users/arifsefrianto/go/src/github.com/flynd-dev/bmi
 - /Users/arifsefrianto/go/src/github.com/arifseft/laravel-echo-example
 - /Users/arifsefrianto/www/bmi
-startuppopupversion: 3
+startuppopupversion: 5

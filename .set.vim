@@ -25,15 +25,16 @@ set matchpairs+=<:>
 set modifiable
 set mouse=a
 set nocursorcolumn
+set nocursorline
 set noerrorbells
 set noexpandtab
 set noshowmode
 set noswapfile
 set novisualbell
 set nowrap
-set number relativenumber
+" set number relativenumber
 set path+=**
-set re=1
+set re=0
 set rtp+=/usr/local/opt/fzf
 set ruler
 set scrolloff=2

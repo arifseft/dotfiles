@@ -120,6 +120,7 @@ let g:blade_custom_directives_pairs = {
 "" Clear highlight number highlight clear LineNr highlight clear CursorLineNr
 
 syntax enable
+syntax sync minlines=256
 
 if exists('g:loaded_webdevicons')
     call webdevicons#refresh()
@@ -136,7 +137,7 @@ filetype plugin indent on
 
 hi! Normal guibg=NONE ctermbg=NONE
 hi! NonText guibg=NONE ctermbg=NONE
-hi! VertSplit ctermbg=NONE guibg=NONE
+hi! VertSplit guibg=NONE ctermbg=NONE
 " hi! Comment ctermfg=DarkGrey guifg=DarkGrey
 " hi! Search ctermbg=DarkRed guibg=DarkBlue
 " hi! ErrorMsg ctermbg=White ctermfg=Red guibg=White guifg=Red
@@ -162,7 +163,44 @@ autocmd Filetype coc-explorer let g:indentLine_enabled = 0
 autocmd Filetype json let g:indentLine_enabled = 0
 
 autocmd Filetype coc-explorer set nofoldenable
-autocmd VimEnter * PlugUpdate,CocUpdate
+autocmd Filetype qf set nofoldenable
+
+" autocmd CursorMoved * if gitgutter#hunk#in_hunk(line(".")) | GitGutterPreviewHunk | else | pclose | endif
+
+function! OnVimEnter() abort
+  " Run PlugUpdate every week automatically when entering Vim.
+  if exists('g:plug_home')
+    let l:filename = printf('%s/.vim_plug_update', g:plug_home)
+    if filereadable(l:filename) == 0
+      call writefile([], l:filename)
+    endif
+
+    let l:this_week = strftime('%Y_%V')
+    let l:contents = readfile(l:filename)
+
+    if index(l:contents, l:this_week) < 1
+      call execute('PlugUpdate')
+      call execute('CocUpdate')
+      call writefile([l:this_week], l:filename, 'a')
+    endif
+  endif
+
+  " Run every Sunday
+  " if exists('g:plug_home')
+	"   let l:this_day = strftime('%w')
+	"   if l:this_day == 0
+	" 	  call execute('PlugUpdate')
+	" 	  call execute('CocUpdate')
+	"   endif
+  " endif
+
+endfunction
+
+
+autocmd VimEnter * call OnVimEnter()
+
+" autocmd VimEnter * PlugUpdate
+" autocmd VimEnter * CocUpdate
 
 " Exit terminal
 augroup terminal_settings
@@ -283,10 +321,16 @@ endfunction
 command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
 
 function RunEcho()
+    " exe 'sp | terminal cd $BMI/backend && laravel-echo-server --config=laravel-echo-server.local.json start'
     exe 'sp | terminal cd $BMI/backend && laravel-echo-server start'
 	exe 'file echo'
 endfunction
 command! RunEcho call RunEcho()
+
+" function RunNsq()
+"     exe 'sp | terminal nsq'
+" 	exe 'file nsq'
+" endfunction
 
 function RunAll()
 	call Run('tracker')
