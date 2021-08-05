@@ -34,6 +34,16 @@ then
   eval "$(docker-machine env default)"
 fi
 
+# env
+# move cursor for tmux
+bindkey "[C" forward-word
+bindkey "[D" backward-word
+bindkey "^[a" beginning-of-line
+bindkey "^[e" end-of-line
+bindkey '\e\eOC' forward-word
+bindkey '\e\eOD' backward-word
+
+
 # Powerline
 # powerline-daemon -q
 # POWERLINE_BASH_CONTINUATION=1

@@ -12,19 +12,20 @@ alias nsq='nsqlookupd & nsqd --data-path ~ --lookupd-tcp-address=127.0.0.1:4160 
 # alias hg='history | grep'
 
 # GIT
-# alias g='git status'
+alias g='git status'
+alias gst='git status'
 # alias gs='git stash'
 # alias gsp='git stash pop'
 # alias gsl='git stash list'
-# alias ga='git add'
-# alias gap='git add --patch'
-# alias gc='git commit -m'
-# alias gco='git checkout'
+alias ga='git add'
+alias gapa='git add --patch'
+alias gc='git commit'
+alias gco='git checkout'
 alias gcom='git checkout main'
 alias gcod='git checkout develop'
-# alias gps='git push'
-# alias gpl='git pull'
-# alias gb='git branch'
+alias gp='git push'
+alias gl='git pull'
+alias gb='git branch'
 alias gffs='git flow feature start'
 alias gffp='git flow feature publish'
 alias gfff='git flow feature finish -k'
@@ -34,12 +35,15 @@ alias gfhf='git flow hotfix finish'
 alias gfrs='git flow release start'
 alias gfrp='git flow release publish'
 alias gfrf='git flow release finish'
-# alias gm='git merge'
+alias gm='git merge'
 alias gmd='git merge develop'
 alias gmm='git merge main'
-# alias gl='git log'
-# alias ge='git commit --allow-empty -m "empty"'
-# alias grh='git reset --hard '
+alias glg='git log'
+alias ge='git commit --allow-empty -m "empty"'
+alias grh='git reset --hard '
+alias gsta='git stash'
+alias gstl='git stash list'
+alias gstp='git stash pop'
 
 # alias deq='dep ensure -update github.com/karirdotcom/qservice'
 alias ll='ls -la'
@@ -51,68 +55,67 @@ alias te='n ~/dotfiles/.tmux.conf.local'
 alias ze='n ~/dotfiles/.zshrc'
 alias sz='source ~/.zshrc'
 alias ae='n ~/.config/alacritty/alacritty.yml'
-alias se='n ~/.config/coc/ultisnips/go.snippets'
-alias re='n ~/.config/ranger/rc.conf'
+# alias se='n ~/.config/coc/ultisnips/go.snippets'
+# alias re='n ~/.config/ranger/rc.conf'
 alias rm='trash'
-
 
 alias myloc='mysql -hlocalhost -uroot -p12345678'
 alias mydev='lsof -t -i:3307 | xargs kill && ssh -fN -L 0.0.0.0:3307:db.dev.unload.id:3306 ubuntu@bastion.dev.unload.id -i /Volumes/HDD/Downloads/unload-development.pem && mysql -h0.0.0.0 -P3307 -unimda -pnimda20210220'
 alias mystg='lsof -t -i:3305 | xargs kill && ssh -fN -L 0.0.0.0:3305:db.staging.unload.id:3306 ubuntu@bastion.dev.unload.id -i /Volumes/HDD/Downloads/unload-development.pem && mysql -h0.0.0.0 -P3305 -unimda -pnimda20210220'
 alias myprod='lsof -t -i:3308 | xargs kill && ssh -fN -L 0.0.0.0:3308:db.unload.id:3306 ec2-user@18.139.99.147 -i /Volumes/HDD/Downloads/unload-production.pem && mysql -h0.0.0.0 -P3308 -unimdap -pnimdap20210423'
 alias mydevf='lsof -t -i:3309 | xargs kill && ssh -fN -L 0.0.0.0:3309:db.dev.transflynd.com:3306 ec2-user@18.139.150.130 -i /Volumes/HDD/Downloads/flynd-development.pem && mysql -h0.0.0.0 -P3309 -uflyndmaster -pmastertermas'
+
+alias tm='tmate'
+alias tmo='ssh arifsefrianto/office@sgp1.tmate.io'
+alias tmh='ssh arifsefrianto/home@sgp1.tmate.io'
 # alias restg='redis-cli -h 103.93.55.46 -p 6379 -a stagingredis'
 # alias reprd='redis-cli -h redis.qareer.com -p 6379 -a redisprod'
 # alias mystg='mysql -h103.93.56.46 -uorang_qareer -pmaucobafitur'
 
 # export MYSQL_SIZE="SELECT table_schema AS DB_Name, ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) AS MB FROM information_schema.tables WHERE table_schema = 'kunkka3' GROUP BY table_schema"
 # export SIZE_BYTES=$(mysql --skip-column-names -h103.93.56.46 -uorang_qareer -pmaucobafitur kunkka3 <<< 'SELECT ROUND(SUM(data_length) * 0.8) AS "size_bytes" FROM information_schema.TABLES;')
-alias myexport='mysqldump -h103.93.56.46 -uorang_qareer -pmaucobafitur --column-statistics=0 kunkka3 --hex-blob | pv --progress --size $SIZE_BYTES > $HOME/Downloads/dump.sql'
+# alias myexport='mysqldump -h103.93.56.46 -uorang_qareer -pmaucobafitur --column-statistics=0 kunkka3 --hex-blob | pv --progress --size $SIZE_BYTES > $HOME/Downloads/dump.sql'
 
 #
 # alias mysize='mysql -h103.93.56.46 -uorang_qareer -pmaucobafitur -e $MYSQL_SIZE'
 # alias myexport='mysqldump -h103.93.56.46 -uorang_qareer -pmaucobafitur --column-statistics=0 kunkka3 | pv | gzip > $HOME/Downloads/dump.sql.gz'
-alias myimport='mysql -hlocalhost -uroot -p12345678 kunkka3 < $HOME/Downloads/dump.sql'
+# alias myimport='mysql -hlocalhost -uroot -p12345678 kunkka3 < $HOME/Downloads/dump.sql'
 
 # alias myprd='mysql -hdb.qareer.com -uread_user -pkj#h3u9&dY'
-alias myprd='mysql -hdb.qareer.com -uqerja -pgaji_dan_curhatkakakaka'
-alias mostg='mongo --host 103.93.55.46 --port 27017 --username simpendata --password bentukdokumen'
+# alias myprd='mysql -hdb.qareer.com -uqerja -pgaji_dan_curhatkakakaka'
+# alias mostg='mongo --host 103.93.55.46 --port 27017 --username simpendata --password bentukdokumen'
 # alias pgdev='psql service=pg_dev'
-alias pgloc='psql -hlocalhost -uroot -p12345678'
-alias pgstg='psql postgres://flamboyan:PNI0XkuC9@13.251.169.57:5432/karir_production'
-alias pgprd='psql postgres://bacakarir:cumabacaajakarir@dbkarir_read.karir.com:5432/karir_production'
+# alias pgloc='psql -hlocalhost -uroot -p12345678'
+# alias pgstg='psql postgres://flamboyan:PNI0XkuC9@13.251.169.57:5432/karir_production'
+# alias pgprd='psql postgres://bacakarir:cumabacaajakarir@dbkarir_read.karir.com:5432/karir_production'
 #
-alias pgdeverika='psql postgres://sakura:SNmm8q4AR@dberika.dev.karir.com:5432/erika_production'
-alias pgdevkarir='psql postgres://flamboyan:PNI0XkuC9@dbkarir.dev.karir.com:5432/karir_production'
+# alias pgdeverika='psql postgres://sakura:SNmm8q4AR@dberika.dev.karir.com:5432/erika_production'
+# alias pgdevkarir='psql postgres://flamboyan:PNI0XkuC9@dbkarir.dev.karir.com:5432/karir_production'
 
-pgdev() {
-	if [[ "$1" == "erika" ]] then
-		pgdeverika
-	else
-		pgdevkarir
-	fi
-}
+# pgdev() {
+# 	if [[ "$1" == "erika" ]] then
+# 		pgdeverika
+# 	else
+# 		pgdevkarir
+# 	fi
+# }
 
 # PHP ARTISAN
 # alias pa='php artisan'
 # alias pam='php artisan migrate'
 # alias par='php artisan migrate:rollback'
 # alias s="cd $KARIR/karir-consulting-joko && php artisan config:cache && php artisan serve"
-alias s="cd $BMI/backend && php artisan config:cache && php artisan serve"
+# alias s="cd $BMI/backend && php artisan config:cache && php artisan serve"
 
-alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
-alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+# alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+# alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 
-alias tm='tmate'
-alias tmo='ssh arifsefrianto/office@sgp1.tmate.io'
-alias tmh='ssh arifsefrianto/home@sgp1.tmate.io'
-
-alias kca='cd $KARIR/karir-consulting-api'
-alias kcj='cd $KARIR/karir-consulting-joko'
-alias kcw='cd $KARIR/karir-consulting-web'
+# alias kca='cd $KARIR/karir-consulting-api'
+# alias kcj='cd $KARIR/karir-consulting-joko'
+# alias kcw='cd $KARIR/karir-consulting-web'
 
 # flynd
-alias mysqldumpdev='scp fdev1:bmi/backup.sql ~/Downloads'
+# alias mysqldumpdev='scp fdev1:bmi/backup.sql ~/Downloads'
 # alias mysqlrestoredev='cat ~/Downloads/backup.sql | docker exec -i bmi_database_1 /usr/bin/mysqldump -P 3308 -u bmi_dba --password=bmi_dba_pass123 bmi'
-alias mysqlrestore='docker exec -i bmi_database_1 mysql -P3308 -ubmi_dba -pbmi_dba_pass123 bmi < ~/Downloads/backup.sql'
+# alias mysqlrestore='docker exec -i bmi_database_1 mysql -P3308 -ubmi_dba -pbmi_dba_pass123 bmi < ~/Downloads/backup.sql'
 # alias redis-server='cd ~ && redis-server'

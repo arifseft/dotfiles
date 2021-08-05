@@ -1,0 +1,7 @@
+env:
+  TERM: xterm-256color
+import:
+  - ~/.config/alacritty/colors/alacritty_tokyonight_storm.yml
+  - ~/.config/alacritty/fonts/font.yml
+scrolling:
+  history: 5000

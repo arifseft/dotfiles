@@ -18,7 +18,7 @@ g.mapleader = ","
 require("packer").startup(
   function()
     use "folke/tokyonight.nvim"
-    -- use "akinsho/nvim-toggleterm.lua"
+    use "akinsho/nvim-toggleterm.lua"
     use "alvan/vim-closetag"
     -- use "arcticicestudio/nord-vim"
     use "b3nj5m1n/kommentary"
@@ -80,16 +80,17 @@ require("auto-session").setup(
   }
 )
 
---[[ require("toggleterm").setup {
+require("toggleterm").setup {
+  open_mapping = [[<c-\>]],
   hide_numbers = true, -- hide the number column in toggleterm buffers
   shade_filetypes = {},
   shade_terminals = false,
   start_in_insert = true,
   insert_mappings = true, -- whether or not the open mapping applies in insert mode
   persist_size = true,
-  direction = "float",
   close_on_exit = true, -- close the terminal window when the process exits
   shell = vim.o.shell, -- change the default shell
+  --[[ direction = "float",
   float_opts = {
     border = "curved", -- other options supported by win open
     winblend = 3,
@@ -97,8 +98,8 @@ require("auto-session").setup(
       border = "Normal",
       background = "Normal"
     }
-  }
-} ]]
+  } ]]
+}
 
 -- formatter
 --[[ local prettier = function()
@@ -435,6 +436,7 @@ opt.incsearch = true -- Shows the match while typing
 opt.joinspaces = false -- No double spaces with join
 opt.linebreak = true -- Stop words being broken on wrap
 opt.list = false -- Show some invisible characters
+opt.mouse = "a"
 opt.number = false -- Show line numbers
 opt.numberwidth = 5 -- Make the gutter wider by default
 opt.scrolloff = 4 -- Lines of context
@@ -457,15 +459,15 @@ g.netrw_liststyle = 3 -- Tree style Netrw
 
 -- nvim-dashboard
 g.dashboard_default_executive = "telescope"
-g.dashboard_preview_command = "cat"
+--[[ g.dashboard_preview_command = "cat"
 g.dashboard_preview_pipeline = "lolcat"
---[[ g.dashboard_preview_file = "~/.config/nvim/neovim.cat"
-g.dashboard_preview_file_height = 14 ]]
 g.dashboard_preview_file = "~/.config/nvim/neovim-block.cat"
 g.dashboard_preview_file_height = 10
---[[ g.dashboard_preview_file = "~/.config/nvim/doom.cat"
-g.dashboard_preview_file_height = 20 ]]
-g.dashboard_preview_file_width = 200
+g.dashboard_preview_file_width = 200 ]]
+-- g.dashboard_preview_file = "~/.config/nvim/neovim.cat"
+-- g.dashboard_preview_file_height = 14
+-- g.dashboard_preview_file = "~/.config/nvim/doom.cat"
+-- g.dashboard_preview_file_height = 20
 
 map("n", "<space>fh", ":DashboardFindHistory<CR>")
 map("n", "<space>ff", ":DashboardFindFile<CR>")

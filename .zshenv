@@ -1,12 +1,4 @@
-# env
-# move cursor for tmux
-bindkey "[C" forward-word
-bindkey "[D" backward-word
-bindkey "^[a" beginning-of-line
-bindkey "^[e" end-of-line
-bindkey '\e\eOC' forward-word
-bindkey '\e\eOD' backward-word
-
+#!/bin/sh
 export CLICOLOR=1
 export EDITOR='nvim'
 export ENV=development

@@ -89,10 +89,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/editorconfig-vim"
   },
-  ["formatter.nvim"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/formatter.nvim"
-  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/gitsigns.nvim"
@@ -117,10 +113,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/lualine.nvim"
   },
-  ["nord-vim"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nord-vim"
-  },
   ["nvim-compe"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-compe"
@@ -128,10 +120,6 @@ _G.packer_plugins = {
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
-  },
-  ["nvim-toggleterm.lua"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-toggleterm.lua"
   },
   ["nvim-tree.lua"] = {
     loaded = true,

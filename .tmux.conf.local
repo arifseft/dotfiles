@@ -361,3 +361,6 @@ bind ` send-prefix
  bind p paste-buffer
  bind-key -Tcopy-mode-vi 'v' send -X begin-selection
  bind-key -Tcopy-mode-vi 'y' send-keys -X copy-pipe-and-cancel "pbcopy"
+
+bind-key -n C-S-Left swap-window -t -1\; select-window -t -1
+bind-key -n C-S-Right swap-window -t +1\; select-window -t +1
