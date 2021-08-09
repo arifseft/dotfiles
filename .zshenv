@@ -10,9 +10,10 @@ export XDG_CONFIG_HOME=$HOME/.config
 
 # export GO111MODULE=auto
 export GOBIN=$HOME/go/bin
-export GOPRIVATE="github.com/karirdotcom"
-export KARIR=$HOME/go/src/github.com/karirdotcom
+# export GOPRIVATE="github.com/karirdotcom"
+# export KARIR=$HOME/go/src/github.com/karirdotcom
 export BMI=$HOME/go/src/github.com/flynd-dev/bmi
+export ARIFSEFT=$HOME/go/src/github.com/arifseft
 # export MYVIMRC=$XDG_CONFIG_HOME/nvim/init.vim
 export MYVIMRC=$XDG_CONFIG_HOME/nvim/init.lua
 export ANDROID_HOME=$HOME/Library/Android/sdk
@@ -27,7 +28,7 @@ export ANDROID_NDK=$ANDROID_HOME/ndk/20.1.5948944
 # export ANDROID_HOME=$HOME/.android-sdk
 # export ANDROID_SDK_ROOT=$HOME/.android-sdk
 # export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/bin
-export PATH=$PATH:$GOBIN:/usr/local/bin:/usr/local/opt/go/libexec/bin:/usr/local/mysql/bin/:/usr/local/opt/mysql@5.7/:$HOME/.composer/vendor/bin:$HOME/.fastlane/bin:$HOME/Library/Python/3.9/bin:$GEM_HOME/bin
+export PATH=$PATH:$GOBIN:/usr/local/bin:/usr/local/opt/go/libexec/bin:/usr/local/mysql/bin/:/usr/local/opt/mysql@5.7/:$HOME/.composer/vendor/bin:$HOME/Library/Python/3.9/bin:$GEM_HOME/bin
 export PATH=$PATH:/usr/local/opt/php@7.1/bin:/usr/local/opt/php@7.1/sbin
 export PATH=$PATH:/usr/local/opt/php@7.2/bin:/usr/local/opt/php@7.2/sbin
 export PATH=$PATH:/usr/local/opt/php@7.3/bin:/usr/local/opt/php@7.3/sbin
@@ -47,3 +48,5 @@ export PATH=$ES_HOME/bin:$JAVA_HOME/bin:$PATH
 export DOCKER_CLIENT_TIMEOUT=120
 export COMPOSE_HTTP_TIMEOUT=120
 export HOMEBREW_AUTO_UPDATING=0
+
+export DB_UI_DEV=mysql://root:12345678@localhost/bmi

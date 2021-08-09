@@ -3,6 +3,48 @@ local fn = vim.fn -- to call Vim functions e.g. fn.bufnr()
 local g = vim.g -- a table to access global variables
 local opt = vim.opt -- to set options
 
+opt.autoindent = true
+opt.autoread = true
+opt.backspace = {"indent", "eol", "start"}
+opt.clipboard = "unnamedplus"
+opt.completeopt = "menuone,noinsert,noselect"
+opt.cursorcolumn = false
+opt.cursorline = false
+opt.encoding = "utf-8" -- Set default encoding to UTF-8
+opt.expandtab = true -- Use spaces instead of tabs
+-- opt.foldenable = true
+opt.foldlevel = 99 -- Disable fold default
+-- opt.foldmethod = "indent"
+opt.formatoptions = "l"
+opt.hidden = true -- Enable background buffers
+opt.hlsearch = true -- Highlight found searches
+opt.ignorecase = true -- Ignore case
+opt.inccommand = "split" -- Get a preview of replacements
+opt.incsearch = true -- Shows the match while typing
+opt.joinspaces = false -- No double spaces with join
+opt.linebreak = true -- Stop words being broken on wrap
+opt.list = false -- Show some invisible characters
+opt.mouse = "a"
+opt.number = false -- Show line numbers
+opt.numberwidth = 5 -- Make the gutter wider by default
+opt.scrolloff = 4 -- Lines of context
+opt.shiftround = true -- Round indent
+opt.shiftwidth = 4 -- Size of an indent
+opt.showmode = false -- Don't display mode
+opt.sidescrolloff = 8 -- Columns of context
+opt.signcolumn = "yes:1" -- always show signcolumns
+opt.smartcase = true -- Do not ignore case with capitals
+opt.smartindent = true -- Insert indents automatically
+opt.spelllang = "en"
+opt.splitbelow = true -- Put new windows below current
+opt.splitright = true -- Put new windows right of current
+opt.tabstop = 4 -- Number of spaces tabs count for
+opt.termguicolors = true -- You will have bad experience for diagnostic messages when it's default 4000.
+opt.timeoutlen = 500
+opt.updatetime = 250 -- don't give |ins-completion-menu| messages.
+opt.wrap = false
+opt.swapfile = false
+
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true}
   if opts then
@@ -17,40 +59,54 @@ g.mapleader = ","
 -- Plugins
 require("packer").startup(
   function()
-    use "folke/tokyonight.nvim"
     use "akinsho/nvim-toggleterm.lua"
-    use "alvan/vim-closetag"
+    -- use "alvan/vim-closetag"
     -- use "arcticicestudio/nord-vim"
     use "b3nj5m1n/kommentary"
     use "JoosepAlviste/nvim-ts-context-commentstring"
     use "editorconfig/editorconfig-vim"
+    use "folke/tokyonight.nvim"
+    use "folke/which-key.nvim"
     use "glepnir/lspsaga.nvim"
-    use "glepnir/dashboard-nvim"
+    -- use "glepnir/dashboard-nvim"
     use "hoob3rt/lualine.nvim"
     use "hrsh7th/nvim-compe"
     use "hrsh7th/vim-vsnip"
+    use "hrsh7th/vim-vsnip-integ"
     use "jiangmiao/auto-pairs"
     use "jwalton512/vim-blade"
+    use "kristijanhusak/vim-dadbod-completion"
+    use "kristijanhusak/vim-dadbod-ui"
     use "kyazdani42/nvim-web-devicons"
     use "kyazdani42/nvim-tree.lua"
-    use "lewis6991/gitsigns.nvim"
+    use {"lewis6991/gitsigns.nvim", require = {"nvim-lua/plenary.nvim"}}
+    -- use "mfussenegger/nvim-dap"
     -- use "mhartington/formatter.nvim"
     use "neovim/nvim-lspconfig"
-    use "nvim-lua/plenary.nvim"
-    use "nvim-lua/popup.nvim"
+    use "norcalli/nvim-colorizer.lua"
+    -- use "nvim-lua/popup.nvim"
     use "nvim-telescope/telescope.nvim"
     use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
+    use {"nvim-treesitter/playground", run = ":TSInstall query"}
+    use "nvim-treesitter/nvim-treesitter-textobjects"
     use "onsails/lspkind-nvim"
     use "phaazon/hop.nvim"
+    -- use "p00f/nvim-ts-rainbow"
+    use "rafamadriz/friendly-snippets"
     use "rbgrouleff/bclose.vim"
     use "rmagatti/auto-session"
     use "terryma/vim-multiple-cursors"
+    use "tpope/vim-dadbod"
     use "tpope/vim-repeat"
     use "tpope/vim-surround"
-    use "wellle/targets.vim"
+    -- use "wellle/targets.vim"
     use "wbthomason/packer.nvim"
   end
 )
+
+require("which-key").setup()
+
+require'colorizer'.setup()
 
 cmd("colorscheme tokyonight")
 
@@ -66,6 +122,13 @@ map("n", "<leader>j", "<cmd>lua require'hop'.hint_words()<cr>")
 map("n", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
 map("v", "<leader>j", "<cmd>lua require'hop'.hint_words()<cr>")
 map("v", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
+
+require('kommentary.config').configure_language("default", {
+    prefer_single_line_comments = true,
+    hook_function = function()
+      require('ts_context_commentstring.internal').update_commentstring()
+    end,
+})
 
 -- Session
 require("auto-session").setup(
@@ -90,90 +153,91 @@ require("toggleterm").setup {
   persist_size = true,
   close_on_exit = true, -- close the terminal window when the process exits
   shell = vim.o.shell, -- change the default shell
-  --[[ direction = "float",
-  float_opts = {
-    border = "curved", -- other options supported by win open
-    winblend = 3,
-    highlights = {
-      border = "Normal",
-      background = "Normal"
-    }
-  } ]]
+  -- direction = "float",
+  -- float_opts = {
+  --   border = "curved", -- other options supported by win open
+  --   winblend = 3,
+  --   highlights = {
+  --     border = "Normal",
+  --     background = "Normal"
+  --   }
+  -- }
 }
 
--- formatter
---[[ local prettier = function()
-  return {
-    exe = "prettier",
-    args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
-    stdin = true
-  }
-end
+-- -- formatter
+-- local prettier = function()
+--   return {
+--     exe = "prettier",
+--     args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
+--     stdin = true
+--   }
+-- end
 
-local prettierPhp = function()
-  return {
-    exe = "prettier",
-    args = {
-      "--php-version",
-      "7.3",
-      "--stdin-filepath",
-      vim.api.nvim_buf_get_name(0),
-      "--print-width=10000",
-      "--single-quote=true",
-      "--trailing-comma-php=false"
-    },
-    stdin = true
-  }
-end
+-- local prettierPhp = function()
+--   return {
+--     exe = "prettier",
+--     args = {
+--       "--php-version",
+--       "7.3",
+--       "--stdin-filepath",
+--       vim.api.nvim_buf_get_name(0),
+--       "--print-width=10000",
+--       "--single-quote=true",
+--       "--trailing-comma-php=false"
+--     },
+--     stdin = true
+--   }
+-- end
 
-require("formatter").setup(
-  {
-    logging = false,
-    filetype = {
-      javascript = {prettier},
-      typescript = {prettier},
-      html = {prettier},
-      css = {prettier},
-      scss = {prettier},
-      vue = {prettier},
-      -- php = {prettierPhp},
-      blade = {
-        -- blade-formatter
-        function()
-          return {
-            exe = "blade-formatter",
-            args = {"--indent-size", 2, "--wrap-line-length", 10000, "--end-with-newline", 0, "--write", "--stdin"},
-            stdin = true
-          }
-        end
-      },
-      php = {
-        -- php
-        function()
-          return {
-            exe = "php-cs-fixer",
-            args = {"fix", vim.api.nvim_buf_get_name(0), "--quiet", "--rules=@PSR2", "--using-cache=no"},
-            stdin = true
-          }
-        end
-      },
-      lua = {
-        -- luafmt
-        function()
-          return {
-            exe = "luafmt",
-            args = {"--indent-count", 2, "--line-width", 10000, "--stdin"},
-            stdin = true
-          }
-        end
-      }
-    }
-  }
-) ]]
+-- require("formatter").setup(
+--   {
+--     logging = false,
+--     filetype = {
+--       javascript = {prettier},
+--       typescript = {prettier},
+--       html = {prettier},
+--       css = {prettier},
+--       scss = {prettier},
+--       vue = {prettier},
+--       -- php = {prettierPhp},
+--       blade = {
+--         -- blade-formatter
+--         function()
+--           return {
+--             exe = "blade-formatter",
+--             args = {"--indent-size", 2, "--wrap-line-length", 10000, "--end-with-newline", 0, "--write", "--stdin"},
+--             stdin = true
+--           }
+--         end
+--       },
+--       php = {
+--         -- php
+--         function()
+--           return {
+--             exe = "php-cs-fixer",
+--             args = {"fix", vim.api.nvim_buf_get_name(0), "--quiet", "--rules=@PSR2", "--using-cache=no"},
+--             stdin = true
+--           }
+--         end
+--       },
+--       lua = {
+--         -- luafmt
+--         function()
+--           return {
+--             exe = "luafmt",
+--             args = {"--indent-count", 2, "--line-width", 10000, "--stdin"},
+--             stdin = true
+--           }
+--         end
+--       }
+--     }
+--   }
+-- )
 -- end formatter
 
 local nvim_lsp = require("lspconfig")
 local util = require("lspconfig/util")
+local configs = require("lspconfig/configs")
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -312,6 +376,20 @@ nvim_lsp.tsserver.setup {
   end
 }
 
+if not nvim_lsp.emmet_ls then
+  configs.emmet_ls = {
+    default_config = {
+      cmd = {'emmet-ls', '--stdio'};
+      filetypes = {'html', 'css', 'blade', 'vue'};
+      root_dir = function(fname)
+        return vim.loop.cwd()
+      end;
+      settings = {};
+    };
+  }
+end
+nvim_lsp.emmet_ls.setup{ capabilities = capabilities;}
+
 nvim_lsp.html.setup {
   on_attach = on_attach,
   flags = {
@@ -410,56 +488,73 @@ require "nvim-treesitter.configs".setup {
   highlight = {
     enable = true
   },
+  incremental_selection = {
+    enable = true,
+    keymaps = { init_selection = "gnn", node_incremental = "gn[", scope_incremental = "gn]", node_decremental = "gn)" }
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+      }
+    }
+  },
+  -- rainbow = {
+  --   enable = true,
+  --   extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+  --   max_file_lines = 1000, -- Do not enable for files with more than 1000 lines, int
+  -- },
   context_commentstring = {
-    enable = true
+    enable = true,
+    enable_autocmd = false,
+    config = {
+      css = '// %s',
+      javascript = {
+        __default = '// %s',
+        jsx_element = '{/* %s */}',
+        jsx_fragment = '{/* %s */}',
+        jsx_attribute = '// %s',
+        comment = '// %s'
+      }
+    }
+  },
+  playground = {
+    enable = true,
+    disable = {},
+    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+    persist_queries = false, -- Whether the query persists across vim sessions
+    keybindings = {
+      toggle_query_editor = 'o',
+      toggle_hl_groups = 'i',
+      toggle_injected_languages = 't',
+      toggle_anonymous_nodes = 'a',
+      toggle_language_display = 'I',
+      focus_language = 'f',
+      unfocus_language = 'F',
+      update = 'R',
+      goto_node = '<cr>',
+      show_help = '?',
+    },
   }
 }
 
-opt.autoindent = true
-opt.autoread = true
-opt.backspace = {"indent", "eol", "start"}
-opt.clipboard = "unnamedplus"
-opt.completeopt = "menuone,noinsert,noselect"
-opt.cursorcolumn = false
-opt.cursorline = false
-opt.encoding = "utf-8" -- Set default encoding to UTF-8
-opt.expandtab = true -- Use spaces instead of tabs
-opt.foldenable = true
-opt.foldlevel = 99 -- Disable fold default
-opt.foldmethod = "indent"
-opt.formatoptions = "l"
-opt.hidden = true -- Enable background buffers
-opt.hlsearch = true -- Highlight found searches
-opt.ignorecase = true -- Ignore case
-opt.inccommand = "split" -- Get a preview of replacements
-opt.incsearch = true -- Shows the match while typing
-opt.joinspaces = false -- No double spaces with join
-opt.linebreak = true -- Stop words being broken on wrap
-opt.list = false -- Show some invisible characters
-opt.mouse = "a"
-opt.number = false -- Show line numbers
-opt.numberwidth = 5 -- Make the gutter wider by default
-opt.scrolloff = 4 -- Lines of context
-opt.shiftround = true -- Round indent
-opt.shiftwidth = 4 -- Size of an indent
-opt.showmode = false -- Don't display mode
-opt.sidescrolloff = 8 -- Columns of context
-opt.signcolumn = "yes:1" -- always show signcolumns
-opt.smartcase = true -- Do not ignore case with capitals
-opt.smartindent = true -- Insert indents automatically
-opt.spelllang = "en"
-opt.splitbelow = true -- Put new windows below current
-opt.splitright = true -- Put new windows right of current
-opt.tabstop = 4 -- Number of spaces tabs count for
-opt.termguicolors = true -- You will have bad experience for diagnostic messages when it's default 4000.
-opt.updatetime = 250 -- don't give |ins-completion-menu| messages.
-opt.wrap = false
+-- local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+-- parser_config.javascript.used_by = "blade"
+-- parser_config.html.used_by = "blade"
+-- parser_config.css.used_by = "blade"
+-- parser_config.vue.used_by = "blade"
+
 
 g.netrw_liststyle = 3 -- Tree style Netrw
 
 -- nvim-dashboard
-g.dashboard_default_executive = "telescope"
---[[ g.dashboard_preview_command = "cat"
+--[[ g.dashboard_default_executive = "telescope"
+g.dashboard_preview_command = "cat"
 g.dashboard_preview_pipeline = "lolcat"
 g.dashboard_preview_file = "~/.config/nvim/neovim-block.cat"
 g.dashboard_preview_file_height = 10
@@ -469,13 +564,13 @@ g.dashboard_preview_file_width = 200 ]]
 -- g.dashboard_preview_file = "~/.config/nvim/doom.cat"
 -- g.dashboard_preview_file_height = 20
 
-map("n", "<space>fh", ":DashboardFindHistory<CR>")
+--[[ map("n", "<space>fh", ":DashboardFindHistory<CR>")
 map("n", "<space>ff", ":DashboardFindFile<CR>")
 map("n", "<space>tc", ":DashboardChangeColorscheme<CR>")
 map("n", "<space>fa", ":DashboardFindWord<CR>")
 map("n", "<space>fb", ":DashboardJumpMark<CR>")
 map("n", "<space>sl", ":SessionLoad<CR>")
-map("n", "<space>cn", ":DashboardNewFile<CR>")
+map("n", "<space>cn", ":DashboardNewFile<CR>") ]]
 
 require "lualine".setup {
   options = {
@@ -552,7 +647,8 @@ require "compe".setup {
     nvim_lsp = true,
     nvim_lua = true,
     vsnip = true,
-    luasnip = true
+    luasnip = true,
+    vim_dadbod_completion = true
   }
 }
 
@@ -561,12 +657,8 @@ local t = function(str)
 end
 
 local check_back_space = function()
-  local col = vim.fn.col(".") - 1
-  if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
-    return true
-  else
-    return false
-  end
+    local col = vim.fn.col('.') - 1
+    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
 end
 
 -- Use (s-)tab to:
@@ -575,25 +667,31 @@ end
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-n>"
+  elseif vim.fn['vsnip#available'](1) == 1 then
+    return t "<Plug>(vsnip-expand-or-jump)"
   elseif check_back_space() then
     return t "<Tab>"
   else
-    return vim.fn["compe#complete"]()
+    return vim.fn['compe#complete']()
   end
 end
 _G.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-p>"
+  elseif vim.fn['vsnip#jumpable'](-1) == 1 then
+    return t "<Plug>(vsnip-jump-prev)"
   else
+    -- If <S-Tab> is not working in your terminal, change it to <C-h>
     return t "<S-Tab>"
   end
 end
 
 map("i", "<CR>", "compe#confirm({ 'keys': '<CR>', 'select': v:true })", {expr = true})
-map("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-map("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+map("i", "<Tab>", "v:lua.tab_complete()", {expr = true, noremap = false})
+map("s", "<Tab>", "v:lua.tab_complete()", {expr = true, noremap = false})
+map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true, noremap = false})
+map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true, noremap = false})
+
 -- End Compe related setup
 
 map("", "<space><space>", ":NvimTreeToggle<CR>")
@@ -608,7 +706,7 @@ map("n", "<leader>sv", ":source $MYVIMRC<CR>")
 map("n", "<leader>n", "<cmd>enew<CR>")
 
 -- Easy select all of file
-map("n", "<C-a>", "ggVG<c-$>")
+map("n", "<leader>a", "ggVG<c-$>")
 
 -- Make visual yanks place the cursor back where started
 map("v", "y", "ygv<Esc>")
@@ -622,28 +720,29 @@ map("t", "<leader>c", "exit<CR>")
 map("n", "<leader>q", "<cmd>:q<CR>")
 
 -- Tab to switch buffers in Normal mode
-map("n", "<Tab>", ":bnext<CR>")
-map("n", "<S-Tab>", ":bprevious<CR>")
+-- map("n", "<Tab>", ":bnext<CR>")
+-- map("n", "<S-Tab>", ":bprevious<CR>")
 
 -- Line bubbling
 -- Use these two if you don't have prettier
-map("n", "<c-j>", "<cmd>m .+1<CR>", {silent = true})
+--[[ map("n", "<c-j>", "<cmd>m .+1<CR>", {silent = true})
 map("n", "<c-k>", "<cmd>m .-2<CR>", {silent = true})
 map("i", "<c-j> <Esc>", "<cmd>m .+1<CR>==gi", {silent = true})
 map("i", "<c-k> <Esc>", "<cmd>m .-2<CR>==gi", {silent = true})
 map("v", "<c-j>", "<cmd>m +1<CR>gv=gv", {silent = true})
-map("v", "<c-k>", "<cmd>m -2<CR>gv=gv", {silent = true})
+map("v", "<c-k>", "<cmd>m -2<CR>gv=gv", {silent = true}) ]]
 map("v", "J", ":m '>+1<CR>gv=gv")
 map("v", "K", ":m '<-2<CR>gv=gv")
 
 --Auto close tags
-map("i", ",/", "</<C-X><C-O>")
+-- map("i", ",/", "</<C-X><C-O>")
 
 --After searching, pressing escape stops the highlight
 map("n", "<esc>", ":noh<cr><esc>", {silent = true})
 
 -- Telescope Global remapping
 local actions = require("telescope.actions")
+local action_set = require "telescope.actions.set"
 require("telescope").setup {
   defaults = {
     vimgrep_arguments = {
@@ -693,16 +792,54 @@ require("telescope").setup {
     buffer_previewer_maker = require "telescope.previewers".buffer_previewer_maker
   },
   pickers = {
+    file_browser = {
+      attach_mappings = function(prompt_bufnr)
+        action_set.select:enhance({
+          post = function()
+            vim.cmd(":normal! zx")
+          end
+        })
+        return true
+      end
+    },
+    live_grep = {
+      attach_mappings = function(prompt_bufnr)
+        action_set.select:enhance({
+          post = function()
+            vim.cmd(":normal! zx")
+          end
+        })
+        return true
+      end
+    },
+    find_files = {
+      attach_mappings = function(prompt_bufnr)
+        action_set.select:enhance({
+          post = function()
+            vim.cmd(":normal! zx")
+          end
+        })
+        return true
+      end
+    },
     buffers = {
       sort_lastused = true,
-      mappings = {
-        i = {
-          ["<C-w>"] = "delete_buffer"
-        },
-        n = {
-          ["<C-w>"] = "delete_buffer"
-        }
-      }
+      attach_mappings = function(prompt_bufnr)
+        action_set.select:enhance({
+          post = function()
+            vim.cmd(":normal! zx")
+          end
+        })
+        return true
+      end,
+      -- mappings = {
+      --   i = {
+      --     ["<C-w>"] = "delete_buffer"
+      --   },
+      --   n = {
+      --     ["<C-w>"] = "delete_buffer"
+      --   }
+      -- }
     }
   }
 }
@@ -713,11 +850,16 @@ map("n", "<leader>g", '<cmd>lua require("telescope.builtin").live_grep(require("
 map("n", "<leader>,", '<cmd>lua require("telescope.builtin").buffers(require("telescope.themes").get_dropdown({}))<cr>')
 map("n", "<leader>h", '<cmd>lua require("telescope.builtin").help_tags()<cr>')
 map("n", "<leader>f", '<cmd>lua require("telescope.builtin").file_browser(require("telescope.themes").get_dropdown({}))<cr>')
-map("n", "<leader>s", '<cmd>lua require("telescope.builtin").spell_suggest()<cr>')
 map("n", "<leader>i", '<cmd>lua require("telescope.builtin").git_status(require("telescope.themes").get_dropdown({}))<cr>')
+-- map("n", "<leader>s", '<cmd>lua require("telescope.builtin").spell_suggest()<cr>')
+
+
+opt.foldmethod="expr"
+opt.foldexpr="nvim_treesitter#foldexpr()"
 
 -------------------- COMMANDS ------------------------------
 cmd("au TextYankPost * lua vim.highlight.on_yank {on_visual = true}") -- disabled in visual mode
+cmd [[set shortmess+=c]]
 
 vim.api.nvim_exec([[
 augroup FormatAutogroup

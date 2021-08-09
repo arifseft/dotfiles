@@ -81,13 +81,13 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/bclose.vim"
   },
-  ["dashboard-nvim"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/dashboard-nvim"
-  },
   ["editorconfig-vim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/editorconfig-vim"
+  },
+  ["friendly-snippets"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/friendly-snippets"
   },
   ["gitsigns.nvim"] = {
     loaded = true,
@@ -113,6 +113,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/lualine.nvim"
   },
+  ["nvim-colorizer.lua"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua"
+  },
   ["nvim-compe"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-compe"
@@ -121,6 +125,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
   },
+  ["nvim-toggleterm.lua"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-toggleterm.lua"
+  },
   ["nvim-tree.lua"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-tree.lua"
@@ -128,6 +136,10 @@ _G.packer_plugins = {
   ["nvim-treesitter"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
+  },
+  ["nvim-treesitter-textobjects"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects"
   },
   ["nvim-ts-context-commentstring"] = {
     loaded = true,
@@ -141,17 +153,9 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/packer.nvim"
   },
-  ["plenary.nvim"] = {
+  playground = {
     loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/plenary.nvim"
-  },
-  ["popup.nvim"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/popup.nvim"
-  },
-  ["targets.vim"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/targets.vim"
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/playground"
   },
   ["telescope.nvim"] = {
     loaded = true,
@@ -165,9 +169,17 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-blade"
   },
-  ["vim-closetag"] = {
+  ["vim-dadbod"] = {
     loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-closetag"
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-dadbod"
+  },
+  ["vim-dadbod-completion"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-dadbod-completion"
+  },
+  ["vim-dadbod-ui"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-dadbod-ui"
   },
   ["vim-multiple-cursors"] = {
     loaded = true,
@@ -184,6 +196,14 @@ _G.packer_plugins = {
   ["vim-vsnip"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-vsnip"
+  },
+  ["vim-vsnip-integ"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-vsnip-integ"
+  },
+  ["which-key.nvim"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/which-key.nvim"
   }
 }
 
