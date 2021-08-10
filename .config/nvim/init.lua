@@ -67,6 +67,7 @@ require("packer").startup(
     use "editorconfig/editorconfig-vim"
     use "folke/tokyonight.nvim"
     use "folke/which-key.nvim"
+    use {"glacambre/firenvim", run = function() fn["firenvim#install"](0) end }
     use "glepnir/lspsaga.nvim"
     -- use "glepnir/dashboard-nvim"
     use "hoob3rt/lualine.nvim"
@@ -79,12 +80,12 @@ require("packer").startup(
     use "kristijanhusak/vim-dadbod-ui"
     use "kyazdani42/nvim-web-devicons"
     use "kyazdani42/nvim-tree.lua"
-    use {"lewis6991/gitsigns.nvim", require = {"nvim-lua/plenary.nvim"}}
+    use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}}
     -- use "mfussenegger/nvim-dap"
     -- use "mhartington/formatter.nvim"
     use "neovim/nvim-lspconfig"
     use "norcalli/nvim-colorizer.lua"
-    -- use "nvim-lua/popup.nvim"
+    use "nvim-lua/popup.nvim"
     use "nvim-telescope/telescope.nvim"
     use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
     use {"nvim-treesitter/playground", run = ":TSInstall query"}
@@ -93,12 +94,12 @@ require("packer").startup(
     use "phaazon/hop.nvim"
     -- use "p00f/nvim-ts-rainbow"
     use "rafamadriz/friendly-snippets"
-    use "rbgrouleff/bclose.vim"
+    -- use "rbgrouleff/bclose.vim"
     use "rmagatti/auto-session"
     use "terryma/vim-multiple-cursors"
     use "tpope/vim-dadbod"
     use "tpope/vim-repeat"
-    use "tpope/vim-surround"
+    -- use "tpope/vim-surround"
     -- use "wellle/targets.vim"
     use "wbthomason/packer.nvim"
   end
@@ -703,7 +704,7 @@ map("n", "<leader>v", "<cmd>e $MYVIMRC<CR>")
 map("n", "<leader>sv", ":source $MYVIMRC<CR>")
 
 -- Quick new file
-map("n", "<leader>n", "<cmd>enew<CR>")
+-- map("n", "<leader>n", "<cmd>enew<CR>")
 
 -- Easy select all of file
 map("n", "<leader>a", "ggVG<c-$>")
@@ -715,9 +716,26 @@ map("v", "y", "ygv<Esc>")
 map("n", "<leader>w", "<cmd>w<CR>")
 
 -- Close buffer
-map("n", "<leader>c", ":Bclose<CR>")
+-- map("n", "<leader>c", ":Bclose<CR>")
+-- map("n", "<leader>ba", "<cmd>%bd|e#|bd#<CR>")
+map("n", "<leader>bd", "<cmd>bd<CR>")
 map("t", "<leader>c", "exit<CR>")
-map("n", "<leader>q", "<cmd>:q<CR>")
+map("n", "<leader>q", "<cmd>q<CR>")
+
+-- Wrap selection with ''
+map("v", "<leader>'", "<esc>`>a'<esc>`<i'<esc>")
+-- Wrap selection with ""
+map("v", '<leader>"', '<esc>`>a"<esc>`<i"<esc>')
+-- Wrap selection with ()
+map("v", "<leader>(", "<esc>`>a)<esc>`<i(<esc>")
+-- Wrap selection with []
+map("v", "<leader>[", "<esc>`>a]<esc>`<i[<esc>")
+-- Wrap selection with {}
+map("v", "<leader>{", "<esc>`>a}<esc>`<i{<esc>")
+
+-- Escape in terminal mode takes you to normal mode
+-- tnoremap <silent><leader><Esc> <C-\><C-n>
+-- map("t", "<silent><Esc>", "<C-a><C-n>")
 
 -- Tab to switch buffers in Normal mode
 -- map("n", "<Tab>", ":bnext<CR>")
@@ -760,15 +778,20 @@ require("telescope").setup {
     entry_prefix = "  ",
     initial_mode = "insert",
     selection_strategy = "reset",
-    sorting_strategy = "descending",
+    sorting_strategy = "ascending",
     layout_strategy = "horizontal",
     layout_config = {
       horizontal = {
-        mirror = false
+        prompt_position = "top",
+        preview_width = 0.55,
+        results_width = 0.8,
       },
       vertical = {
-        mirror = false
-      }
+        mirror = false,
+      },
+      width = 0.87,
+      height = 0.80,
+      preview_cutoff = 120,
     },
     mappings = {
       i = {
@@ -776,14 +799,14 @@ require("telescope").setup {
       }
     },
     file_sorter = require "telescope.sorters".get_fuzzy_file,
-    file_ignore_patterns = {"public/*"},
+    file_ignore_patterns = {"public/*", "node_modules/*", "vendor/*", ".git"},
     generic_sorter = require "telescope.sorters".get_generic_fuzzy_sorter,
     winblend = 0,
     border = {},
     borderchars = {"─", "│", "─", "│", "╭", "╮", "╯", "╰"},
     color_devicons = true,
     use_less = true,
-    path_display = {},
+    path_display = { "absolute" },
     set_env = {["COLORTERM"] = "truecolor"}, -- default = nil,
     file_previewer = require "telescope.previewers".vim_buffer_cat.new,
     grep_previewer = require "telescope.previewers".vim_buffer_vimgrep.new,
@@ -844,13 +867,13 @@ require("telescope").setup {
   }
 }
 
-map("n", "<leader>p", '<cmd>lua require("telescope.builtin").find_files(require("telescope.themes").get_dropdown({}))<cr>')
+map("n", "<leader>p", '<cmd>lua require("telescope.builtin").find_files(require("telescope.themes"))<cr>')
 map("n", "<leader>r", '<cmd>lua require("telescope.builtin").registers()<cr>')
-map("n", "<leader>g", '<cmd>lua require("telescope.builtin").live_grep(require("telescope.themes").get_dropdown({}))<cr>')
-map("n", "<leader>,", '<cmd>lua require("telescope.builtin").buffers(require("telescope.themes").get_dropdown({}))<cr>')
+map("n", "<leader>g", '<cmd>lua require("telescope.builtin").live_grep(require("telescope.themes"))<cr>')
+map("n", "<leader>,", '<cmd>lua require("telescope.builtin").buffers(require("telescope.themes"))<cr>')
 map("n", "<leader>h", '<cmd>lua require("telescope.builtin").help_tags()<cr>')
-map("n", "<leader>f", '<cmd>lua require("telescope.builtin").file_browser(require("telescope.themes").get_dropdown({}))<cr>')
-map("n", "<leader>i", '<cmd>lua require("telescope.builtin").git_status(require("telescope.themes").get_dropdown({}))<cr>')
+map("n", "<leader>f", '<cmd>lua require("telescope.builtin").file_browser(require("telescope.themes"))<cr>')
+map("n", "<leader>i", '<cmd>lua require("telescope.builtin").git_status(require("telescope.themes"))<cr>')
 -- map("n", "<leader>s", '<cmd>lua require("telescope.builtin").spell_suggest()<cr>')
 
 

@@ -77,13 +77,13 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/auto-session"
   },
-  ["bclose.vim"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/bclose.vim"
-  },
   ["editorconfig-vim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/editorconfig-vim"
+  },
+  firenvim = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/firenvim"
   },
   ["friendly-snippets"] = {
     loaded = true,
@@ -157,6 +157,14 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/playground"
   },
+  ["plenary.nvim"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/plenary.nvim"
+  },
+  ["popup.nvim"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/popup.nvim"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/telescope.nvim"
@@ -188,10 +196,6 @@ _G.packer_plugins = {
   ["vim-repeat"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-repeat"
-  },
-  ["vim-surround"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-surround"
   },
   ["vim-vsnip"] = {
     loaded = true,
