@@ -46,7 +46,7 @@ alias gstl='git stash list'
 alias gstp='git stash pop'
 
 # alias deq='dep ensure -update github.com/karirdotcom/qservice'
-alias ll='ls -la'
+alias ll='ls -lah'
 alias n='nvim'
 alias v='vim'
 alias f='nvim -o `fzf`'

@@ -67,9 +67,10 @@ require("packer").startup(
     use "editorconfig/editorconfig-vim"
     use "folke/tokyonight.nvim"
     use "folke/which-key.nvim"
-    use {"glacambre/firenvim", run = function() fn["firenvim#install"](0) end }
+    -- use {"glacambre/firenvim", run = function() fn["firenvim#install"](0) end }
     use "glepnir/lspsaga.nvim"
     -- use "glepnir/dashboard-nvim"
+    use "godlygeek/tabular"
     use "hoob3rt/lualine.nvim"
     use "hrsh7th/nvim-compe"
     use "hrsh7th/vim-vsnip"
@@ -109,7 +110,7 @@ require("which-key").setup()
 
 require'colorizer'.setup()
 
-cmd("colorscheme tokyonight")
+cmd[[colorscheme tokyonight]]
 
 -- lspkind Icon setup
 require("lspkind").init({})
@@ -325,7 +326,9 @@ nvim_lsp.cssls.setup {
   },
   cmd = {"vscode-css-language-server", "--stdio"},
   filetypes = {"css", "scss", "less"},
-  root_dir = util.root_pattern("package.json"),
+  root_dir = function(fname)
+    return util.root_pattern("package.json", ".git")(fname) or util.path.dirname(fname)
+  end,
   capabilities = capabilities,
   settings = {
     css = {
@@ -819,7 +822,7 @@ require("telescope").setup {
       attach_mappings = function(prompt_bufnr)
         action_set.select:enhance({
           post = function()
-            vim.cmd(":normal! zx")
+            cmd(":normal! zx")
           end
         })
         return true
@@ -829,7 +832,7 @@ require("telescope").setup {
       attach_mappings = function(prompt_bufnr)
         action_set.select:enhance({
           post = function()
-            vim.cmd(":normal! zx")
+            cmd(":normal! zx")
           end
         })
         return true
@@ -839,7 +842,7 @@ require("telescope").setup {
       attach_mappings = function(prompt_bufnr)
         action_set.select:enhance({
           post = function()
-            vim.cmd(":normal! zx")
+            cmd(":normal! zx")
           end
         })
         return true
@@ -847,22 +850,22 @@ require("telescope").setup {
     },
     buffers = {
       sort_lastused = true,
+      mappings = {
+        i = {
+          ["<C-w>"] = "delete_buffer"
+        },
+        n = {
+          ["<C-w>"] = "delete_buffer"
+        }
+      },
       attach_mappings = function(prompt_bufnr)
         action_set.select:enhance({
           post = function()
-            vim.cmd(":normal! zx")
+            cmd(":normal! zx")
           end
         })
         return true
       end,
-      -- mappings = {
-      --   i = {
-      --     ["<C-w>"] = "delete_buffer"
-      --   },
-      --   n = {
-      --     ["<C-w>"] = "delete_buffer"
-      --   }
-      -- }
     }
   }
 }
@@ -876,6 +879,12 @@ map("n", "<leader>f", '<cmd>lua require("telescope.builtin").file_browser(requir
 map("n", "<leader>i", '<cmd>lua require("telescope.builtin").git_status(require("telescope.themes"))<cr>')
 -- map("n", "<leader>s", '<cmd>lua require("telescope.builtin").spell_suggest()<cr>')
 
+map("n", "<Leader>=", ":Tabularize /=<CR>")
+map("v", "<Leader>=", ":Tabularize /=<CR>")
+map("n", "<Leader>:", ":Tabularize /:\zs<CR>")
+map("v", "<Leader>:", ":Tabularize /:\zs<CR>")
+map("n", "<Leader>>", ":Tabularize /=><CR>")
+map("v", "<Leader>>", ":Tabularize /=><CR>")
 
 opt.foldmethod="expr"
 opt.foldexpr="nvim_treesitter#foldexpr()"
@@ -887,10 +896,22 @@ cmd [[set shortmess+=c]]
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufEnter *.php :set autoindent
-  autocmd BufEnter *.php :set smartindent
-  autocmd BufNewFile,BufRead *.blade.php set filetype=blade
+  autocmd FileType php :set autoindent
+  autocmd FileType php :set smartindent
+  autocmd FileType blade :setlocal filetype=blade
+  autocmd FileType blade :setlocal foldmethod=indent
   autocmd BufWinLeave,FocusLost,WinLeave *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua silent :up
   ""autocmd BufWritePost *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua : FormatWrite
 augroup END
+]], true)
+
+vim.api.nvim_exec([[
+  function! LaravelView()
+    let currentLine = getline(".")
+    let viewPath = matchstr(currentLine, '\c(\([''"]\)\zs.\{-}\ze\1')
+    let viewPath = substitute(viewPath,'\.','/','ge')
+    exe 'cd `git rev-parse --show-toplevel`'
+    exe 'e backend/resources/views/'.viewPath.'.blade.php'
+  endfunction
+  noremap gv :call LaravelView()<CR>
 ]], true)

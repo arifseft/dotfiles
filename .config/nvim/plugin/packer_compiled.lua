@@ -165,6 +165,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/popup.nvim"
   },
+  tabular = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/tabular"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/telescope.nvim"
