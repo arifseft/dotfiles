@@ -5,6 +5,9 @@ alias supervisorctl='supervisorctl -c /usr/local/share/supervisor/supervisord.co
 alias supervisordie='kill -9 `supervisorctl pid` && unlink /tmp/supervisor.sock'
 alias supervisorreload='supervisorctl update && supervisorctl reread'
 
+alias a='cd $PERSONAL'
+alias b='cd $WORK'
+
 alias nsq='nsqlookupd & nsqd --data-path ~ --lookupd-tcp-address=127.0.0.1:4160 --broadcast-address=127.0.0.1 & nsqadmin --lookupd-http-address=127.0.0.1:4161'
 
 # ALIASES

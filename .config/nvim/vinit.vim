@@ -309,20 +309,20 @@ noremap gv :call LaravelView()<CR>
 " command! RunNsq terminal nsq
 "
 function Run(repo)
-	exe 'sp | terminal cd $BMI/'.a:repo.' && watchexec -r --exts go,json -w $BMI/'.a:repo.' go run main.go'
+	exe 'sp | terminal cd $WORK/'.a:repo.' && watchexec -r --exts go,json -w $WORK/'.a:repo.' go run main.go'
 	exe 'file '.a:repo.'-main'
 endfunction
 command! -nargs=1 Run call Run(<f-args>)
 "
 function RunConsumer(repo)
-	exe 'sp | terminal cd $BMI/'.a:repo.' && watchexec -r --exts go,json -w $BMI/'.a:repo.' go run consumer.go'
+	exe 'sp | terminal cd $WORK/'.a:repo.' && watchexec -r --exts go,json -w $WORK/'.a:repo.' go run consumer.go'
 	exe 'file '.a:repo.'-consumer'
 endfunction
 command! -nargs=1 RunConsumer call RunConsumer(<f-args>)
 
 function RunEcho()
-    " exe 'sp | terminal cd $BMI/backend && laravel-echo-server --config=laravel-echo-server.local.json start'
-    exe 'sp | terminal cd $BMI/backend && laravel-echo-server start'
+    " exe 'sp | terminal cd $WORK/backend && laravel-echo-server --config=laravel-echo-server.local.json start'
+    exe 'sp | terminal cd $WORK/backend && laravel-echo-server start'
 	exe 'file echo'
 endfunction
 command! RunEcho call RunEcho()

@@ -103,8 +103,67 @@ require("packer").startup(
     -- use "tpope/vim-surround"
     -- use "wellle/targets.vim"
     use "wbthomason/packer.nvim"
+
+    use {
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("trouble").setup {
+          position = "bottom", -- position of the list can be: bottom, top, left, right
+          height = 10, -- height of the trouble list when position is top or bottom
+          width = 50, -- width of the list when position is left or right
+          icons = true, -- use devicons for filenames
+          mode = "lsp_workspace_diagnostics", -- "lsp_workspace_diagnostics", "lsp_document_diagnostics", "quickfix", "lsp_references", "loclist"
+          fold_open = "?", -- icon used for open folds
+          fold_closed = "?", -- icon used for closed folds
+          action_keys = { -- key mappings for actions in the trouble list
+              -- map to {} to remove a mapping, for example:
+              -- close = {},
+              close = "q", -- close the list
+              cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
+              refresh = "r", -- manually refresh
+              jump = {"<cr>", "<tab>"}, -- jump to the diagnostic or open / close folds
+              open_split = { "<c-x>" }, -- open buffer in new split
+              open_vsplit = { "<c-v>" }, -- open buffer in new vsplit
+              open_tab = { "<c-t>" }, -- open buffer in new tab
+              jump_close = {"o"}, -- jump to the diagnostic and close the list
+              toggle_mode = "m", -- toggle between "workspace" and "document" diagnostics mode
+              toggle_preview = "P", -- toggle auto_preview
+              hover = "K", -- opens a small popup with the full multiline message
+              preview = "p", -- preview the diagnostic location
+              close_folds = {"zM", "zm"}, -- close all folds
+              open_folds = {"zR", "zr"}, -- open all folds
+              toggle_fold = {"zA", "za"}, -- toggle fold of current file
+              previous = "k", -- preview item
+              next = "j" -- next item
+          },
+          indent_lines = true, -- add an indent guide below the fold icons
+          auto_open = false, -- automatically open the list when you have diagnostics
+          auto_close = false, -- automatically close the list when you have no diagnostics
+          auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
+          auto_fold = false, -- automatically fold a file trouble list at creation
+          signs = {
+              -- icons / text used for a diagnostic
+              error = "?",
+              warning = "?",
+              hint = "?",
+              information = "?",
+              other = "?"
+          },
+          use_lsp_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+      }
+      end
+    }
+
+    use {'pwntester/octo.nvim', config=function()
+      require"octo".setup()
+    end}
+    use "ray-x/lsp_signature.nvim"
+
   end
 )
+
+require "lsp_signature".setup()
 
 require("which-key").setup()
 
@@ -155,15 +214,6 @@ require("toggleterm").setup {
   persist_size = true,
   close_on_exit = true, -- close the terminal window when the process exits
   shell = vim.o.shell, -- change the default shell
-  -- direction = "float",
-  -- float_opts = {
-  --   border = "curved", -- other options supported by win open
-  --   winblend = 3,
-  --   highlights = {
-  --     border = "Normal",
-  --     background = "Normal"
-  --   }
-  -- }
 }
 
 -- -- formatter
@@ -281,23 +331,23 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 -- Code actions
-capabilities.textDocument.codeAction = {
-  dynamicRegistration = false,
-  codeActionLiteralSupport = {
-    codeActionKind = {
-      valueSet = {
-        "",
-        "quickfix",
-        "refactor",
-        "refactor.extract",
-        "refactor.inline",
-        "refactor.rewrite",
-        "source",
-        "source.organizeImports"
-      }
-    }
-  }
-}
+-- capabilities.textDocument.codeAction = {
+--   dynamicRegistration = false,
+--   codeActionLiteralSupport = {
+--     codeActionKind = {
+--       valueSet = {
+--         "",
+--         "quickfix",
+--         "refactor",
+--         "refactor.extract",
+--         "refactor.inline",
+--         "refactor.rewrite",
+--         "source",
+--         "source.organizeImports"
+--       }
+--     }
+--   }
+-- }
 
 -- Snippets
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -316,7 +366,10 @@ nvim_lsp.intelephense.setup {
   filetypes = {"php"},
   flags = {
     debounce_text_changes = 150
-  }
+  },
+  root_dir = function(fname)
+    return util.root_pattern("package.json", ".git")(fname) or util.path.dirname(fname)
+  end,
 }
 
 nvim_lsp.cssls.setup {
@@ -356,15 +409,18 @@ nvim_lsp.vuels.setup {
   flags = {
     debounce_text_changes = 150
   },
-  capabilities = capabilities,
-  filetypes = {"vue"},
   init_options = {
     config = {
       vetur = {
         ignoreProjectWarning = true
       }
     }
-  }
+  },
+  capabilities = capabilities,
+  filetypes = {"vue"},
+  root_dir = function(fname)
+    return util.root_pattern("package.json", "jsconfig.json", ".git")(fname) or util.path.dirname(fname)
+  end,
 }
 
 nvim_lsp.tsserver.setup {
@@ -380,20 +436,6 @@ nvim_lsp.tsserver.setup {
   end
 }
 
-if not nvim_lsp.emmet_ls then
-  configs.emmet_ls = {
-    default_config = {
-      cmd = {'emmet-ls', '--stdio'};
-      filetypes = {'html', 'css', 'blade', 'vue'};
-      root_dir = function(fname)
-        return vim.loop.cwd()
-      end;
-      settings = {};
-    };
-  }
-end
-nvim_lsp.emmet_ls.setup{ capabilities = capabilities;}
-
 nvim_lsp.html.setup {
   on_attach = on_attach,
   flags = {
@@ -401,7 +443,7 @@ nvim_lsp.html.setup {
   },
   capabilities = capabilities,
   cmd = {"vscode-html-language-server", "--stdio"},
-  filetypes = {"html", "blade"},
+  filetypes = {"html"},
   init_options = {
     configurationSection = {"html", "css", "javascript"},
     embeddedLanguages = {
@@ -414,6 +456,20 @@ nvim_lsp.html.setup {
   end,
   settings = {}
 }
+
+if not nvim_lsp.emmet_ls then
+  configs.emmet_ls = {
+    default_config = {
+      cmd = {'emmet-ls', '--stdio'};
+      filetypes = {'html', 'css', 'vue'};
+      root_dir = function(fname)
+        return util.root_pattern("package.json", "jsconfig.json", ".git")(fname) or util.path.dirname(fname)
+      end;
+      settings = {};
+    };
+  }
+end
+nvim_lsp.emmet_ls.setup{ capabilities = capabilities;}
 
 nvim_lsp.gopls.setup {
   on_attach = on_attach,
@@ -445,6 +501,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
     virtual_text = false
   }
 )
+
 -- LSP Saga config & keys
 local saga = require "lspsaga"
 saga.init_lsp_saga {
@@ -720,7 +777,7 @@ map("n", "<leader>w", "<cmd>w<CR>")
 
 -- Close buffer
 -- map("n", "<leader>c", ":Bclose<CR>")
--- map("n", "<leader>ba", "<cmd>%bd|e#|bd#<CR>")
+map("n", "<leader>ba", "<cmd>%bd|e#|bd#<CR>")
 map("n", "<leader>bd", "<cmd>bd<CR>")
 map("t", "<leader>c", "exit<CR>")
 map("n", "<leader>q", "<cmd>q<CR>")
@@ -764,6 +821,8 @@ map("n", "<esc>", ":noh<cr><esc>", {silent = true})
 -- Telescope Global remapping
 local actions = require("telescope.actions")
 local action_set = require "telescope.actions.set"
+local trouble = require("trouble.providers.telescope")
+
 require("telescope").setup {
   defaults = {
     vimgrep_arguments = {
@@ -798,8 +857,10 @@ require("telescope").setup {
     },
     mappings = {
       i = {
-        ["<esc>"] = actions.close
-      }
+        ["<esc>"] = actions.close,
+        ["<c-t>"] = trouble.open_with_trouble,
+      },
+      n = { ["<c-t>"] = trouble.open_with_trouble },
     },
     file_sorter = require "telescope.sorters".get_fuzzy_file,
     file_ignore_patterns = {"public/*", "node_modules/*", "vendor/*", ".git"},
@@ -879,6 +940,14 @@ map("n", "<leader>f", '<cmd>lua require("telescope.builtin").file_browser(requir
 map("n", "<leader>i", '<cmd>lua require("telescope.builtin").git_status(require("telescope.themes"))<cr>')
 -- map("n", "<leader>s", '<cmd>lua require("telescope.builtin").spell_suggest()<cr>')
 
+-- Lua
+map("n", "<leader>xx", "<cmd>Trouble<cr>")
+map("n", "<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>")
+map("n", "<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr>")
+map("n", "<leader>xl", "<cmd>Trouble loclist<cr>")
+map("n", "<leader>xq", "<cmd>Trouble quickfix<cr>")
+map("n", "gR", "<cmd>Trouble lsp_references<cr>")
+
 map("n", "<Leader>=", ":Tabularize /=<CR>")
 map("v", "<Leader>=", ":Tabularize /=<CR>")
 map("n", "<Leader>:", ":Tabularize /:\zs<CR>")
@@ -910,13 +979,14 @@ opt.foldexpr="nvim_treesitter#foldexpr()"
 -------------------- COMMANDS ------------------------------
 cmd("au TextYankPost * lua vim.highlight.on_yank {on_visual = true}") -- disabled in visual mode
 cmd [[set shortmess+=c]]
+cmd [[highlight link CompeDocumentation NormalFloat]]
 
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd FileType php :set autoindent
-  autocmd FileType php :set smartindent
-  autocmd FileType blade :setlocal filetype=blade
+  autocmd BufEnter,BufNewFile,BufRead *.php set autoindent
+  autocmd BufEnter,BufNewFile,BufRead *.php set smartindent
+  autocmd BufEnter,BufNewFile,BufRead *.blade.php set filetype=blade
   autocmd FileType blade :setlocal foldmethod=indent
   autocmd BufWinLeave,FocusLost,WinLeave *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua silent :up
   ""autocmd BufWritePost *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua : FormatWrite
