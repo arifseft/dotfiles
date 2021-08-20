@@ -7,8 +7,11 @@ alias supervisorreload='supervisorctl update && supervisorctl reread'
 
 alias a='cd $PERSONAL'
 alias d='cd $DOTFILES'
+alias e='exit'
 alias b='cd $WORK'
 alias t='tmux'
+alias m='$WORK/driver-app/node_modules/react-native/scripts/launchPackager.command ; exit;'
+alias s='scrcpy -Sw --window-x 1000 --window-width 330 --window-height 800'
 
 alias nsq='nsqlookupd & nsqd --data-path ~ --lookupd-tcp-address=127.0.0.1:4160 --broadcast-address=127.0.0.1 & nsqadmin --lookupd-http-address=127.0.0.1:4161'
 

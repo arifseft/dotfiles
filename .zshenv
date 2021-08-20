@@ -16,24 +16,27 @@ export WORK=$HOME/go/src/github.com/flynd-dev/bmi
 export PERSONAL=$HOME/go/src/github.com/arifseft
 # export MYVIMRC=$XDG_CONFIG_HOME/nvim/init.vim
 export MYVIMRC=$XDG_CONFIG_HOME/nvim/init.lua
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
+
+# export ANDROID_HOME=$HOME/Library/Android/sdk
+# export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+# export PATH=$PATH:$ANDROID_HOME/emulator
+# export PATH=$PATH:$ANDROID_HOME/tools
+# export PATH=$PATH:$ANDROID_HOME/tools/bin
+# export PATH=$PATH:$ANDROID_HOME/platform-tools
+# export ANDROID_NDK=$ANDROID_HOME/ndk/20.1.5948944
+
+# brew Android
+export ANDROID_HOME="/usr/local/share/android-sdk"
+export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export ANDROID_NDK=$ANDROID_HOME/ndk/20.1.5948944
-#
+
 # No Android Studio
 # export ANDROID_HOME=$HOME/.android-sdk
 # export ANDROID_SDK_ROOT=$HOME/.android-sdk
 # export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/bin
-export PATH=$PATH:$GOBIN:/usr/local/bin:/usr/local/opt/go/libexec/bin:/usr/local/mysql/bin/:/usr/local/opt/mysql@5.7/:$HOME/.composer/vendor/bin:$HOME/Library/Python/3.9/bin:$GEM_HOME/bin
-export PATH=$PATH:/usr/local/opt/php@7.1/bin:/usr/local/opt/php@7.1/sbin
-export PATH=$PATH:/usr/local/opt/php@7.2/bin:/usr/local/opt/php@7.2/sbin
-export PATH=$PATH:/usr/local/opt/php@7.3/bin:/usr/local/opt/php@7.3/sbin
+export PATH=$PATH:$GOBIN:/usr/local/bin:/usr/local/opt/go/libexec/bin:/usr/local/mysql/bin/:/usr/local/opt/mysql@5.7/:$HOME/.composer/vendor/bin
 export PATH=$PATH:/usr/local/opt/php@8.0/bin:/usr/local/opt/php@8.0/sbin
-export PATH=$PATH:$HOME/.rvm/gems/ruby-2.7.1/bin
 export PATH=$PATH:/usr/local/sbin
 
 # export TERM=screen-256color

@@ -94,7 +94,7 @@ require("packer").startup(
     -- use "p00f/nvim-ts-rainbow"
     use "rafamadriz/friendly-snippets"
     -- use "rbgrouleff/bclose.vim"
-    use "rmagatti/auto-session"
+    -- use "rmagatti/auto-session"
     use "terryma/vim-multiple-cursors"
     use "tpope/vim-repeat"
     -- use "tpope/vim-surround"
@@ -180,9 +180,9 @@ require("gitsigns").setup()
 
 -- Hop
 require "hop".setup()
-map("n", "<leader>j", "<cmd>lua require'hop'.hint_words()<cr>")
+map("n", "<leader>.", "<cmd>lua require'hop'.hint_words()<cr>")
 map("n", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
-map("v", "<leader>j", "<cmd>lua require'hop'.hint_words()<cr>")
+map("v", "<leader>.", "<cmd>lua require'hop'.hint_words()<cr>")
 map("v", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
 
 require('kommentary.config').configure_language("default", {
@@ -193,17 +193,17 @@ require('kommentary.config').configure_language("default", {
 })
 
 -- Session
-require("auto-session").setup(
-  {
-    log_level = "info",
-    auto_session_enable_last_session = false,
-    auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
-    auto_session_enabled = true,
-    auto_save_enabled = true,
-    auto_restore_enabled = true,
-    auto_session_suppress_dirs = nil
-  }
-)
+-- require("auto-session").setup(
+--   {
+--     log_level = "info",
+--     auto_session_enable_last_session = false,
+--     auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
+--     auto_session_enabled = true,
+--     auto_save_enabled = true,
+--     auto_restore_enabled = true,
+--     auto_session_suppress_dirs = nil
+--   }
+-- )
 
 -- require("toggleterm").setup {
 --   open_mapping = [[<c-\>]],
@@ -810,8 +810,30 @@ map("i", "<c-j> <Esc>", "<cmd>m .+1<CR>==gi", {silent = true})
 map("i", "<c-k> <Esc>", "<cmd>m .-2<CR>==gi", {silent = true})
 map("v", "<c-j>", "<cmd>m +1<CR>gv=gv", {silent = true})
 map("v", "<c-k>", "<cmd>m -2<CR>gv=gv", {silent = true}) ]]
+
+-- moving text
 map("v", "J", ":m '>+1<CR>gv=gv")
 map("v", "K", ":m '<-2<CR>gv=gv")
+map("i", "<c-j>", "<esc>:m .+1<CR>==a")
+map("i", "<c-k>", "<esc>:m .-2<CR>==a")
+map("n", "<leader>j", ":m .+1<CR>==")
+map("n", "<leader>k", ":m .-2<CR>==")
+
+-- copy to end of line
+map("n", "Y", "y$")
+
+-- undo breakpoints
+map("n", "n", "nzzzv")
+map("n", "N", "Nzzzv")
+
+-- jumplist mutations
+map("i", ",", ",<c-g>u")
+map("i", ".", ".<c-g>u")
+
+-- vim.api.nvim_exec([[
+--   nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
+--   nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
+-- ]], true)
 
 --Auto close tags
 -- map("i", ",/", "</<C-X><C-O>")
@@ -933,10 +955,10 @@ require("telescope").setup {
 }
 
 map("n", "<leader>p", '<cmd>lua require("telescope.builtin").find_files(require("telescope.themes"))<cr>')
-map("n", "<leader>r", '<cmd>lua require("telescope.builtin").registers()<cr>')
+-- map("n", "<leader>r", '<cmd>lua require("telescope.builtin").registers()<cr>')
 map("n", "<leader>g", '<cmd>lua require("telescope.builtin").live_grep(require("telescope.themes"))<cr>')
 map("n", "<leader>,", '<cmd>lua require("telescope.builtin").buffers(require("telescope.themes"))<cr>')
-map("n", "<leader>h", '<cmd>lua require("telescope.builtin").help_tags()<cr>')
+-- map("n", "<leader>h", '<cmd>lua require("telescope.builtin").help_tags()<cr>')
 map("n", "<leader>f", '<cmd>lua require("telescope.builtin").file_browser(require("telescope.themes"))<cr>')
 map("n", "<leader>i", '<cmd>lua require("telescope.builtin").git_status(require("telescope.themes"))<cr>')
 -- map("n", "<leader>s", '<cmd>lua require("telescope.builtin").spell_suggest()<cr>')
@@ -989,7 +1011,7 @@ augroup FormatAutogroup
   autocmd BufEnter,BufNewFile,BufRead *.php set smartindent
   autocmd BufEnter,BufNewFile,BufRead *.blade.php set filetype=blade
   autocmd FileType blade :setlocal foldmethod=indent
-  autocmd BufWinLeave,FocusLost,WinLeave *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua silent :up
+  ""autocmd BufWinLeave,FocusLost,WinLeave *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua silent :up
   ""autocmd BufWritePost *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua : FormatWrite
 augroup END
 ]], true)
