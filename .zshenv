@@ -31,6 +31,10 @@ export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 # No Android Studio
 # export ANDROID_HOME=$HOME/.android-sdk
 # export ANDROID_SDK_ROOT=$HOME/.android-sdk
@@ -38,6 +42,9 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$GOBIN:/usr/local/bin:/usr/local/opt/go/libexec/bin:/usr/local/mysql/bin/:/usr/local/opt/mysql@5.7/:$HOME/.composer/vendor/bin
 export PATH=$PATH:/usr/local/opt/php@8.0/bin:/usr/local/opt/php@8.0/sbin
 export PATH=$PATH:/usr/local/sbin
+
+# brew install gnu-sed
+export PATH=$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH
 
 # export TERM=screen-256color
 export TERM=xterm-256color

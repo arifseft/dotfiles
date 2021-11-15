@@ -72,20 +72,37 @@ require("packer").startup(
     -- use "glepnir/dashboard-nvim"
     use "godlygeek/tabular"
     use "hoob3rt/lualine.nvim"
-    use "hrsh7th/nvim-compe"
-    use "hrsh7th/vim-vsnip"
-    use "hrsh7th/vim-vsnip-integ"
+    -- use "hrsh7th/nvim-compe"
+    -- use "hrsh7th/vim-vsnip"
+    -- use "hrsh7th/vim-vsnip-integ"
+
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-cmdline'
+    use 'hrsh7th/nvim-cmp'
+
+    use 'hrsh7th/cmp-vsnip'
+    use 'hrsh7th/vim-vsnip'
+
     use "jiangmiao/auto-pairs"
     use "jwalton512/vim-blade"
-    use "kyazdani42/nvim-web-devicons"
-    use "kyazdani42/nvim-tree.lua"
+    -- use "kyazdani42/nvim-web-devicons"
+    -- use "kyazdani42/nvim-tree.lua"
+    use {"tamago324/lir.nvim", requires = "kyazdani42/nvim-web-devicons"}
+    -- use {"kyazdani42/nvim-tree.lua", requires = "kyazdani42/nvim-web-devicons", config = function() require'nvim-tree'.setup {} end }
     use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}}
     -- use "mfussenegger/nvim-dap"
     -- use "mhartington/formatter.nvim"
     use "neovim/nvim-lspconfig"
     use "norcalli/nvim-colorizer.lua"
     use "nvim-lua/popup.nvim"
-    use "nvim-telescope/telescope.nvim"
+    use {
+        "nvim-telescope/telescope.nvim",
+        requires = {
+            { 'nvim-telescope/telescope-live-grep-raw.nvim' }
+        }
+    }
     use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
     use {"nvim-treesitter/playground", run = ":TSInstall query"}
     use "nvim-treesitter/nvim-treesitter-textobjects"
@@ -93,6 +110,7 @@ require("packer").startup(
     use "phaazon/hop.nvim"
     -- use "p00f/nvim-ts-rainbow"
     use "rafamadriz/friendly-snippets"
+    use "ray-x/lsp_signature.nvim"
     -- use "rbgrouleff/bclose.vim"
     -- use "rmagatti/auto-session"
     use "terryma/vim-multiple-cursors"
@@ -100,69 +118,130 @@ require("packer").startup(
     -- use "tpope/vim-surround"
     -- use "wellle/targets.vim"
     use "wbthomason/packer.nvim"
+    use "windwp/nvim-spectre"
 
     -- use "tpope/vim-dadbod"
     -- use "kristijanhusak/vim-dadbod-completion"
     -- use "kristijanhusak/vim-dadbod-ui"
 
-    use {
-      "folke/trouble.nvim",
-      requires = "kyazdani42/nvim-web-devicons",
-      config = function()
-        require("trouble").setup {
-          position = "bottom", -- position of the list can be: bottom, top, left, right
-          height = 10, -- height of the trouble list when position is top or bottom
-          width = 50, -- width of the list when position is left or right
-          icons = true, -- use devicons for filenames
-          mode = "lsp_workspace_diagnostics", -- "lsp_workspace_diagnostics", "lsp_document_diagnostics", "quickfix", "lsp_references", "loclist"
-          fold_open = "?", -- icon used for open folds
-          fold_closed = "?", -- icon used for closed folds
-          action_keys = { -- key mappings for actions in the trouble list
-              -- map to {} to remove a mapping, for example:
-              -- close = {},
-              close = "q", -- close the list
-              cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
-              refresh = "r", -- manually refresh
-              jump = {"<cr>", "<tab>"}, -- jump to the diagnostic or open / close folds
-              open_split = { "<c-x>" }, -- open buffer in new split
-              open_vsplit = { "<c-v>" }, -- open buffer in new vsplit
-              open_tab = { "<c-t>" }, -- open buffer in new tab
-              jump_close = {"o"}, -- jump to the diagnostic and close the list
-              toggle_mode = "m", -- toggle between "workspace" and "document" diagnostics mode
-              toggle_preview = "P", -- toggle auto_preview
-              hover = "K", -- opens a small popup with the full multiline message
-              preview = "p", -- preview the diagnostic location
-              close_folds = {"zM", "zm"}, -- close all folds
-              open_folds = {"zR", "zr"}, -- open all folds
-              toggle_fold = {"zA", "za"}, -- toggle fold of current file
-              previous = "k", -- preview item
-              next = "j" -- next item
-          },
-          indent_lines = true, -- add an indent guide below the fold icons
-          auto_open = false, -- automatically open the list when you have diagnostics
-          auto_close = false, -- automatically close the list when you have no diagnostics
-          auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
-          auto_fold = false, -- automatically fold a file trouble list at creation
-          signs = {
-              -- icons / text used for a diagnostic
-              error = "?",
-              warning = "?",
-              hint = "?",
-              information = "?",
-              other = "?"
-          },
-          use_lsp_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
-      }
-      end
-    }
+    -- use {
+    --   "folke/trouble.nvim",
+    --   requires = "kyazdani42/nvim-web-devicons",
+    --   config = function()
+    --     require("trouble").setup {
+    --       position = "bottom", -- position of the list can be: bottom, top, left, right
+    --       height = 10, -- height of the trouble list when position is top or bottom
+    --       width = 50, -- width of the list when position is left or right
+    --       icons = true, -- use devicons for filenames
+    --       mode = "lsp_workspace_diagnostics", -- "lsp_workspace_diagnostics", "lsp_document_diagnostics", "quickfix", "lsp_references", "loclist"
+    --       fold_open = "?", -- icon used for open folds
+    --       fold_closed = "?", -- icon used for closed folds
+    --       action_keys = { -- key mappings for actions in the trouble list
+    --           -- map to {} to remove a mapping, for example:
+    --           -- close = {},
+    --           close = "q", -- close the list
+    --           cancel = "<esc>", -- cancel the preview and get back to your last window / buffer / cursor
+    --           refresh = "r", -- manually refresh
+    --           jump = {"<cr>", "<tab>"}, -- jump to the diagnostic or open / close folds
+    --           open_split = { "<c-x>" }, -- open buffer in new split
+    --           open_vsplit = { "<c-v>" }, -- open buffer in new vsplit
+    --           open_tab = { "<c-t>" }, -- open buffer in new tab
+    --           jump_close = {"o"}, -- jump to the diagnostic and close the list
+    --           toggle_mode = "m", -- toggle between "workspace" and "document" diagnostics mode
+    --           toggle_preview = "P", -- toggle auto_preview
+    --           hover = "K", -- opens a small popup with the full multiline message
+    --           preview = "p", -- preview the diagnostic location
+    --           close_folds = {"zM", "zm"}, -- close all folds
+    --           open_folds = {"zR", "zr"}, -- open all folds
+    --           toggle_fold = {"zA", "za"}, -- toggle fold of current file
+    --           previous = "k", -- preview item
+    --           next = "j" -- next item
+    --       },
+    --       indent_lines = true, -- add an indent guide below the fold icons
+    --       auto_open = false, -- automatically open the list when you have diagnostics
+    --       auto_close = false, -- automatically close the list when you have no diagnostics
+    --       auto_preview = true, -- automatically preview the location of the diagnostic. <esc> to close preview and go back to last window
+    --       auto_fold = false, -- automatically fold a file trouble list at creation
+    --       signs = {
+    --           -- icons / text used for a diagnostic
+    --           error = "?",
+    --           warning = "?",
+    --           hint = "?",
+    --           information = "?",
+    --           other = "?"
+    --       },
+    --       use_lsp_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+    --   }
+    --   end
+    -- }
 
-    use {'pwntester/octo.nvim', config=function()
-      require"octo".setup()
-    end}
-    use "ray-x/lsp_signature.nvim"
+    -- use {'pwntester/octo.nvim', config=function()
+    --   require"octo".setup()
+    -- end}
+
+    -- use "catppuccin/nvim"
 
   end
 )
+
+--[[ local catppuccin = require("catppuccin")
+
+-- configure it
+catppuccin.setup(
+    {
+		transparent_background = false,
+		term_colors = false,
+		styles = {
+			comments = "italic",
+			functions = "italic",
+			keywords = "italic",
+			strings = "NONE",
+			variables = "NONE",
+		},
+		integrations = {
+			treesitter = true,
+			native_lsp = {
+				enabled = true,
+				virtual_text = {
+					errors = "italic",
+					hints = "italic",
+					warnings = "italic",
+					information = "italic",
+				},
+				underlines = {
+					errors = "underline",
+					hints = "underline",
+					warnings = "underline",
+					information = "underline",
+				},
+			},
+			lsp_trouble = false,
+			lsp_saga = false,
+			gitgutter = false,
+			gitsigns = false,
+			telescope = false,
+			nvimtree = {
+				enabled = false,
+				show_root = false,
+			},
+			which_key = false,
+			indent_blankline = {
+				enabled = false,
+				colored_indent_levels = false,
+			},
+			dashboard = false,
+			neogit = false,
+			vim_sneak = false,
+			fern = false,
+			barbar = false,
+			bufferline = false,
+			markdown = false,
+			lightspeed = false,
+			ts_rainbow = false,
+			hop = false,
+		},
+	}
+) ]]
 
 require "lsp_signature".setup()
 
@@ -171,12 +250,143 @@ require("which-key").setup()
 require'colorizer'.setup()
 
 cmd[[colorscheme tokyonight]]
+-- cmd[[colorscheme catppuccin]]
 
 -- lspkind Icon setup
 require("lspkind").init({})
 
 -- gitsigns setup
 require("gitsigns").setup()
+
+require('spectre').setup({
+  color_devicons = true,
+  open_cmd = 'vnew',
+  live_update = false, -- auto excute search again when you write any file in vim
+  line_sep_start = '+-----------------------------------------',
+  result_padding = '|  ',
+  line_sep       = '+-----------------------------------------',
+  highlight = {
+      ui = "String",
+      search = "DiffChange",
+      replace = "DiffDelete"
+  },
+  mapping={
+    ['toggle_line'] = {
+        map = "dd",
+        cmd = "<cmd>lua require('spectre').toggle_line()<CR>",
+        desc = "toggle current item"
+    },
+    ['enter_file'] = {
+        map = "<cr>",
+        cmd = "<cmd>lua require('spectre.actions').select_entry()<CR>",
+        desc = "goto current file"
+    },
+    ['send_to_qf'] = {
+        map = "<leader>f",
+        cmd = "<cmd>lua require('spectre.actions').send_to_qf()<CR>",
+        desc = "send all item to quickfix"
+    },
+    ['replace_cmd'] = {
+        map = "<leader>c",
+        cmd = "<cmd>lua require('spectre.actions').replace_cmd()<CR>",
+        desc = "input replace vim command"
+    },
+    ['show_option_menu'] = {
+        map = "<leader>o",
+        cmd = "<cmd>lua require('spectre').show_options()<CR>",
+        desc = "show option"
+    },
+    ['run_replace'] = {
+        map = "<leader>R",
+        cmd = "<cmd>lua require('spectre.actions').run_replace()<CR>",
+        desc = "replace all"
+    },
+    ['change_view_mode'] = {
+        map = "<leader>v",
+        cmd = "<cmd>lua require('spectre').change_view()<CR>",
+        desc = "change result view mode"
+    },
+    ['toggle_live_update']={
+      map = "tu",
+      cmd = "<cmd>lua require('spectre').toggle_live_update()<CR>",
+      desc = "update change when vim write file."
+    },
+    ['toggle_ignore_case'] = {
+      map = "ti",
+      cmd = "<cmd>lua require('spectre').change_options('ignore-case')<CR>",
+      desc = "toggle ignore case"
+    },
+    ['toggle_ignore_hidden'] = {
+      map = "th",
+      cmd = "<cmd>lua require('spectre').change_options('hidden')<CR>",
+      desc = "toggle search hidden"
+    },
+    -- you can put your mapping here it only use normal mode
+  },
+  find_engine = {
+    -- rg is map with finder_cmd
+    ['rg'] = {
+      cmd = "rg",
+      -- default args
+      args = {
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+      } ,
+      options = {
+        ['ignore-case'] = {
+          value= "--ignore-case",
+          icon="[I]",
+          desc="ignore case"
+        },
+        ['hidden'] = {
+          value="--hidden",
+          desc="hidden file",
+          icon="[H]"
+        },
+        -- you can put any rg search option you want here it can toggle with
+        -- show_option function
+      }
+    },
+  },
+  replace_engine={
+      ['sed']={
+          cmd = "sed",
+          args = nil
+      },
+      options = {
+        ['ignore-case'] = {
+          value= "--ignore-case",
+          icon="[I]",
+          desc="ignore case"
+        },
+      }
+  },
+  default = {
+      find = {
+          --pick one of item in find_engine
+          cmd = "rg",
+          options = {"ignore-case"}
+      },
+      replace={
+          --pick one of item in replace_engine
+          cmd = "sed"
+      }
+  },
+  cwd = "~/go/src/github.com/flynd-dev/bmi",
+  replace_vim_cmd = "cdo",
+  is_open_target_win = true, --open file on opener window
+  is_insert_mode = false  -- start open panel on is_insert_mode
+})
+
+-- map("n", "<leader>S", "<cmd>lua require('spectre').open()<CR>")
+-- search current word
+map("n", "<leader>sw", "<cmd>lua require('spectre').open_visual({select_word=true})<CR>")
+map("v", "<leader>s", "<cmd>lua require('spectre').open_visual()<CR>")
+-- search in current file
+map("n", "<leader>sp", "viw<cmd>lua require('spectre').open_file_search()<CR>")
 
 -- Hop
 require "hop".setup()
@@ -185,12 +395,28 @@ map("n", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
 map("v", "<leader>.", "<cmd>lua require'hop'.hint_words()<cr>")
 map("v", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
 
-require('kommentary.config').configure_language("default", {
-    prefer_single_line_comments = true,
+--[[ require('kommentary.config').configure_language("default", {
+    -- prefer_single_line_comments = true,
+    hook_function = function()
+      require('ts_context_commentstring.internal').update_commentstring()
+    end,
+}) ]]
+
+-- require('kommentary.config').configure_language("php", {
+--     single_line_comment_string = "//",
+-- })
+
+require('kommentary.config').configure_language("typescriptreact", {
     hook_function = function()
       require('ts_context_commentstring.internal').update_commentstring()
     end,
 })
+
+-- require('kommentary.config').configure_language("javascriptreact", {
+--   hook_function = function()
+--     require('ts_context_commentstring.internal').update_commentstring()
+--   end,
+-- })
 
 -- Session
 -- require("auto-session").setup(
@@ -328,8 +554,65 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 end
 
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+    end,
+  },
+  mapping = {
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+-- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+
 -- LSP this is needed for LSP completions in CSS along with the snippets plugin
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 -- Code actions
 -- capabilities.textDocument.codeAction = {
@@ -462,7 +745,7 @@ if not nvim_lsp.emmet_ls then
   configs.emmet_ls = {
     default_config = {
       cmd = {'emmet-ls', '--stdio'};
-      filetypes = {'html', 'css', 'vue'};
+      filetypes = {'html', 'blade', 'css', 'vue'};
       root_dir = function(fname)
         return util.root_pattern("package.json", "jsconfig.json", ".git")(fname) or util.path.dirname(fname)
       end;
@@ -564,7 +847,35 @@ require "nvim-treesitter.configs".setup {
         ["ac"] = "@class.outer",
         ["ic"] = "@class.inner",
       }
-    }
+    },
+    lsp_interop = {
+      enable = true,
+      border = 'none',
+      peek_definition_code = {
+        ["<leader>df"] = "@function.outer",
+        ["<leader>dF"] = "@class.outer",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
   },
   -- rainbow = {
   --   enable = true,
@@ -638,6 +949,7 @@ require "lualine".setup {
   options = {
     icons_enabled = true,
     theme = "tokyonight",
+    -- theme = "catppuccin",
     component_separators = {" ", " "},
     section_separators = {"", ""},
     disabled_filetypes = {}
@@ -681,7 +993,7 @@ require "lualine".setup {
 }
 
 -- Compe setup start
-require "compe".setup {
+--[[ require "compe".setup {
   enabled = true,
   autocomplete = true,
   debug = false,
@@ -734,7 +1046,7 @@ _G.tab_complete = function()
   elseif check_back_space() then
     return t "<Tab>"
   else
-    return vim.fn['compe#complete']()
+    -- return vim.fn['compe#complete']()
   end
 end
 _G.s_tab_complete = function()
@@ -748,15 +1060,92 @@ _G.s_tab_complete = function()
   end
 end
 
-map("i", "<CR>", "compe#confirm({ 'keys': '<CR>', 'select': v:true })", {expr = true})
+-- map("i", "<CR>", "compe#confirm({ 'keys': '<CR>', 'select': v:true })", {expr = true})
 map("i", "<Tab>", "v:lua.tab_complete()", {expr = true, noremap = false})
 map("s", "<Tab>", "v:lua.tab_complete()", {expr = true, noremap = false})
 map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true, noremap = false})
-map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true, noremap = false})
+map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true, noremap = false}) ]]
 
 -- End Compe related setup
 
-map("", "<space><space>", ":NvimTreeToggle<CR>")
+-- map("", "<space><space>", ":NvimTreeToggle<CR>")
+
+local actions = require'lir.actions'
+local mark_actions = require 'lir.mark.actions'
+local clipboard_actions = require'lir.clipboard.actions'
+
+require'lir'.setup {
+  show_hidden_files = true,
+  devicons_enable = true,
+  mappings = {
+    ['l']     = actions.edit,
+    ['<CR>']     = actions.edit,
+    ['<C-s>'] = actions.split,
+    ['<C-v>'] = actions.vsplit,
+    ['<C-t>'] = actions.tabedit,
+
+    ['h']     = actions.up,
+    ['q']     = actions.quit,
+    ['<ESC>'] = actions.quit,
+
+    ['A']     = actions.mkdir,
+    ['a']     = actions.newfile,
+    ['r']     = actions.rename,
+    ['@']     = actions.cd,
+    ['Y']     = actions.yank_path,
+    ['.']     = actions.toggle_show_hidden,
+    ['D']     = actions.delete,
+
+    ['J'] = function()
+      mark_actions.toggle_mark()
+      vim.cmd('normal! j')
+    end,
+    ['c'] = clipboard_actions.copy,
+    ['p'] = clipboard_actions.paste,
+    ['d'] = function()
+      mark_actions.toggle_mark()
+      clipboard_actions.cut()
+    end,
+  },
+  float = {
+    winblend = 0,
+    curdir_window = {
+      enable = false,
+      highlight_dirname = false
+    },
+
+    -- -- You can define a function that returns a table to be passed as the third
+    -- -- argument of nvim_open_win().
+    -- win_opts = function()
+    --   local width = math.floor(vim.o.columns * 0.8)
+    --   local height = math.floor(vim.o.lines * 0.8)
+    --   return {
+    --     border = require("lir.float.helper").make_border_opts({
+    --       "+", "?", "+", "?", "+", "?", "+", "?",
+    --     }, "Normal"),
+    --     width = width,
+    --     height = height,
+    --     row = 1,
+    --     col = math.floor((vim.o.columns - width) / 2),
+    --   }
+    -- end,
+  },
+  hide_cursor = true,
+}
+
+-- use visual mode
+function _G.LirSettings()
+  vim.api.nvim_buf_set_keymap(0, 'x', 'J', ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>', {noremap = true, silent = true})
+
+  -- echo cwd
+  vim.api.nvim_echo({{vim.fn.expand('%:p'), 'Normal'}}, false, {})
+end
+
+vim.cmd [[augroup lir-settings]]
+vim.cmd [[  autocmd!]]
+vim.cmd [[  autocmd Filetype lir :lua LirSettings()]]
+vim.cmd [[augroup END]]
+map("", "<space><space>", "<cmd>lua require'lir.float'.toggle()<CR>")
 
 -- Open nvimrc file
 map("n", "<leader>v", "<cmd>e $MYVIMRC<CR>")
@@ -844,11 +1233,43 @@ map("n", "<esc>", ":noh<cr><esc>", {silent = true})
 -- Telescope Global remapping
 local actions = require("telescope.actions")
 local action_set = require "telescope.actions.set"
-local trouble = require("trouble.providers.telescope")
+-- local trouble = require("trouble.providers.telescope")
+
+--[[ require('telescope').setup{
+  defaults = {
+    -- Default configuration for telescope goes here:
+    -- config_key = value,
+    mappings = {
+      i = {
+        -- map actions.which_key to <C-h> (default: <C-/>)
+        -- actions.which_key shows the mappings for your picker,
+        -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+        ["<C-h>"] = "which_key",
+        ["<esc>"] = actions.close,
+      }
+    }
+  },
+  pickers = {
+    -- Default configuration for builtin pickers goes here:
+    -- picker_name = {
+    --   picker_config_key = value,
+    --   ...
+    -- }
+    -- Now the picker_config_key will be applied every time you call this
+    -- builtin picker
+  },
+  extensions = {
+    -- Your extension configuration goes here:
+    -- extension_name = {
+    --   extension_config_key = value,
+    -- }
+    -- please take a look at the readme of the extension you want to configure
+  }
+} ]]
 
 require("telescope").setup {
   defaults = {
-    vimgrep_arguments = {
+    --[[ vimgrep_arguments = {
       "rg",
       "--hidden",
       "--color=never",
@@ -857,7 +1278,7 @@ require("telescope").setup {
       "--line-number",
       "--column",
       "--smart-case"
-    },
+    }, ]]
     prompt_prefix = "> ",
     selection_caret = "> ",
     entry_prefix = "  ",
@@ -880,13 +1301,15 @@ require("telescope").setup {
     },
     mappings = {
       i = {
+        ["<C-h>"] = "which_key",
         ["<esc>"] = actions.close,
-        ["<c-t>"] = trouble.open_with_trouble,
+        -- ["<c-t>"] = trouble.open_with_trouble,
       },
-      n = { ["<c-t>"] = trouble.open_with_trouble },
+      -- n = { ["<c-t>"] = trouble.open_with_trouble },
     },
     file_sorter = require "telescope.sorters".get_fuzzy_file,
-    file_ignore_patterns = {"public/*", "node_modules/*", "vendor/*", ".git"},
+    -- file_ignore_patterns = {"public/*", "node_modules/*", "vendor/*", ".git"},
+    file_ignore_patterns = {"public/*", "node_modules/*", ".git"},
     generic_sorter = require "telescope.sorters".get_generic_fuzzy_sorter,
     winblend = 0,
     border = {},
@@ -902,7 +1325,7 @@ require("telescope").setup {
     buffer_previewer_maker = require "telescope.previewers".buffer_previewer_maker
   },
   pickers = {
-    file_browser = {
+    --[[ file_browser = {
       attach_mappings = function(prompt_bufnr)
         action_set.select:enhance({
           post = function()
@@ -931,7 +1354,7 @@ require("telescope").setup {
         })
         return true
       end
-    },
+    }, ]]
     buffers = {
       sort_lastused = true,
       mappings = {
@@ -942,21 +1365,21 @@ require("telescope").setup {
           ["<C-w>"] = "delete_buffer"
         }
       },
-      attach_mappings = function(prompt_bufnr)
+      --[[ attach_mappings = function(prompt_bufnr)
         action_set.select:enhance({
           post = function()
             cmd(":normal! zx")
           end
         })
         return true
-      end,
+      end, ]]
     }
   }
 }
 
 map("n", "<leader>p", '<cmd>lua require("telescope.builtin").find_files(require("telescope.themes"))<cr>')
--- map("n", "<leader>r", '<cmd>lua require("telescope.builtin").registers()<cr>')
-map("n", "<leader>g", '<cmd>lua require("telescope.builtin").live_grep(require("telescope.themes"))<cr>')
+map("n", "<leader>r", '<cmd>lua require("telescope.builtin").registers()<cr>')
+map("n", "<leader>g", '<cmd>lua require("telescope").extensions.live_grep_raw.live_grep_raw()<cr>')
 map("n", "<leader>,", '<cmd>lua require("telescope.builtin").buffers(require("telescope.themes"))<cr>')
 -- map("n", "<leader>h", '<cmd>lua require("telescope.builtin").help_tags()<cr>')
 map("n", "<leader>f", '<cmd>lua require("telescope.builtin").file_browser(require("telescope.themes"))<cr>')
@@ -964,12 +1387,12 @@ map("n", "<leader>i", '<cmd>lua require("telescope.builtin").git_status(require(
 -- map("n", "<leader>s", '<cmd>lua require("telescope.builtin").spell_suggest()<cr>')
 
 -- Lua
-map("n", "<leader>xx", "<cmd>Trouble<cr>")
-map("n", "<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>")
-map("n", "<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr>")
-map("n", "<leader>xl", "<cmd>Trouble loclist<cr>")
-map("n", "<leader>xq", "<cmd>Trouble quickfix<cr>")
-map("n", "gR", "<cmd>Trouble lsp_references<cr>")
+-- map("n", "<leader>xx", "<cmd>Trouble<cr>")
+-- map("n", "<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>")
+-- map("n", "<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr>")
+-- map("n", "<leader>xl", "<cmd>Trouble loclist<cr>")
+-- map("n", "<leader>xq", "<cmd>Trouble quickfix<cr>")
+-- map("n", "gR", "<cmd>Trouble lsp_references<cr>")
 
 map("n", "<Leader>=", ":Tabularize /=<CR>")
 map("v", "<Leader>=", ":Tabularize /=<CR>")
@@ -999,6 +1422,8 @@ map("v", "<Leader>>", ":Tabularize /=><CR>")
 opt.foldmethod="expr"
 opt.foldexpr="nvim_treesitter#foldexpr()"
 
+cmd("autocmd User TelescopePreviewerLoaded setlocal wrap") -- disabled in visual mode
+
 -------------------- COMMANDS ------------------------------
 cmd("au TextYankPost * lua vim.highlight.on_yank {on_visual = true}") -- disabled in visual mode
 cmd [[set shortmess+=c]]
@@ -1022,7 +1447,23 @@ vim.api.nvim_exec([[
     let viewPath = matchstr(currentLine, '\c(\([''"]\)\zs.\{-}\ze\1')
     let viewPath = substitute(viewPath,'\.','/','ge')
     exe 'cd `git rev-parse --show-toplevel`'
-    exe 'e backend/resources/views/'.viewPath.'.blade.php'
+    ""exe 'cd' fnameescape(fnamemodify(finddir('artisan', escape(expand('%:p:h'), ' ') . ';'), ':h'))
+    exe 'cd backend'
+    let bladePath = 'resources/views/'.viewPath.'.blade.php'
+    echo bladePath
+    if empty(glob(bladePath))
+      echo "File doesn't exists."
+    else
+      exe 'e '.bladePath
+      ""exe 'e resources/views/'.viewPath.'.blade.php'
+    endif
   endfunction
   noremap gv :call LaravelView()<CR>
+]], true)
+
+vim.api.nvim_exec([[
+  function! WindowDiff()
+    exe 'windo diffthis'
+  endfunction
+  noremap <leader>sd :call WindowDiff()<CR>
 ]], true)

@@ -3,4 +3,5 @@
 .config/coc/snippets-mru
 .config/nvim/plugged/
 .config/whatscli/session
+.config/valet
 *.log

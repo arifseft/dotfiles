@@ -5,3 +5,5 @@ recentrepos:
 - /Users/arifsefrianto/go/src/github.com/arifseft/laravel-echo-example
 - /Users/arifsefrianto/www/bmi
 startuppopupversion: 5
+customcommandshistory: []
+hidecommandlog: false
