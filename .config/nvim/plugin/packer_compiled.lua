@@ -57,7 +57,7 @@ end
 time([[Luarocks path setup]], false)
 time([[try_loadstring definition]], true)
 local function try_loadstring(s, component, name)
-  local success, result = pcall(loadstring(s))
+  local success, result = pcall(loadstring(s), name, _G.packer_plugins[name])
   if not success then
     vim.schedule(function()
       vim.api.nvim_notify('packer.nvim: Error running ' .. component .. ' for ' .. name .. ': ' .. result, vim.log.levels.ERROR, {})
@@ -94,15 +94,15 @@ _G.packer_plugins = {
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/cmp-path",
     url = "https://github.com/hrsh7th/cmp-path"
   },
-  ["cmp-vsnip"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/cmp-vsnip",
-    url = "https://github.com/hrsh7th/cmp-vsnip"
-  },
   ["editorconfig-vim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/editorconfig-vim",
     url = "https://github.com/editorconfig/editorconfig-vim"
+  },
+  ["emmet-vim"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/emmet-vim",
+    url = "https://github.com/mattn/emmet-vim"
   },
   ["friendly-snippets"] = {
     loaded = true,
@@ -142,7 +142,7 @@ _G.packer_plugins = {
   ["lspsaga.nvim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/lspsaga.nvim",
-    url = "https://github.com/glepnir/lspsaga.nvim"
+    url = "https://github.com/tami5/lspsaga.nvim"
   },
   ["lualine.nvim"] = {
     loaded = true,
@@ -164,6 +164,11 @@ _G.packer_plugins = {
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
+  ["nvim-spectre"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-spectre",
+    url = "https://github.com/windwp/nvim-spectre"
+  },
   ["nvim-treesitter"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
@@ -172,7 +177,7 @@ _G.packer_plugins = {
   ["nvim-treesitter-textobjects"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects",
-    url = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
+    url = "https://github.com/theHamsta/nvim-treesitter-textobjects"
   },
   ["nvim-ts-context-commentstring"] = {
     loaded = true,
@@ -238,11 +243,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-repeat",
     url = "https://github.com/tpope/vim-repeat"
-  },
-  ["vim-vsnip"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-vsnip",
-    url = "https://github.com/hrsh7th/vim-vsnip"
   },
   ["which-key.nvim"] = {
     loaded = true,

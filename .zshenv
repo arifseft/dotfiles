@@ -53,7 +53,10 @@ export XDEBUG_CONFIG="idekey=XDEBUG_VIM"
 
 # elasticsearch
 export ES_HOME=$HOME/elasticsearch-7.4.2
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-12.0.2.jdk/Contents/Home
+# export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-12.0.2.jdk/Contents/Home
+# export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+# export JAVA_HOME=/usr/local/opt/openjdk
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
 export PATH=$ES_HOME/bin:$JAVA_HOME/bin:$PATH
 export DOCKER_CLIENT_TIMEOUT=120
 export COMPOSE_HTTP_TIMEOUT=120

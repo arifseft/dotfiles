@@ -56,6 +56,8 @@ end
 -- Map leader to space
 g.mapleader = ","
 
+g.blade_custom_directives = {'javascript'}
+
 -- Plugins
 require("packer").startup(
   function()
@@ -68,13 +70,13 @@ require("packer").startup(
     use "folke/tokyonight.nvim"
     use "folke/which-key.nvim"
     -- use {"glacambre/firenvim", run = function() fn["firenvim#install"](0) end }
-    use "glepnir/lspsaga.nvim"
+    -- use "glepnir/lspsaga.nvim"
+    use "tami5/lspsaga.nvim"
+
     -- use "glepnir/dashboard-nvim"
     use "godlygeek/tabular"
     use "hoob3rt/lualine.nvim"
     -- use "hrsh7th/nvim-compe"
-    -- use "hrsh7th/vim-vsnip"
-    -- use "hrsh7th/vim-vsnip-integ"
 
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
@@ -82,11 +84,12 @@ require("packer").startup(
     use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/nvim-cmp'
 
-    use 'hrsh7th/cmp-vsnip'
-    use 'hrsh7th/vim-vsnip'
+    -- use 'hrsh7th/cmp-vsnip'
+    -- use 'hrsh7th/vim-vsnip'
 
     use "jiangmiao/auto-pairs"
     use "jwalton512/vim-blade"
+    -- use "sheerun/vim-polyglot"
     -- use "kyazdani42/nvim-web-devicons"
     -- use "kyazdani42/nvim-tree.lua"
     use {"tamago324/lir.nvim", requires = "kyazdani42/nvim-web-devicons"}
@@ -119,6 +122,7 @@ require("packer").startup(
     -- use "wellle/targets.vim"
     use "wbthomason/packer.nvim"
     use "windwp/nvim-spectre"
+    use "mattn/emmet-vim"
 
     -- use "tpope/vim-dadbod"
     -- use "kristijanhusak/vim-dadbod-completion"
@@ -242,6 +246,8 @@ catppuccin.setup(
 		},
 	}
 ) ]]
+
+-- g.user_emmet_leader_key = '<Tab>'
 
 require "lsp_signature".setup()
 
@@ -547,7 +553,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
   buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
   buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-  buf_set_keymap("n", "<space>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+  -- buf_set_keymap("n", "<space>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
   buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
   buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
   buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
@@ -561,7 +567,7 @@ cmp.setup({
   snippet = {
     -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
       -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
       -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
@@ -615,23 +621,23 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protoco
 -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 -- Code actions
--- capabilities.textDocument.codeAction = {
---   dynamicRegistration = false,
---   codeActionLiteralSupport = {
---     codeActionKind = {
---       valueSet = {
---         "",
---         "quickfix",
---         "refactor",
---         "refactor.extract",
---         "refactor.inline",
---         "refactor.rewrite",
---         "source",
---         "source.organizeImports"
---       }
---     }
---   }
--- }
+--[[ capabilities.textDocument.codeAction = {
+  dynamicRegistration = false,
+  codeActionLiteralSupport = {
+    codeActionKind = {
+      valueSet = {
+        "",
+        "quickfix",
+        "refactor",
+        "refactor.extract",
+        "refactor.inline",
+        "refactor.rewrite",
+        "source",
+        "source.organizeImports"
+      }
+    }
+  }
+} ]]
 
 -- Snippets
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -741,7 +747,7 @@ nvim_lsp.html.setup {
   settings = {}
 }
 
-if not nvim_lsp.emmet_ls then
+--[[ if not nvim_lsp.emmet_ls then
   configs.emmet_ls = {
     default_config = {
       cmd = {'emmet-ls', '--stdio'};
@@ -753,7 +759,7 @@ if not nvim_lsp.emmet_ls then
     };
   }
 end
-nvim_lsp.emmet_ls.setup{ capabilities = capabilities;}
+nvim_lsp.emmet_ls.setup{ capabilities = capabilities } ]]
 
 nvim_lsp.gopls.setup {
   on_attach = on_attach,
@@ -777,21 +783,51 @@ nvim_lsp.gopls.setup {
 }
 
 -- LSP Prevents inline buffer annotations
-vim.lsp.diagnostic.show_line_diagnostics()
-vim.lsp.handlers["textDocument/publishDiagnostics"] =
+-- vim.lsp.diagnostic.show_line_diagnostics()
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- Enable underline, use default values
+    underline = true,
+    -- Enable virtual text, override spacing to 4
+    virtual_text = {
+      spacing = 4,
+      prefix = '~',
+    },
+    -- Use a function to dynamically turn signs off
+    -- and on, using buffer local variables
+    signs = function(bufnr, client_id)
+      local ok, result = pcall(vim.api.nvim_buf_get_var, bufnr, 'show_signs')
+      -- No buffer local variable set, so just enable by default
+      if not ok then
+        return true
+      end
+
+      return result
+    end,
+    -- Disable a feature
+    update_in_insert = false,
+  }
+)
+--[[ vim.lsp.handlers["textDocument/publishDiagnostics"] =
   vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics,
   {
     virtual_text = false
   }
-)
+) ]]
 
 -- LSP Saga config & keys
 local saga = require "lspsaga"
 saga.init_lsp_saga {
+  code_action_prompt = {
+    enable = true,
+    sign = true,
+    sign_priority = 40,
+    virtual_text = false,
+  },
   code_action_icon = " ",
   definition_preview_icon = "  ",
-  dianostic_header_icon = "   ",
+  diagnostic_header_icon = "   ",
   error_sign = " ",
   finder_definition_icon = "  ",
   finder_reference_icon = "  ",
@@ -807,7 +843,7 @@ map("n", "<leader>ch", ":Lspsaga hover_doc<CR>", {silent = true})
 map("n", "<leader>ck", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>', {silent = true})
 map("n", "<leader>cj", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>', {silent = true})
 map("n", "<leader>cs", ":Lspsaga signature_help<CR>", {silent = true})
-map("n", "<leader>ci", ":Lspsaga show_line_diagnostics<CR>", {silent = true})
+-- map("n", "<leader>ci", ":Lspsaga show_line_diagnostics<CR>", {silent = true})
 map("n", "<leader>cn", ":Lspsaga diagnostic_jump_next<CR>", {silent = true})
 map("n", "<leader>cp", ":Lspsaga diagnostic_jump_prev<CR>", {silent = true})
 map("n", "<leader>cr", ":Lspsaga rename<CR>", {silent = true})
@@ -820,6 +856,8 @@ require "nvim-treesitter.configs".setup {
     "dockerfile",
     "go",
     "gomod",
+    "gowork",
+    "godot_resource",
     "html",
     "javascript",
     "json",
@@ -831,7 +869,12 @@ require "nvim-treesitter.configs".setup {
     "vue"
   },
   highlight = {
-    enable = true
+    enable = true,
+    disable = { 'go' , 'gomod' },
+  },
+  indent = {
+    enable = true,
+    disable = { 'blade' , 'vue' },
   },
   incremental_selection = {
     enable = true,
@@ -961,7 +1004,7 @@ require "lualine".setup {
       {"diff", color_added = "#a7c080", color_modified = "#ffdf1b", color_removed = "#ff6666"}
     },
     lualine_c = {
-      {"diagnostics", sources = {"nvim_lsp"}},
+      {"diagnostics", sources = {"nvim_diagnostic"}},
       function()
         return "%="
       end,
@@ -1100,6 +1143,7 @@ require'lir'.setup {
       mark_actions.toggle_mark()
       vim.cmd('normal! j')
     end,
+    ['x'] = clipboard_actions.cut,
     ['c'] = clipboard_actions.copy,
     ['p'] = clipboard_actions.paste,
     ['d'] = function()
@@ -1427,15 +1471,18 @@ cmd("autocmd User TelescopePreviewerLoaded setlocal wrap") -- disabled in visual
 -------------------- COMMANDS ------------------------------
 cmd("au TextYankPost * lua vim.highlight.on_yank {on_visual = true}") -- disabled in visual mode
 cmd [[set shortmess+=c]]
-cmd [[highlight link CompeDocumentation NormalFloat]]
+-- cmd [[highlight link CompeDocumentation NormalFloat]]
 
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufEnter,BufNewFile,BufRead *.php set autoindent
-  autocmd BufEnter,BufNewFile,BufRead *.php set smartindent
   autocmd BufEnter,BufNewFile,BufRead *.blade.php set filetype=blade
+  autocmd BufEnter,BufNewFile,BufRead *.blade.php set indentexpr=
   autocmd FileType blade :setlocal foldmethod=indent
+
+  ""autocmd BufEnter,BufNewFile,BufRead *.php set autoindent
+  ""autocmd BufEnter,BufNewFile,BufRead *.php set smartindent
+
   ""autocmd BufWinLeave,FocusLost,WinLeave *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua silent :up
   ""autocmd BufWritePost *.vue,*.json,*.php,*.js,*.ts,*.tsx,*.css,*.scss,*.html,*.lua : FormatWrite
 augroup END
@@ -1465,5 +1512,5 @@ vim.api.nvim_exec([[
   function! WindowDiff()
     exe 'windo diffthis'
   endfunction
-  noremap <leader>sd :call WindowDiff()<CR>
+  noremap <leader>dd :call WindowDiff()<CR>
 ]], true)
