@@ -870,7 +870,6 @@ require "nvim-treesitter.configs".setup {
   },
   highlight = {
     enable = true,
-    disable = { 'go' , 'gomod' },
   },
   indent = {
     enable = true,
