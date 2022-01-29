@@ -110,7 +110,7 @@ _G.packer_plugins = {
     url = "https://github.com/tami5/lspsaga.nvim"
   },
   ["mini.nvim"] = {
-    config = { "\27LJ\2\n°\2\0\0\3\0\t\0+6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\4\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\5\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\6\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\a\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\b\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\20mini.trailspace\18mini.surround\20mini.statusline\15mini.pairs\14mini.jump\20mini.completion\nsetup\17mini.comment\frequire\0" },
+    config = { "\27LJ\2\n÷\4\0\0\4\0\r\00036\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\0016\0\0\0'\2\6\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\a\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\b\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\t\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\n\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\v\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\f\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\20mini.trailspace\18mini.surround\20mini.statusline\15mini.pairs\14mini.jump\20mini.completion\17mini.comment\fpalette\1\0\1\14use_cterm\2\1\0\16\vbase08\f#EC5f67\vbase07\f#D8DEE9\vbase09\f#F99157\vbase06\f#CDD3DE\vbase0A\f#FAC863\vbase05\f#C0C5CE\vbase0B\f#99C794\vbase04\f#A7ADBA\vbase0C\f#5FB3B3\vbase03\f#65737E\vbase0D\f#6699CC\vbase02\f#4F5B66\vbase0E\f#C594C5\vbase01\f#343D46\vbase0F\f#AB7967\vbase00\f#1B2B34\nsetup\16mini.base16\frequire\0" },
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/mini.nvim",
     url = "https://github.com/echasnovski/mini.nvim"
@@ -185,11 +185,6 @@ _G.packer_plugins = {
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
-  ["tokyonight.nvim"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/tokyonight.nvim",
-    url = "https://github.com/folke/tokyonight.nvim"
-  },
   ["vim-blade"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/vim-blade",
@@ -215,7 +210,7 @@ _G.packer_plugins = {
 time([[Defining packer_plugins]], false)
 -- Config for: mini.nvim
 time([[Config for mini.nvim]], true)
-try_loadstring("\27LJ\2\n°\2\0\0\3\0\t\0+6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\3\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\4\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\5\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\6\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\a\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\b\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\20mini.trailspace\18mini.surround\20mini.statusline\15mini.pairs\14mini.jump\20mini.completion\nsetup\17mini.comment\frequire\0", "config", "mini.nvim")
+try_loadstring("\27LJ\2\n÷\4\0\0\4\0\r\00036\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\0016\0\0\0'\2\6\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\a\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\b\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\t\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\n\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\v\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\f\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\20mini.trailspace\18mini.surround\20mini.statusline\15mini.pairs\14mini.jump\20mini.completion\17mini.comment\fpalette\1\0\1\14use_cterm\2\1\0\16\vbase08\f#EC5f67\vbase07\f#D8DEE9\vbase09\f#F99157\vbase06\f#CDD3DE\vbase0A\f#FAC863\vbase05\f#C0C5CE\vbase0B\f#99C794\vbase04\f#A7ADBA\vbase0C\f#5FB3B3\vbase03\f#65737E\vbase0D\f#6699CC\vbase02\f#4F5B66\vbase0E\f#C594C5\vbase01\f#343D46\vbase0F\f#AB7967\vbase00\f#1B2B34\nsetup\16mini.base16\frequire\0", "config", "mini.nvim")
 time([[Config for mini.nvim]], false)
 if should_profile then save_profiles() end
 

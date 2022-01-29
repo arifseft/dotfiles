@@ -67,7 +67,7 @@ require("packer").startup(
     -- use "b3nj5m1n/kommentary"
     use "JoosepAlviste/nvim-ts-context-commentstring"
     use "editorconfig/editorconfig-vim"
-    use "folke/tokyonight.nvim"
+    -- use "folke/tokyonight.nvim"
     use "folke/which-key.nvim"
     -- use {"glacambre/firenvim", run = function() fn["firenvim#install"](0) end }
     -- use "glepnir/lspsaga.nvim"
@@ -127,6 +127,27 @@ require("packer").startup(
     use {
         "echasnovski/mini.nvim",
         config = function()
+          require("mini.base16").setup {
+            palette = {
+              base00 = '#1B2B34',
+              base01 = '#343D46',
+              base02 = '#4F5B66',
+              base03 = '#65737E',
+              base04 = '#A7ADBA',
+              base05 = '#C0C5CE',
+              base06 = '#CDD3DE',
+              base07 = '#D8DEE9',
+              base08 = '#EC5f67',
+              base09 = '#F99157',
+              base0A = '#FAC863',
+              base0B = '#99C794',
+              base0C = '#5FB3B3',
+              base0D = '#6699CC',
+              base0E = '#C594C5',
+              base0F = '#AB7967'
+              },
+              use_cterm = true,
+          }
           require("mini.comment").setup {}
           require("mini.completion").setup {}
           require("mini.jump").setup {}
@@ -268,7 +289,7 @@ require("which-key").setup()
 
 require'colorizer'.setup()
 
-cmd[[colorscheme tokyonight]]
+-- cmd[[colorscheme tokyonight]]
 -- cmd[[colorscheme catppuccin]]
 
 -- lspkind Icon setup
