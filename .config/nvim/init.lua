@@ -64,7 +64,7 @@ require("packer").startup(
     -- use "akinsho/nvim-toggleterm.lua"
     -- use "alvan/vim-closetag"
     -- use "arcticicestudio/nord-vim"
-    use "b3nj5m1n/kommentary"
+    -- use "b3nj5m1n/kommentary"
     use "JoosepAlviste/nvim-ts-context-commentstring"
     use "editorconfig/editorconfig-vim"
     use "folke/tokyonight.nvim"
@@ -75,19 +75,19 @@ require("packer").startup(
 
     -- use "glepnir/dashboard-nvim"
     use "godlygeek/tabular"
-    use "hoob3rt/lualine.nvim"
+    -- use "hoob3rt/lualine.nvim"
     -- use "hrsh7th/nvim-compe"
 
-    use 'hrsh7th/cmp-nvim-lsp'
+    --[[ use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-cmdline'
-    use 'hrsh7th/nvim-cmp'
+    use 'hrsh7th/nvim-cmp' ]]
 
     -- use 'hrsh7th/cmp-vsnip'
     -- use 'hrsh7th/vim-vsnip'
 
-    use "jiangmiao/auto-pairs"
+    -- use "jiangmiao/auto-pairs"
     use "jwalton512/vim-blade"
     -- use "sheerun/vim-polyglot"
     -- use "kyazdani42/nvim-web-devicons"
@@ -110,7 +110,7 @@ require("packer").startup(
     use {"nvim-treesitter/playground", run = ":TSInstall query"}
     use "nvim-treesitter/nvim-treesitter-textobjects"
     use "onsails/lspkind-nvim"
-    use "phaazon/hop.nvim"
+    -- use "phaazon/hop.nvim"
     -- use "p00f/nvim-ts-rainbow"
     use "rafamadriz/friendly-snippets"
     use "ray-x/lsp_signature.nvim"
@@ -123,6 +123,19 @@ require("packer").startup(
     use "wbthomason/packer.nvim"
     use "windwp/nvim-spectre"
     use "mattn/emmet-vim"
+
+    use {
+        "echasnovski/mini.nvim",
+        config = function()
+          require("mini.comment").setup {}
+          require("mini.completion").setup {}
+          require("mini.jump").setup {}
+          require("mini.pairs").setup {}
+          require("mini.statusline").setup {}
+          require("mini.surround").setup {}
+          require("mini.trailspace").setup {}
+        end,
+    }
 
     -- use "tpope/vim-dadbod"
     -- use "kristijanhusak/vim-dadbod-completion"
@@ -395,11 +408,11 @@ map("v", "<leader>s", "<cmd>lua require('spectre').open_visual()<CR>")
 map("n", "<leader>sp", "viw<cmd>lua require('spectre').open_file_search()<CR>")
 
 -- Hop
-require "hop".setup()
+--[[ require "hop".setup()
 map("n", "<leader>.", "<cmd>lua require'hop'.hint_words()<cr>")
 map("n", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
 map("v", "<leader>.", "<cmd>lua require'hop'.hint_words()<cr>")
-map("v", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
+map("v", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>") ]]
 
 --[[ require('kommentary.config').configure_language("default", {
     -- prefer_single_line_comments = true,
@@ -412,11 +425,11 @@ map("v", "<leader>l", "<cmd>lua require'hop'.hint_lines()<cr>")
 --     single_line_comment_string = "//",
 -- })
 
-require('kommentary.config').configure_language("typescriptreact", {
+--[[ require('kommentary.config').configure_language("typescriptreact", {
     hook_function = function()
       require('ts_context_commentstring.internal').update_commentstring()
     end,
-})
+}) ]]
 
 -- require('kommentary.config').configure_language("javascriptreact", {
 --   hook_function = function()
@@ -561,7 +574,7 @@ local on_attach = function(client, bufnr)
 end
 
 -- Setup nvim-cmp.
-local cmp = require'cmp'
+--[[ local cmp = require'cmp'
 
 cmp.setup({
   snippet = {
@@ -614,11 +627,11 @@ cmp.setup.cmdline(':', {
 })
 
 -- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()) ]]
 
 
 -- LSP this is needed for LSP completions in CSS along with the snippets plugin
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 -- Code actions
 --[[ capabilities.textDocument.codeAction = {
@@ -987,7 +1000,7 @@ map("n", "<space>fb", ":DashboardJumpMark<CR>")
 map("n", "<space>sl", ":SessionLoad<CR>")
 map("n", "<space>cn", ":DashboardNewFile<CR>") ]]
 
-require "lualine".setup {
+--[[ require "lualine".setup {
   options = {
     icons_enabled = true,
     theme = "tokyonight",
@@ -1032,7 +1045,7 @@ require "lualine".setup {
   },
   tabline = {},
   extensions = {}
-}
+} ]]
 
 -- Compe setup start
 --[[ require "compe".setup {
