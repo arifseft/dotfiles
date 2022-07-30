@@ -40,8 +40,11 @@ export NVM_DIR="$HOME/.nvm"
 # export ANDROID_SDK_ROOT=$HOME/.android-sdk
 # export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/bin
 export PATH=$PATH:$GOBIN:/usr/local/bin:/usr/local/opt/go/libexec/bin:/usr/local/mysql/bin/:/usr/local/opt/mysql@5.7/:$HOME/.composer/vendor/bin
-export PATH=$PATH:/usr/local/opt/php@8.0/bin:/usr/local/opt/php@8.0/sbin
 export PATH=$PATH:/usr/local/sbin
+
+# php 8
+export PATH=$(brew --prefix)/local/opt/php@8.0/bin:$PATH
+export PATH=$(brew --prefix)/local/opt/php@8.0/sbin:$PATH
 
 # brew install gnu-sed
 export PATH=$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH
@@ -62,4 +65,8 @@ export DOCKER_CLIENT_TIMEOUT=120
 export COMPOSE_HTTP_TIMEOUT=120
 export HOMEBREW_AUTO_UPDATING=0
 
+export LOCATE_PATH=$HOME/locatedb
+
+export OPENAI_API_KEY=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
 export DB_UI_DEV=mysql://root:12345678@localhost/bmi
+. "$HOME/.cargo/env"

@@ -69,6 +69,26 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["Comment.nvim"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/Comment.nvim",
+    url = "https://github.com/numToStr/Comment.nvim"
+  },
+  ["bufferline.nvim"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/bufferline.nvim",
+    url = "https://github.com/akinsho/bufferline.nvim"
+  },
+  ["coq.artifacts"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/coq.artifacts",
+    url = "https://github.com/ms-jpq/coq.artifacts"
+  },
+  coq_nvim = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/coq_nvim",
+    url = "https://github.com/ms-jpq/coq_nvim"
+  },
   ["editorconfig-vim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/editorconfig-vim",
@@ -79,15 +99,26 @@ _G.packer_plugins = {
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/emmet-vim",
     url = "https://github.com/mattn/emmet-vim"
   },
-  ["friendly-snippets"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/friendly-snippets",
-    url = "https://github.com/rafamadriz/friendly-snippets"
-  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  ["go.nvim"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/go.nvim",
+    url = "https://github.com/ray-x/go.nvim"
+  },
+  ["guihua.lua"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/guihua.lua",
+    url = "https://github.com/ray-x/guihua.lua"
+  },
+  ["hop.nvim"] = {
+    config = { "\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\tkeys\28etovxqpdygfblzhckisuran\nsetup\bhop\frequire\0" },
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/hop.nvim",
+    url = "https://github.com/phaazon/hop.nvim"
   },
   ["lir.nvim"] = {
     loaded = true,
@@ -109,11 +140,20 @@ _G.packer_plugins = {
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/lspsaga.nvim",
     url = "https://github.com/tami5/lspsaga.nvim"
   },
-  ["mini.nvim"] = {
-    config = { "\27LJ\2\n÷\4\0\0\4\0\r\00036\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\0016\0\0\0'\2\6\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\a\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\b\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\t\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\n\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\v\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\f\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\20mini.trailspace\18mini.surround\20mini.statusline\15mini.pairs\14mini.jump\20mini.completion\17mini.comment\fpalette\1\0\1\14use_cterm\2\1\0\16\vbase08\f#EC5f67\vbase07\f#D8DEE9\vbase09\f#F99157\vbase06\f#CDD3DE\vbase0A\f#FAC863\vbase05\f#C0C5CE\vbase0B\f#99C794\vbase04\f#A7ADBA\vbase0C\f#5FB3B3\vbase03\f#65737E\vbase0D\f#6699CC\vbase02\f#4F5B66\vbase0E\f#C594C5\vbase01\f#343D46\vbase0F\f#AB7967\vbase00\f#1B2B34\nsetup\16mini.base16\frequire\0" },
+  ["lualine.nvim"] = {
     loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/mini.nvim",
-    url = "https://github.com/echasnovski/mini.nvim"
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/lualine.nvim",
+    url = "https://github.com/nvim-lualine/lualine.nvim"
+  },
+  ["nvim-autopairs"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
+    url = "https://github.com/windwp/nvim-autopairs"
+  },
+  ["nvim-base16"] = {
+    loaded = true,
+    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-base16",
+    url = "https://github.com/RRethy/nvim-base16"
   },
   ["nvim-colorizer.lua"] = {
     loaded = true,
@@ -124,11 +164,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
-  },
-  ["nvim-spectre"] = {
-    loaded = true,
-    path = "/Users/arifsefrianto/.local/share/nvim/site/pack/packer/start/nvim-spectre",
-    url = "https://github.com/windwp/nvim-spectre"
   },
   ["nvim-treesitter"] = {
     loaded = true,
@@ -208,14 +243,15 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: mini.nvim
-time([[Config for mini.nvim]], true)
-try_loadstring("\27LJ\2\n÷\4\0\0\4\0\r\00036\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\0016\0\0\0'\2\6\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\a\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\b\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\t\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\n\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\v\0B\0\2\0029\0\2\0004\2\0\0B\0\2\0016\0\0\0'\2\f\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\20mini.trailspace\18mini.surround\20mini.statusline\15mini.pairs\14mini.jump\20mini.completion\17mini.comment\fpalette\1\0\1\14use_cterm\2\1\0\16\vbase08\f#EC5f67\vbase07\f#D8DEE9\vbase09\f#F99157\vbase06\f#CDD3DE\vbase0A\f#FAC863\vbase05\f#C0C5CE\vbase0B\f#99C794\vbase04\f#A7ADBA\vbase0C\f#5FB3B3\vbase03\f#65737E\vbase0D\f#6699CC\vbase02\f#4F5B66\vbase0E\f#C594C5\vbase01\f#343D46\vbase0F\f#AB7967\vbase00\f#1B2B34\nsetup\16mini.base16\frequire\0", "config", "mini.nvim")
-time([[Config for mini.nvim]], false)
+-- Config for: hop.nvim
+time([[Config for hop.nvim]], true)
+try_loadstring("\27LJ\2\nU\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\tkeys\28etovxqpdygfblzhckisuran\nsetup\bhop\frequire\0", "config", "hop.nvim")
+time([[Config for hop.nvim]], false)
 if should_profile then save_profiles() end
 
 end)
 
 if not no_errors then
+  error_msg = error_msg:gsub('"', '\\"')
   vim.api.nvim_command('echohl ErrorMsg | echom "Error in packer_compiled: '..error_msg..'" | echom "Please check your config for correctness" | echohl None')
 end

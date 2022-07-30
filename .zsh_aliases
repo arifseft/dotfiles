@@ -10,7 +10,7 @@ alias d='cd $DOTFILES'
 alias e='exit'
 alias b='cd $WORK'
 alias t='tmux'
-alias m='$WORK/driver-app/node_modules/react-native/scripts/launchPackager.command ; exit;'
+alias m='$WORK/driver-app/node_modules/react-native/scripts/launchPackager.command --reset-cache ; exit;'
 alias s='scrcpy -Sw --window-x 1000 --window-width 330 --window-height 800 --legacy-paste'
 
 alias apkdev='rclone copy ~/go/src/github.com/flynd-dev/bmi/driver-app/android/app/build/outputs/apk/developmentRelease/app-universal-developmentRelease.apk gdrive:'
@@ -81,6 +81,11 @@ alias mydevf='lsof -t -i:3309 | xargs kill && ssh -fN -L 0.0.0.0:3309:db.dev.tra
 alias tm='tmate'
 alias tmo='ssh arifsefrianto/office@sgp1.tmate.io'
 alias tmh='ssh arifsefrianto/home@sgp1.tmate.io'
+
+alias ba='cd $WORK/driver-app/android && ./gradlew clean && ./gradlew assembleRelease && ./gradlew bundleRelease'
+
+alias tr='bundletool build-apks --connected-device --overwrite --bundle=$WORK/driver-app/android/app/build/outputs/bundle/release/app-release.aab --output=/tmp/app-release.apks --ks=$WORK/driver-app/android/app/unload-driverapp-key.keystore --ks-pass=pass:123123 --key-pass=pass:123123 --ks-key-alias=unload-driverapp-alias && bundletool install-apks --apks=/tmp/app-release.apks'
+alias trp='bundletool build-apks --connected-device --overwrite --bundle=$WORK/driver-app/android/app/build/outputs/bundle/productionRelease/app-productionRelease.aab --output=/tmp/app-release.apks --ks=$WORK/driver-app/android/app/unload-driverapp-key.keystore --ks-pass=pass:123123 --key-pass=pass:123123 --ks-key-alias=unload-driverapp-alias && bundletool install-apks --apks=/tmp/app-release.apks'
 # alias restg='redis-cli -h 103.93.55.46 -p 6379 -a stagingredis'
 # alias reprd='redis-cli -h redis.qareer.com -p 6379 -a redisprod'
 # alias mystg='mysql -h103.93.56.46 -uorang_qareer -pmaucobafitur'
@@ -120,8 +125,8 @@ alias tmh='ssh arifsefrianto/home@sgp1.tmate.io'
 # alias s="cd $KARIR/karir-consulting-joko && php artisan config:cache && php artisan serve"
 # alias s="cd $BMI/backend && php artisan config:cache && php artisan serve"
 
-# alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
-# alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 
 # alias kca='cd $KARIR/karir-consulting-api'
 # alias kcj='cd $KARIR/karir-consulting-joko'
